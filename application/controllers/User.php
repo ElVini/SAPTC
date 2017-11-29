@@ -6,7 +6,7 @@ class User extends CI_Controller
 	public function __construct()
 	{
 		parent::__construct();
-		$this->load->model('usuario');
+		$this->load->model('Usuario_model');
 		$this->load->library(array('session'));
 	}
 
@@ -23,7 +23,7 @@ class User extends CI_Controller
 		}
 		else if($this->session->userdata('id') == 2)
 		{
-			$data['tutorias'] = $this->usuario->getTutorias($this->session->userdata('login'));
+			$data['tutorias'] = $this->Usuario_model->getTutorias($this->session->userdata('login'));
 			$data['titulo'] = 'SAPTC - Tutorías';
 			$this->load->view('User/tutorias', $data);
 		}
