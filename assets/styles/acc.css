@@ -1,0 +1,114 @@
+#divolvidado, #divcb, .enviarbtn,.enviarbtno{
+    position: relative;
+}
+
+.TituloPag{
+  text-align: center;
+}
+
+#cuadroaccp, #titulo, #subtitulo, #instr, .letra, .divcorreo{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#contra, #usu{
+    height: 35px;
+    width: 200px;
+}
+
+#correo{
+    height: 35px;
+    width: 300px;
+}
+
+#titulo{
+    width: 100%;
+    position: absolute;
+    margin-top: 5px;
+}
+
+#npag{
+    position: absolute;
+    padding: 5px 1px 1px 18px;
+    z-index: 1;
+}
+
+#npag a:hover{
+  color: #DFDEE6;
+}
+
+#instr{
+    margin: 11px 0px 0px 0px;
+}
+
+#subtitulo{
+    margin: 25px 0px 10px 0px;
+}
+
+#titulo a, #divcb label, #npag a{
+    text-decoration: none;
+    color: white;
+    font-family: Raavi, Arial;
+}
+
+#divolvidado a, #instr{
+  color: #2F4159;
+}
+
+#divolvidado a, #divcb label, #instr{
+    font-size: small;
+}
+
+.imagen img{
+    display: inline-block;
+    float: right;
+    width: 50px;
+    height: 67px;
+    margin: 5px 18px 0px 0px;
+}
+
+#header{
+    background-color: #2F4159;
+    width: 100%;
+    height: 83px;
+}
+
+#cuadroolv, #cuadroacc{
+    background-color: #FFFFFF;
+    border-style: solid;
+    border-color: #2F4159;
+    border-radius: 15px;
+}
+
+#cuadroolv{
+    width: 439px;
+    height: 150px;
+}
+
+#cuadroacc{
+    width: 300px;
+    height: 200px;
+}
+
+.letra{
+    margin: 20px 0px 0px 10px;
+}
+
+.enviarbtno{
+    left: 345px;
+    top: 19px;
+}
+
+.enviarbtn{
+    left: 201px;
+    top: 10px;
+}
+
+#divcb{
+    left: 7px;
+}
+
+#divolvidado{
+    left: 107px;
+}

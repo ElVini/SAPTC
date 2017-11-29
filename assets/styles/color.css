@@ -1,0 +1,20 @@
+.color {
+	background-color: #2F4159;
+}
+
+.user-image {
+	float: right;
+}
+
+.center {
+	position: relative;
+	text-align: center;
+}
+
+.hiden-submenu {
+	display: none;
+}
+
+.hiden-submenu a{
+	diaplay: inline-block;
+}

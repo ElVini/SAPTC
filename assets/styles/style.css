@@ -1,0 +1,83 @@
+nav {
+    background-color:#2F4159;
+}
+
+.table_container {
+    margin-top: 20px;
+}
+
+.tutoria {
+    color: #0143FF;
+    text-decoration: underline;
+    list-style: inherit;
+}
+
+.tutoria:hover {
+    cursor: pointer;
+}
+
+.check {
+    align-content: center;
+}
+
+.tabla {
+    margin-top: 20px;
+}
+
+.boton {
+    margin-left: 20px;
+}
+
+.boton:hover {
+    cursor: pointer;
+}
+
+.left {
+    float: right;
+}
+
+h3 {
+    padding-top: 10px;
+}
+
+#msjError {
+    margin-top: 30px;
+    color: red;
+    font-size: 20px;
+}
+
+.formulario {
+    margin-top: 60px;
+}
+
+button:hover {
+    cursor: pointer;
+}
+
+.form {
+    width: 100%;
+}
+
+#error {
+    margin-top: 20px;
+    font-weight: bold;
+    font-family: inherit;
+    font-size: 16px;
+    color: #FF0606;
+}
+
+#clickEvent {
+    background-color: silver;
+}
+
+.encabezado {
+    margin: 25px, 0px, 25px, 0px;
+}
+
+.formulario {
+    padding-top: 5px;
+}
+
+.formu {
+    display:none;
+}
