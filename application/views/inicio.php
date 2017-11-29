@@ -34,7 +34,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
        <?php if(isset($error))
        {
        		echo 'Contraseña incorrecta';
-       } 
+       }
        ?>
 
        <div class="enviarbtn">
@@ -44,4 +44,3 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 </div>
 </html>
 <script type="text/javascript" src="<?php echo base_url('assets/js/jquery-3.2.1.min.js'); ?>"></script>
-<script type="text/javascript" src="<?php echo base_url('assets/js/bootstrap-dialog.min.js'); ?>"></script>
