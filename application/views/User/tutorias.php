@@ -8,16 +8,17 @@
 	</div>
 </div>
 <div class="container">
+	<input id="url" hidden type="text" value="<?php echo base_url(); ?>">
 	<div class="row tabla">
 		<table class="table table-hover table-responsive">
 			<tr>
-				<th>Tutoría</th>
+				<th>Tutorías</th>
 				<th>Nivel</th>
 				<th>Fecha de inicio</th>
 				<th>Fecha de término</th>
 			</tr>
 			<tbody id="tabla">
-				<?php 
+				<?php
 					if($tutorias == null)
 					{
 						echo '<tr><td colspan = "5"><center>Aún no se cuenta con tutorías asignadas</center></td></tr>';

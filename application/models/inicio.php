@@ -1,4 +1,4 @@
-<?php 
+<?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
 class inicio extends CI_Model {
@@ -13,18 +13,18 @@ class inicio extends CI_Model {
 		$query = $this->db->query('SELECT * FROM login WHERE Usuario = "'.$user.'"');
 		if($query->num_rows() > 0)
 		{
-			foreach ($query->result_array() as $value) 
+			foreach ($query->result_array() as $value)
 			{
-				if($pass == $value['Password']) 
+				if($pass == $value['Password'])
 				{
 					return $query;
 				}
-				else 
+				else
 				{
 					return null;
 				}
 			}
-		}		
+		}
 	}
 
 	public function getNombre($id)

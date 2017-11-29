@@ -1,4 +1,4 @@
-<?php 
+<?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
 class User extends CI_Controller
@@ -16,7 +16,7 @@ class User extends CI_Controller
 	}
 
 	public function tutorias()
-	{	
+	{
 		if($this->session->userdata('id') != 2)
 		{
 			redirect(base_url());
@@ -25,7 +25,7 @@ class User extends CI_Controller
 		{
 			$data['tutorias'] = $this->usuario->getTutorias($this->session->userdata('login'));
 			$data['titulo'] = 'SAPTC - Tutorías';
-			$this->load->view('User/tutorias', $data);	
+			$this->load->view('User/tutorias', $data);
 		}
 		else
 		{
@@ -50,7 +50,7 @@ class User extends CI_Controller
 	}
 	public function eliminarTutoria()
 	{
-		$id = $this->input->get('id');
+		$this->usuario->eliminarTutoria($this->input->get('id'));
 		redirect(base_url('index.php/User/tutorias'));
 	}
 
@@ -63,7 +63,7 @@ class User extends CI_Controller
 		else if($this->session->userdata('id') == 2)
 		{
 			$data['titulo'] = 'SAPTC - Docencias';
-			$this->load->view('User/docencais', $data);	
+			$this->load->view('User/docencais', $data);
 		}
 		else
 		{

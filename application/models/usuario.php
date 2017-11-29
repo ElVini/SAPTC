@@ -1,4 +1,4 @@
-<?php  
+<?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
 class usuario extends CI_Model
@@ -7,7 +7,7 @@ class usuario extends CI_Model
 	{
 		parent::__construct();
 		$this->load->database();
-	}	
+	}
 
 	public function agregar($data)
 	{
@@ -33,6 +33,10 @@ class usuario extends CI_Model
 		{
 			return null;
 		}
+	}
+	public function eliminarTutoria($id)
+	{
+		$this->db->query('DELETE FROM tutoria WHERE idTutoria = '.$id);
 	}
 }
 

@@ -48,7 +48,7 @@ btnDel.addEventListener('click', function(event) {
 	event.preventDefault();
 	if(ac!=0) {
 		var formulario = document.createElement('form');
-		formulario.setAttribute('action','index.php/User/eliminarTutoria?id=');
+		formulario.setAttribute('action', $("#url").val() + 'index.php/User/eliminarTutoria?id=' + deleteElement);
 		formulario.setAttribute('method','post');
 		var caja = document.createElement('input');
 		caja.setAttribute('name', 'elemento');
@@ -87,3 +87,7 @@ btnAdd.addEventListener('click', function(event) {
 	error.innerHTML = '';
 	$("#content").removeAttr('hidden', 'hidden');
 });
+
+function modificar(id) {
+	
+}
