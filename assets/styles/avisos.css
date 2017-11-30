@@ -1,0 +1,104 @@
+nav {
+    background-color:#2F4159;
+}
+
+#details
+{
+  text-align: left;
+}
+#tabla
+{
+    vertical-align: top;
+    text-align: left;
+    font-family: Arial;
+    border-collapse: separate;
+    border-radius: 15px 15px 15px 15px;
+    width: 100%;
+}
+#tabla tr {
+width: 100%;
+}
+.scroll {
+  overflow-y: auto;
+  height: 300px;
+  width: 95%;
+  text-align: left;
+}
+.container
+{
+  margin-left: 15px;
+  margin-top: 20px;
+}
+
+#divPrueba
+{
+  text-align: left;
+  display: block;
+}
+
+#tabla thead
+{
+  background-color:#f0f0f0;
+}
+
+#tabla #notif
+{
+    text-align: center;
+    background-color: #2f4159;
+    font-size: 25px;
+    color: white;
+    border-top-left-radius: 15px;
+    border-top-right-radius: 15px;
+}
+#div-tabla
+{
+  text-align: right;
+  margin-top: 30px;
+  margin-bottom: 30px;
+}
+#buttons
+{
+  height: 30px;
+  display: block;
+  width: 100%;
+  text-align: right;
+}
+button
+{
+  padding: 10px;
+}
+#tabla th
+{
+    font-size: 20px;
+    color: black;
+    border-collapse: collapse;
+}
+
+.DivELetrasrojas{
+  color: red;
+  font-size: 20px;
+  display: none;
+  text-align: right;
+}
+#tabla tbody tr.highlight td {
+    background-color: #B0B0B0;
+}
+.scroll::-webkit-scrollbar {
+    width: 8px;
+}
+
+.scroll::-webkit-scrollbar-track {
+    -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+    -webkit-border-radius: 10px;
+    border-radius: 10px;
+}
+.scroll::-webkit-scrollbar-thumb {
+    -webkit-border-radius: 10px;
+    border-radius: 10px;
+    background:#2f4159;
+    -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.5);
+}
+
+#divParaError{
+	display: inline-block;
+}

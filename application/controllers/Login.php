@@ -26,8 +26,10 @@ class Login extends CI_Controller {
 				break;
 
 			case '2':
+				$this->load->model('Usuario_model');
 				$data['titulo'] = 'SAPTC - Inicio';
 				$data['nombre'] = $this->session->userdata('user');
+				$data['query'] = $this->Usuario_model->obtenerRecordatorios($this->session->userdata('login'));
 				$this->load->view('User/inicio', $data);
 				break;
 		}
@@ -59,8 +61,10 @@ class Login extends CI_Controller {
 						'login'  => $res->Datosprofesores_idDatosprofesor
 					);
 					$this->session->set_userdata($data);
+					$this->load->model('usuario');
 					$datos['titulo']="SAPTC - Inicio";
 					$datos['nombre']=$this->Inicio_model->getNombre($res->Idlogin);
+					$datos['query']=$this->Usuario_model->obtenerRecordatorios();
 					$this->load->view('User/inicio',$datos);
 				}
 			}
