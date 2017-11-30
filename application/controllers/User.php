@@ -75,12 +75,12 @@ class User extends CI_Controller
 			'estado'	  => $this->input->post('estado'),
 			'id'		  => $this->session->userdata('login')
 		);
-		$this->usuario->agregar($data);
+		$this->Usuario_model->agregar($data);
 		redirect(base_url('index.php/User/tutorias'));
 	}
 	public function eliminarTutoria()
 	{
-		$this->usuario->eliminarTutoria($this->input->get('id'));
+		$this->Usuario_model->eliminarTutoria($this->input->get('id'));
 		redirect(base_url('index.php/User/tutorias'));
 	}
 

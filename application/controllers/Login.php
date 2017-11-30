@@ -61,7 +61,7 @@ class Login extends CI_Controller {
 						'login'  => $res->Datosprofesores_idDatosprofesor
 					);
 					$this->session->set_userdata($data);
-					$this->load->model('usuario');
+					$this->load->model('Usuario_model');
 					$datos['titulo']="SAPTC - Inicio";
 					$datos['nombre']=$this->Inicio_model->getNombre($res->Idlogin);
 					$datos['query']=$this->Usuario_model->obtenerRecordatorios();
@@ -75,5 +75,17 @@ class Login extends CI_Controller {
 			$data['titulo'] = 'SAPTC - Iniciar sesión';
 			$this->load->view('inicio', $data);
 		}
+	}
+
+	public function logout()
+	{
+		$data = array(
+			'user'   => '',
+			'id'     => '',
+			'login'  => ''
+		);
+		$this->session->set_userdata($data);
+		$this->session->sess_destroy();
+		$this->index();
 	}
 }
