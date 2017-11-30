@@ -51,7 +51,7 @@ class Login extends CI_Controller {
 						'login'  => $res->Datosprofesores_idDatosprofesor
 					);
 					$this->session->set_userdata($data);
-					//$this->load->view('User/inicio');
+					redirect(base_url());
 				}
 				else if($res->Tipo == 2)
 				{
@@ -87,5 +87,7 @@ class Login extends CI_Controller {
 		$this->session->set_userdata($data);
 		$this->session->sess_destroy();
 		$this->index();
+		redirect(base_url());
 	}
+
 }

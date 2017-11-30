@@ -32,7 +32,7 @@
           <ul class="nav navbar-nav">
             <li><a href="#" style="color:white;"><span class="glyphicon glyphicon-user"></span > Perfil</a></li>
 
-            <li><a href="#" style="color:white;">Lorem</a> </li>
+            <li><a href="#" style="color:white;">Tutorías</a> </li>
 
             <li class="dropdown">
               <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" style="color:white;">
@@ -48,7 +48,9 @@
 
             <li><a href="#" style="color:white;">Lorem</a> </li>
 
-
+          </ul>
+          <ul class="nav navbar-nav navbar-right">
+            <li><a href="<?php echo base_url('index.php/Login/logout');?>" style="color:white;"><span class="glyphicon glyphicon-log-out" id="cerrar-sesion"></span > Cerrar Sesion</a></li>
           </ul>
 
         </div>

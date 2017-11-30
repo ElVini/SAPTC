@@ -12,13 +12,13 @@ class Administrador extends CI_Controller {
 
 	public function index()
 	{
-    $this->load->view('Admin/inicio');
 	}
 
-  public function incio_sesion()
-	{
-    $this->load->view('Admin/inicio_sesion');
+	public function inicio(){
+		$this->load->view('Admin/inicio');
 	}
+
+
 
 
 }
