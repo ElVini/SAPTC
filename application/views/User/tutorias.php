@@ -218,7 +218,23 @@
 					label: 'Guardar',
 					cssClass: 'btn btn-primary',
 					action: function(){
-						alert('Holi c:');
+						$.ajax({
+							type: 'POST',
+							url: $("#url").val() + 'index.php/User/modificarTutoria',
+							data: {
+								id: 			y.getAttribute('data-id'),
+								nivel: 			$("#nivelb").val(),
+								programa: 		$("#programab").val(),
+								tipo: 			$("#tipob").val(),
+								n: 				$("#nb").val(),
+								fechaInicio: 	$("#fechaIniciob").val(),
+								fechaFin: 		$("#fechaFinb").val(),
+								estado: 		$("#estadob").val()
+							},
+							success: function() {
+								location.reload();
+							}
+						});
 					}
 				}]
 			});

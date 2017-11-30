@@ -1,8 +1,8 @@
-<form method="post" id="formulario" action="<?php echo base_url('index.php/User/agregarTutoria') ?>">
+<form method="post" id="formul">
     <div class="row form-group">
         <div class="col-md-4">
             <label for="nivel">Nivel:</label>
-            <select id="nivel" name="nivel" class="form-control">
+            <select id="nivelb" name="nivel" class="form-control">
                 <option value="0">Seleccionar. . .</option>
                 <option <?php if($nivel === 'Doctorado')  echo 'selected="selected"'; ?>value="Doctorado">Doctorado</option>
                 <option <?php if($nivel === 'Especialidad')  echo 'selected="selected"'; ?>value="Especialidad">Especialidad</option>
@@ -16,7 +16,7 @@
 
         <div class="col-md-4">
             <label for="programa">Programa educativo:</label>
-            <select id="programa" name="programa" class="form-control">
+            <select id="programab" name="programa" class="form-control">
                 <option value="0">Seleccionar. . .</option>
                 <option <?php if($programa === 'Ing. en informática')  echo 'selected="selected"'; ?>value="Ing. en informática">Ing. en informática</option>
                 <option <?php if($programa === 'Ing. en nanotecnología')  echo 'selected="selected"'; ?> value="Ing. en nanotecnología">Ing. en nanotecnología</option>
@@ -36,7 +36,7 @@
 
         <div class="col-md-4">
             <label for="tipo">Tipo:</label>
-            <select id="tipo" name="tipo" class="form-control" onchange="append()">
+            <select id="tipob" name="tipo" class="form-control" onchange="append()">
                 <option value="0">Seleccionar. . .</option>
                 <option <?php if($tipo === 'Grupal')  echo 'selected="selected"'; ?> value="Grupal">Grupal</option>
                 <option <?php if($tipo === 'Individual')  echo 'selected="selected"'; ?> value="Individual">Individual</option>
@@ -48,29 +48,29 @@
         <div class="col-md-4" id="grupal">
             <?php if($tipo === 'Grupal') {
                 echo '<label for="n">Número de estudiantes:</label>';
-                echo '<input class="form-control" type="number" name="n" value="'.$n.'">';
+                echo '<input id="nb" class="form-control" type="number" name="n" value="'.$n.'">';
             }
             else {
                 echo '<label for="n">Nombre del estudiante:</label>';
-                echo '<input class="form-control" type="text" name="n" value="'.$n.'">';
+                echo '<input id="nb" class="form-control" type="text" name="n" value="'.$n.'">';
             } ?>
         </div>
 
         <div class="col-md-4">
             <label for="fechaInicio">Fecha de inicio:</label>
-            <input type="date" class="form-control" name="fechaInicio" id="fechaInicio" value="<?php echo $fechaInicio; ?>">
+            <input type="date" class="form-control" name="fechaInicio" id="fechaIniciob" value="<?php echo $fechaInicio; ?>">
         </div>
 
         <div class="col-md-4">
             <label for="fechaFin">Fecha de término:</label>
-            <input type="date" class="form-control" name="fechaFin" id="fechaFin" value="<?php echo $fechaFin; ?>">
+            <input type="date" class="form-control" name="fechaFin" id="fechaFinb" value="<?php echo $fechaFin; ?>">
         </div>
     </div>
 
     <div class="row form-group">
         <div class="col-md-4">
             <label for="estado">Estado:</label>
-            <select id="estado" name="estado" class="form-control">
+            <select id="estadob" name="estado" class="form-control">
                 <option value="0">Seleccionar. . .</option>
                 <option <?php if($estado === 'En proceso')  echo 'selected="selected"'; ?>value="En proceso">En proceso</option>
                 <option <?php if($estado === 'Concluida')  echo 'selected="selected"'; ?>value="Concluida">Concluida</option>

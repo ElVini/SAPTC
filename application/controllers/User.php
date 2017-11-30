@@ -118,7 +118,16 @@ class User extends CI_Controller
 
 	public function modificarTutoria()
 	{
-
+		$data = array(
+			'nivel' 		=> $this->input->post('nivel'),
+			'programa'		=> $this->input->post('programa'),
+			'tipo'			=> $this->input->post('tipo'),
+			'n'				=> $this->input->post('n'),
+			'fechaInicio'	=> $this->input->post('fechaInicio'),
+			'fechaFin'		=> $this->input->post('fechaFin'),
+			'estado'		=> $this->input->post('estado')
+		);
+		$this->Usuario_model->modificarTutoria($this->input->post('id'), $data);
 	}
 
 	public function docencias()

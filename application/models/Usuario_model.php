@@ -22,6 +22,7 @@ class Usuario_model extends CI_Model
 		$this->db->query($insert);
 	}
 
+	//Devuelve todas las tutorías para mostrarlas en la tabla
 	public function getTutorias($id)
 	{
 		$query = $this->db->query('SELECT * FROM tutoria WHERE Datosprofesores_idDatosprofesor = '.$id);
@@ -39,7 +40,7 @@ class Usuario_model extends CI_Model
 		$this->db->query('DELETE FROM tutoria WHERE idTutoria = '.$id);
 	}
 
-<<<<<<< HEAD
+	//Devuelve la información para mostrarla al modificar
 	public function getTutoria($id)
 	{
 		$query = $this->db->query("SELECT * FROM tutoria WHERE idTutoria =".$id);
@@ -50,7 +51,22 @@ class Usuario_model extends CI_Model
 		else
 		{
 			return null;
-=======
+		}
+	}
+
+	public function modificarTutoria($id, $data)
+	{
+		if($data['n'] != '1')
+		{
+			$update = 'UPDATE tutoria SET Fechainicio = "'.$data['fechaInicio'].'", Fechafin = "'.$data['fechaFin'].'", Estado = "'.$data['estado'].'", Tipo = "'.$data['tipo'].'", Nivelestudios = "'.$data['nivel'].'", Noestudiantes = "'.$data['n'].'", Programaeducativo = "'.$data['programa'].'" WHERE idTutoria = '.$id;
+		}
+		else
+		{
+			$update = 'UPDATE tutoria SET Fechainicio = "'.$data['fechaInicio'].'", Fechafin = "'.$data['fechaFin'].'", Estado = "'.$data['estado'].'", Tipo = "'.$data['tipo'].'", Nivelestudios = "'.$data['nivel'].'", Grupoalumnos = "'.$data['n'].'", Programaeducativo = "'.$data['programa'].'" WHERE idTutoria = '.$id;
+		}
+		$this->db->query($update);
+	}
+
 	public function obtenerRecordatorios(){
 		$this->db->where('Datosprofesores_idDatosprofesor', $this->session->userdata('login'));
 		$query = $this->db->get('recordatorios');
@@ -81,7 +97,6 @@ class Usuario_model extends CI_Model
 		else{
 			$this->db->where('idrecordatorios',$idrecordatorios);
 			$this->db->delete('recordatorios');
->>>>>>> dc80d7dd919dd61e79b122969ed0054331ae37cb
 		}
 	}
 }
