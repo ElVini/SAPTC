@@ -7,6 +7,7 @@ class User extends CI_Controller
 	{
 		parent::__construct();
 		$this->load->model('Usuario_model');
+		$this->load->model('EstudiosRealizados_model');
 		$this->load->library(array('session'));
 	}
 
@@ -146,6 +147,20 @@ class User extends CI_Controller
 			redirect(base_url());
 		}
 	}
+
+	public function estudiosRealizados()
+	{
+		if($this->session->userdata('id') != 2)
+		{
+			redirect(base_url());
+		}
+
+		$idERUser = $this->session->userdata('login');
+		$data['estudios'] = $this->EstudiosRealizados_model->getEstudios(/*$idERUser*/2);
+		$data['titulo'] = 'SAPTC - Estudios Realizados';
+		$this->load->view('User/estudiosRealizados', $data);
+	}
+
 }
 
 ?>
