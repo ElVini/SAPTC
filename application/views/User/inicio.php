@@ -1,4 +1,4 @@
-<?php $this->load->view('User/Helpers/header'); ?>
+<?php $this->load->view('Helpers/User/header'); ?>
 <link rel="stylesheet" type="text/css" href="<?php echo base_url('assets/styles/bootstrap.css') ?>">
 <link rel="stylesheet" href="<?php echo base_url('assets/styles/avisos.css'); ?>">
 <link rel="stylesheet" href="<?php echo base_url('assets/styles/zabuto_calendar.css'); ?>">

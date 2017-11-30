@@ -65,7 +65,7 @@ class Login extends CI_Controller {
 					$datos['titulo']="SAPTC - Inicio";
 					$datos['nombre']=$this->Inicio_model->getNombre($res->Idlogin);
 					$datos['query']=$this->Usuario_model->obtenerRecordatorios();
-					$this->load->view('User/inicio',$datos);
+					redirect(base_url());
 				}
 			}
 		}
