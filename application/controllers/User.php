@@ -45,13 +45,50 @@ class User extends CI_Controller
 			'estado'	  => $this->input->post('estado'),
 			'id'		  => $this->session->userdata('login')
 		);
-		$this->usuario->agregar($data);
+		$this->Usuario_model->agregar($data);
 		redirect(base_url('index.php/User/tutorias'));
 	}
 	public function eliminarTutoria()
 	{
-		$this->usuario->eliminarTutoria($this->input->get('id'));
+		$this->Usuario_model->eliminarTutoria($this->input->get('id'));
 		redirect(base_url('index.php/User/tutorias'));
+	}
+
+	public function getData()
+	{
+		$query = $this->Usuario_model->getTutoria($this->input->get('id'));
+		foreach ($query->result() as $res)
+		{
+			$data = array(
+				'nivel'       => $res->Nivelestudios,
+				'programa'    => $res->Programaeducativo,
+				'tipo'		  => $res->Tipo,
+				'fechaInicio' => $res->Fechainicio,
+				'fechaFin'    => $res->Fechafin,
+				'estado'	  => $res->Estado,
+				'id'		  => $res->idTutoria
+			);
+			/**
+			* La variable 'n' cambia dependiendo del tipo de tutoría
+			* es decir, si la tutoría es grupal toma el valor del número
+			* de alumnos, si es individual, toma el valor del nombre
+			* del alumno
+			*/
+			if($res->Noestudiantes == '1')
+			{
+				$data['n'] = $res->Grupoalumnos;
+			}
+			else
+			{
+				$data['n'] = $res->Noestudiantes;
+			}
+		}
+		$this->load->view('User/Helpers/modTut', $data);
+	}
+
+	public function modificarTutoria()
+	{
+
 	}
 
 	public function docencias()

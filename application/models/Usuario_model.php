@@ -17,7 +17,7 @@ class Usuario_model extends CI_Model
 		}
 		else if ($data['tipo'] == 'Individual')
 		{
-			$insert = "INSERT INTO tutoria VALUES('', '', '".$data['fechaInicio']."', '".$data['fechaFin']."', '".$data['estado']."', '".$data['tipo']."', '".$data['nivel']."', '".$data['n']."',  '".$data['programa']."', '".$data['id']."')";
+			$insert = "INSERT INTO tutoria VALUES('', '1', '".$data['fechaInicio']."', '".$data['fechaFin']."', '".$data['estado']."', '".$data['tipo']."', '".$data['nivel']."', '".$data['n']."',  '".$data['programa']."', '".$data['id']."')";
 		}
 		$this->db->query($insert);
 	}
@@ -37,6 +37,19 @@ class Usuario_model extends CI_Model
 	public function eliminarTutoria($id)
 	{
 		$this->db->query('DELETE FROM tutoria WHERE idTutoria = '.$id);
+	}
+
+	public function getTutoria($id)
+	{
+		$query = $this->db->query("SELECT * FROM tutoria WHERE idTutoria =".$id);
+		if($query->num_rows() > 0)
+		{
+			return $query;
+		}
+		else
+		{
+			return null;
+		}
 	}
 }
 

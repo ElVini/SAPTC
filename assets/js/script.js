@@ -13,10 +13,12 @@ var filas = document.getElementsByTagName('tr');	//Crea un array con los element
 var deleteElement;
 var selected;
 var send;
+var elemento;
 
 function getValue(valor, posicion) {
 	deleteElement = valor;
 	selected = filas[posicion];
+	elemento = posicion;
 	selected.setAttribute('id','clickEvent');
 	for(var i = 1; i<filas.length; i++) {
 		if(i != posicion)
@@ -75,19 +77,24 @@ btnDel.addEventListener('click', function(event) {
 		});
 	}
 	else {
-		error.innerHTML = 'Favor de seleccionar un elemento a eliminar';
+		BootstrapDialog.show({
+			title: 'Error',
+			message: 'Favor de seleccionar un elemento a eliminar',
+			type: BootstrapDialog.TYPE_WARNING,
+			buttons: [{
+				label: 'Aceptar',
+				cssClass: 'btn btn-warning',
+				action: function(dialogItself) {
+					dialogItself.close();
+				}
+			}]
+		});
 	}
 });
 /*btnMod.addEventListener('click', function(event) {
 	event.preventDefault();
 });*/
 
-btnAdd.addEventListener('click', function(event) {
-	event.preventDefault();
-	error.innerHTML = '';
-	$("#content").removeAttr('hidden', 'hidden');
-});
-
-function modificar(id) {
-	
+function guardar() {
+	$("#formulario").submit();
 }

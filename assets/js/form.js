@@ -12,7 +12,7 @@ var x = 0;
 
 
 
-btnGuardar.addEventListener('click', function(event) {
+function guardar() {
 	event.preventDefault();
 	if(tipoTutoria.selectedIndex == 0 || nivel.selectedIndex == 0 || pEdu.selectedIndex == 0 || fechaInicio == null|| fechaFin == null || estado.selectedIndex == 0) {
 		BootstrapDialog.show({
@@ -31,7 +31,7 @@ btnGuardar.addEventListener('click', function(event) {
 	else {
 		document.getElementById('formulario').submit();
 	}
-});
+}
 
 function cancelar(event) {
 	event.preventDefault();
