@@ -12,7 +12,37 @@ class User extends CI_Controller
 
 	public function index()
 	{
+		if($this->session->userdata('tipo') !='2')
+		{
+			redirect(base_url());
+		}
+		$data['titulo'] = 'SAPTC - Inicio';
+		$data['query'] = $this->Usuario_model->obtenerRecordatorios();
+		$this->load->view('User/inicio',$data);
+	}
+	public function funcionRecordatorio()
+	{
+		//primer parametro de la funcion para identificar si se va agregar o editar valor
+		// -1 para agregar
+		// cualquier otro valor para modificar
 
+		//ultimo parametro de la funcion define funcionalidad
+		// 0 - agregar/Modificar
+		// 1 - eliminar
+		if(isset($_POST['idrecordatorios']) && $_POST['idrecordatorios']==""){
+				$this->Usuario_model->funcionesRecordatorios(-1, $_POST['date'], $_POST['title'], $_POST['description'], 0);
+		}
+		else if(isset($_POST['idAborrar'])) {
+			$id = $_POST['idAborrar'];
+			$funcion = 1; //eliminar
+			$this->Usuario_model->funcionesRecordatorios($id, "" , "", "", $funcion);
+		}
+		else{
+			$id = $_POST['idrecordatorios'];
+			$this->Usuario_model->funcionesRecordatorios($id, $_POST['date'], $_POST['title'], $_POST['description'], 0);
+		}
+
+		redirect(base_url());
 	}
 
 	public function tutorias()

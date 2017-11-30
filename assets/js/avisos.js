@@ -6,13 +6,46 @@ var submit;
 var bandera = false;
 $(document).ready(function()
 {
-  $("#add").click(function()
-  {
-      $("#divPrueba").show("slow");
-      window.scrollTo(0,document.body.scrollHeight);
-      $(".DivELetrasrojas").hide();
+  $('#add').click(function(){
+	desplegarDialogo('','','');
   });
-  $("#send").click(function(event)
+
+  function desplegarDialogo(fecha,titulo,descripcion){
+	  BootstrapDialog.show({
+		  size: BootstrapDialog.SIZE_NORMAL,
+		  title: 'Nuevo recordatorio',
+		  cssClass: 'dialog',
+		  message: `<div id="divPrueba">
+		  	        <form id="formulario" method="post">
+		  	          <input type="text" hidden id="idrecordatorios" name="idrecordatorios"value="">
+		  	          <label>Fecha: </label>
+		  	          <input type="date" id="fecha" name="date" value="`+fecha+`" class="form-control">
+		  	          <label>Titulo: </label>
+		  	          <input type="text" id="titulo" name="title" value="`+titulo+`" class="form-control">
+		  	          <label>Descripcion: </label>
+		  	          <input type="text" id="descripcion" name="description" value="`+descripcion+`" class="form-control"><br>
+		  	          <p id="error"></p>
+		  	        </form>
+		  	      </div>`,
+		  closable: false,
+		  buttons: [{
+			label: 'Cancelar',
+			cssClass: 'btn-danger',
+			id: 'cancel',
+			action: function(dialogRef){
+				dialogRef.close();
+			  }
+			},{
+			label: "Enviar",
+			id: "send",
+			cssClass: 'btn-primary',
+			action: function(dialogRef){
+				send();
+			  }
+		  }]
+	  });
+  }
+  function send()
   {
     $(this).prop('disabled', true);
   	event.preventDefault();
@@ -30,13 +63,13 @@ $(document).ready(function()
           var send_id = document.getElementById('idrecordatorios');
            send_id.setAttribute('value', id);
            formulario.appendChild(send_id);
-           formulario.setAttribute('action', 'index.php?a=e');
+           formulario.setAttribute('action', 'index.php/User/funcionRecordatorio');
            formulario.submit();
            bandera=true;
       }
       else
       {
-          formulario.setAttribute('action', 'index.php?a=aa');
+          formulario.setAttribute('action', 'index.php/User/funcionRecordatorio');
           formulario.submit();
           bandera=false;
       }
@@ -45,7 +78,7 @@ $(document).ready(function()
   		error.innerHTML = 'Uno o más elementos están vacíos';
        $(this).removeAttr('disabled');
   	}
-  });
+  }
 
   $("#cancel").click(function()
   {
@@ -70,7 +103,7 @@ $(document).ready(function()
   if(seleccionado != undefined){
     if(confirm('El elemento seleccionado será elminado. Esta acción no se puede deshacer, ¿Desea continuar?') == true) {
      var formulario = document.getElementById('formu');
-     formulario.setAttribute('action', 'index.php?a=d');
+     formulario.setAttribute('action', 'index.php/User/funcionRecordatorio');
      formulario.setAttribute('method', 'post');
      var idAborrar = document.createElement('input');
      idAborrar.setAttribute('type', 'text');
@@ -91,15 +124,15 @@ $(document).ready(function()
   bandera=true;
   var id = $(".highlight ").children('td:nth-child(1)').first().html();
   if(id != undefined){
-    document.getElementById('fecha').value = $(".highlight").children('td:nth-child(2)').first().html();
-    document.getElementById('titulo').value = $(".highlight").children('td:nth-child(4)').first().html();
-    document.getElementById('descripcion').value = $(".highlight").children('td:nth-child(5)').first().html();
-    document.getElementById('#send');
-    $("#divPrueba").show("slow");
+	var fecha = $(".highlight").children('td:nth-child(2)').first().html();
+	var titulo =  $(".highlight").children('td:nth-child(4)').first().html();
+	var descripcion =  $(".highlight").children('td:nth-child(5)').first().html();
+
+	desplegarDialogo(fecha,titulo,descripcion);
   }
   else
   {
-    $(".DivELetrasrojas").show('slow');
+    $(".DivELetrasrojas p").text('Por favor seleccione una fila');
   }
   });
 });

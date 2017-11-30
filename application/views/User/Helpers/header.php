@@ -26,7 +26,7 @@
       </div>
       <a href="#">Actividades particulares</a>
       <a href="#">Profesor</a>
-      <a href="#">Cerrar sesión</a>
+      <a href="<?php echo base_url('index.php/Login/logout'); ?>">Cerrar sesión</a>
     </nav>
 
     <div class="user-image">
@@ -36,4 +36,3 @@
   </div>
 
 </header>
-

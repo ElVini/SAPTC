@@ -39,6 +39,7 @@ class Usuario_model extends CI_Model
 		$this->db->query('DELETE FROM tutoria WHERE idTutoria = '.$id);
 	}
 
+<<<<<<< HEAD
 	public function getTutoria($id)
 	{
 		$query = $this->db->query("SELECT * FROM tutoria WHERE idTutoria =".$id);
@@ -49,6 +50,38 @@ class Usuario_model extends CI_Model
 		else
 		{
 			return null;
+=======
+	public function obtenerRecordatorios(){
+		$this->db->where('Datosprofesores_idDatosprofesor', $this->session->userdata('login'));
+		$query = $this->db->get('recordatorios');
+		return $query->result();
+	}
+
+	public function funcionesRecordatorios($idrecordatorios,$fecha,$titulo,$descripcion,$funcion){
+		if($funcion!=1){
+			$this->db->set('Titulo',$titulo);
+			$this->db->set('Descripcion',$descripcion);
+			$this->db->set('Dia',$fecha);
+			//agregar
+			if($idrecordatorios == -1){
+				$this->db->set('Datosprofesores_idDatosprofesor',$this->session->userdata('login'));
+				$resultado = $this->db->insert('recordatorios');
+			}
+			//modificar
+			else{
+				$this->db->where('idRecordatorios',$idrecordatorios);
+				$resultado = $this->db->update('recordatorios');
+			}
+			if(!$resultado)
+			{
+				echo "No se pudo agregar correctamente este registro";
+			}
+		}
+		//eliminar
+		else{
+			$this->db->where('idrecordatorios',$idrecordatorios);
+			$this->db->delete('recordatorios');
+>>>>>>> dc80d7dd919dd61e79b122969ed0054331ae37cb
 		}
 	}
 }
