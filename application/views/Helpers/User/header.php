@@ -6,8 +6,12 @@
   <title><?= $titulo?></title>
 
       <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
-      <link rel="stylesheet" type="text/css" href="<?php echo base_url('assets/styles/bootstrap.css') ?>">
+
+
+
       <link rel="stylesheet" href="<?php echo base_url('assets/styles/avisos.css'); ?>">
+      <!-- Bootstrap -->
+      <link rel="stylesheet" type="text/css" href="<?php echo base_url('assets/styles/bootstrap.min.css'); ?>">
       <link rel="stylesheet" href="<?php echo base_url('assets/styles/zabuto_calendar.css'); ?>">
       <link rel="stylesheet" href="<?php echo base_url('assets/css/inicio_admin.css'); ?>">
 
