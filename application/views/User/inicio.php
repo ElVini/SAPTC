@@ -1,15 +1,15 @@
-<?php $this->load->view('User/Helpers/header'); ?>
-<link rel="stylesheet" type="text/css" href="<?php echo base_url('assets/styles/bootstrap.css') ?>">
+<?php $this->load->view('Helpers/User/header'); ?>
 <link rel="stylesheet" href="<?php echo base_url('assets/styles/avisos.css'); ?>">
 <link rel="stylesheet" href="<?php echo base_url('assets/styles/zabuto_calendar.css'); ?>">
+<link rel="stylesheet" type="text/css" href="<?php echo base_url('assets/styles/bootstrap-dialog.min.css'); ?>">
 <script src="<?php echo base_url('assets/js/jquery-3.2.1.min.js'); ?>"></script>
 <script src="<?php echo base_url('assets/js/zabuto_calendar.js'); ?>"></script>
 <script src="<?php echo base_url('assets/js/avisos.js'); ?>"></script>
 <script src="https://use.fontawesome.com/eb49eee3f9.js"></script>
 <div class="row container col-xs-12 col-sm-12 col-md-12">
-	<div id="my-calendar" class="col-xs-12 col-sm-12 col-md-12 col-lg-7">
+	<div id="my-calendar" class="col-xs-12 col-sm-12 col-md-7 col-lg-7">
 	</div>
-	<div id="tabla-buttons" class="col-xs-12 col-sm-12 col-md-12 col-lg-5">
+	<div id="tabla-buttons" class="col-xs-12 col-sm-12 col-md-5 col-lg-5">
 	    <div id="div-tabla" class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
 	        <table id="tabla" class="table table-hover">
 	            <thead>
@@ -18,7 +18,7 @@
 	                </tr>
 	                <tr>
 	                    <th>Fecha</th>
-	                    <th>Titulo</th>
+	                    <th>Título</th>
 	                    <th>Detalles</th>
 	                </tr>
 	            </thead>

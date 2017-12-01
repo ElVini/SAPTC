@@ -5,6 +5,9 @@
 .TituloPag{
   text-align: center;
 }
+.ini-sesion{
+  padding-top: 20px;
+}
 
 #cuadroaccp, #titulo, #subtitulo, #instr, .letra, .divcorreo{
     display: flex;

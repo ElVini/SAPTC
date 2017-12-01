@@ -2,45 +2,64 @@
 defined('BASEPATH') OR exit('No direct script access allowed');
 ?>
 
-<html>
-<head>
     <meta charset="UTF-8">
     <title><?=$titulo ?></title>
     <link rel="stylesheet" href="<?php echo base_url('assets/styles/acc.css'); ?>">
     <link rel="stylesheet" href="<?php echo base_url('assets/styles/bootstrap.min.css'); ?>" crossorigin="anonymous">
-</head>
+    <link rel="stylesheet" href="<?php echo base_url('assets/css/inicio_admin.css'); ?>">
+    <link rel="stylesheet" href="<?php echo base_url('assets/styles/bootstrap-dialog.min.css'); ?>">
+    <script src="<?php echo base_url('assets/js/jquery.js'); ?>"></script>
+    <script src="<?php echo base_url('assets/js/bootstrap.min.js'); ?>"></script>
+    <script src="<?php echo base_url('assets/js/bootstrap-dialog.min.js'); ?>"></script>
 
 <?php $this->load->view('User/Helpers/headeri');?>
-<div id="subtitulo">
- <h1>Inicio de Sesión</h1>
+
+<div class="ini-sesion">
+  <div class="container">
+  	    <div class="row">
+  	        <div class="col-sm-3 col-md-4 col-md-offset-4 col-lg-offset-5">
+  	            <div class="login-panel panel panel-default">
+  	                <div class="panel-heading" style="background-color: #2f4159; color: white;">
+                       <center> <h3 class="panel-title">Inicio de Sesión</h3></center>
+  	                </div>
+  	                <div class="panel-body">
+  	                    <form role="form" method="post" id="cuadroaccp"  action="<?=base_url('index.php/Login/ingresar')?>" novalidate>
+  	                        <fieldset>
+  	                            <div class="form-group">
+                                  <label for="usu" class="">Usuario</label>
+  	                                <input class="form-control" id="usu" placeholder="Usuario" name="usu" type="email" autofocus>
+  	                            </div>
+  	                            <div class="form-group">
+                                  <label for="usu" class="">Contraseña</label>
+  	                                <input class="form-control" id="contra" placeholder="Contraseña" name="contra" type="password" >
+  	                            </div>
+  	                            <div class="form-group">
+  	                                <small><a href="recordar.php" >He olvidado mi contraseña</a></small>
+  	                            </div>
+                                <?php if(isset($error))
+                                {
+                                    echo  "
+                                    <script type='text/javascript'>
+                                      BootstrapDialog.show({
+                                          title: '¡Atención!',
+                                          message: '".$error."',
+                                          type: BootstrapDialog.TYPE_DANGER, 
+                                          buttons: [{
+                                              label: 'Aceptar',
+                                              action: function(dialog) {
+                                                  dialog.close();
+                                              }
+                                          }]
+                                      });
+                                      </script>";
+                                }
+                                ?>
+  	                            <input id="btn" type="submit" value="Iniciar Sesión" class="btn btn-lg btn-primary btn-block" style="background-color: #2f4159;">
+  	                        </fieldset>
+  	                    </form>
+  	                </div>
+  	            </div>
+  	        </div>
+  	    </div>
+  	</div>
 </div>
-
-<div id="cuadroaccp">
- <form id="cuadroacc" method="post" action="<?php echo base_url('index.php/Login/ingresar'); ?>" class="container" novalidate>
-
-         <div class="letra">
-         	<label for="usu"></label>
-            <input type="text" class="form-control" id="usu" placeholder="Usuario:" name="usu">
-         </div>
-
-         <div class="letra">
-         	<label for="contra"></label>
-            <input type="password" class="form-control" id="contra"  placeholder="Contraseña:" name="contra">
-         </div>
-
-       <div id="divolvidado">
-           <a href="recordar.php">He olvidado mi contraseña.</a>
-       </div>
-       <?php if(isset($error))
-       {
-       		echo 'Contraseña incorrecta';
-       }
-       ?>
-
-       <div class="enviarbtn">
-           <button id="btn" type="submit" class="btn btn-outline-primary">Enviar</button>
-     </div>
- </form>
-</div>
-</html>
-<script type="text/javascript" src="<?php echo base_url('assets/js/jquery-3.2.1.min.js'); ?>"></script>

@@ -1,7 +1,7 @@
 <?php $this->load->view('Helpers/Admin/header'); ?>
 <div class="content-wrapper">
   <section class="jumbotron">
-    
+
   </section>
 </div>
 

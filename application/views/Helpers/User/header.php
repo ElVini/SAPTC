@@ -6,14 +6,15 @@
   <title> UPSIN | SAPTC   </title>
 
       <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
-      <link rel="stylesheet" href="<?php echo base_url('assets/styles/acc.css'); ?>">
       <link rel="stylesheet" type="text/css" href="<?php echo base_url('assets/styles/bootstrap.css') ?>">
       <link rel="stylesheet" href="<?php echo base_url('assets/styles/avisos.css'); ?>">
       <link rel="stylesheet" href="<?php echo base_url('assets/styles/zabuto_calendar.css'); ?>">
-      <link rel="stylesheet" href="<?php echo base_url('assets/css/inicio_admin.css') ?>">
+        <link rel="stylesheet" href="<?php echo base_url('assets/css/inicio_admin.css') ?>">
 
 </head>
 <body>
+
+
 
   <header>
     <nav class="navbar navbar-inverse navbar-static-top" style="background-color: #2f4159;"role="navigation">
@@ -32,10 +33,27 @@
         <div class="collapse navbar-collapse" id="navegacion-fm">
           <ul class="nav navbar-nav">
             <li><a href="<?php echo base_url(); ?>" style="color:white;"><span class="glyphicon glyphicon-home"></span> Inicio</a></li>
+            <li><a href="<?php echo base_url(); ?>" style="color:white;"><span class="glyphicon glyphicon-user"></span> Usuario</a></li>
+
+            <li class="dropdown">
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" style="color:white;">
+                <span class="glyphicon glyphicon-apple"></span> Servicios a alumnos <span class="caret"></span>
+              </a>
+              <ul class="dropdown-menu" role="menu">
+                <li><a href="<?php echo base_url('index.php/User/tutorias'); ?>">Tutorias</a> </li>
+                <li class="divider"></li>
+                <li><a href="#" >Docencias</a> </li>
+                <li class="divider" ></li>
+                <li><a href="#" >Dirección individualizada</a> </li>
+
+              </ul>
+            </li>
+
+            <li><a href="#" style="color:white;"><span class="glyphicon glyphicon-list-alt"></span> Actividades particulares</a> </li>
 
           </ul>
           <ul class="nav navbar-nav navbar-right">
-            <li><a href="<?php echo base_url();?>" style="color:white;"><span class="glyphicon glyphicon-log-in" id="cerrar-sesion"></span > Iniciar Sesión</a></li>
+            <li><a href="<?php echo base_url('index.php/Login/logout');?>" style="color:white;"><span class="glyphicon glyphicon-log-out" id="cerrar-sesion"></span > Cerrar Sesion</a></li>
           </ul>
 
         </div>

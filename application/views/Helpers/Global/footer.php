@@ -2,7 +2,7 @@
 <footer class="footer">
 
   <div class="row">
-    <div class="col-sm-12 col-md-12">
+    <div class="span12">
 
           <center><h3>UPSIN® Copyright 2017</h3></center>
 
