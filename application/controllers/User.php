@@ -7,8 +7,8 @@ class User extends CI_Controller
 	{
 		parent::__construct();
 		$this->load->model('Usuario_model');
-		$this->load->model('datosLaborales_model');
 		$this->load->model('EstudiosRealizados_model');
+		$this->load->model('Perfil_model');
 		$this->load->library(array('session'));
 	}
 
@@ -155,96 +155,49 @@ class User extends CI_Controller
 		{
 			redirect(base_url());
 		}
-		
+
 		$idERUser = $this->session->userdata('login');
 		$data['estudios'] = $this->EstudiosRealizados_model->getEstudios(/*$idERUser*/2);
 		$data['titulo'] = 'SAPTC - Estudios Realizados';
 		$this->load->view('User/estudiosRealizados', $data);
 	}
-	// Datos laborales
-	public function datosLaborales()
+
+	public function perfil()
 	{
 		if($this->session->userdata('id') != 2)
 		{
 			redirect(base_url());
 		}
-		else if($this->session->userdata('id') == 2)
-		{
-			$data['titulo'] = 'SAPTC - Datos Laborales';
-			$data['datos'] = $this->datosLaborales_model->obtiene($this->session->userdata('login'));
-			$data['loginid']= $this->session->userdata('login');
-			$this->load->view('User/datosLaborales', $data);
-		}
 		else
 		{
-			redirect(base_url());
+			$datos = $this->Perfil_model->getData($this->session->userdata('login'));
+			if($datos != null)
+			{
+				foreach($datos->result() as $res)
+				{
+					$data = array(
+						'nombre' 		=> $res->Nombres.' '.$res->Primerapellido.' '.$res->Segundoapellido,
+						'curp' 			=> $res->Curp,
+						'rfc' 			=> $res->RFC,
+						'sexo' 			=> $res->Sexo,
+						'nacimiento' 	=> $res->Fechanacimiento,
+						'nacionalidad' 	=> $res->Nacionalidad,
+						'enacimiento' 	=> $res->Estadodenacimiento,
+						'ecivil' 		=> $res->Estadocivil,
+						'correo' 		=> $res->Correo,
+						'telefonot' 	=> $res->TelefonoTrabajo,
+						'telefonoc' 	=> $res->TelefonoCasa,
+						'img' 			=> $res->foto,
+						'telefonop' 	=> $res->TelefonoPersonal
+
+					);
+				}
+			}
+			$data['titulo'] = 'SAPTC - Perfil maestro';
+			$this->load->view('User/Perfil', $data);
 		}
 	}
-	public function form_datoslaborales($id)
-	{
-		if ($id!=0 )
-		{
-			$data["user"]=$this->datosLaborales_model->tomafila($id);
-			$this->load->view('User/form_datoslaborales', $data);
-		}
-		else
-		{
-			$this->load->view('User/form_datoslaborales');
-		}
-	}
-	public function agregaDatosLaborales()
-	{
-		$data = $this->input->post();
-    $datos = (object)array(
-				'idDatoslaborales'=>'',
-        'Nombramiento'=>$data['nom'],
-        'Fechadeiniciocontrato'=>$data['fecha_init'],
-        'Fechafincontrato'=>$data['fecha_fin'],
-        'Tipo'=>$data['tipo_nom'],
-				'Dedicacion'=>$data['dedicacion'],
-				'NombreDependencia'=>$data['dependencia'],
-				'Unidadacademica'=>$data['unidad'],
-				'Cronologia'=>'',
-				'Datosprofesores_idDatosprofesor'=>$data['profe']
-        );
-				$this->datosLaborales_model->insert_data($datos);
-	}
-	public function actualizaDatosLaborales()
-	{
-		$data = $this->input->post();
-    $datos = (object)array(
-				'idDatoslaborales'=>$data['id_d'],
-        'Nombramiento'=>$data['nom'],
-        'Fechadeiniciocontrato'=>$data['fecha_init'],
-        'Fechafincontrato'=>$data['fecha_fin'],
-        'Tipo'=>$data['tipo_nom'],
-				'Dedicacion'=>$data['dedicacion'],
-				'NombreDependencia'=>$data['dependencia'],
-				'Unidadacademica'=>$data['unidad'],
-				'Datosprofesores_idDatosprofesor'=>$data['profe']
-        );
-				$this->datosLaborales_model->updateDatoslaborales($datos);
-	}
-	public function deleteDatol()
-	{
-		$id= $this->uri->segment(3);
-		$this->datosLaborales_model->delete_data($id);
-		redirect(base_url()."index.php/User/datosLaborales");
-	}
-	public function contratoactual()
-	{
-		$id= $this->uri->segment(3);
-		$data = (object)array('id'=>$id,'Cronologia'=>'Contrato Actual');
-		$this->datosLaborales_model->contratoactual($data);
-		redirect(base_url()."index.php/User/datosLaborales");
-	}
-	public function contratoprimero()
-	{
-		$id= $this->uri->segment(3);
-		$data = (object)array('id'=>$id,'Cronologia'=>'Primer Contrato');
-		$this->datosLaborales_model->contratoprimero($data);
-		redirect(base_url()."index.php/User/datosLaborales");
-	}
+
 }
 
 ?>

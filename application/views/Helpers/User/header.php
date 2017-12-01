@@ -3,13 +3,13 @@
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title> UPSIN | SAPTC   </title>
+  <title><?= $titulo?></title>
 
       <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
       <link rel="stylesheet" type="text/css" href="<?php echo base_url('assets/styles/bootstrap.css') ?>">
       <link rel="stylesheet" href="<?php echo base_url('assets/styles/avisos.css'); ?>">
       <link rel="stylesheet" href="<?php echo base_url('assets/styles/zabuto_calendar.css'); ?>">
-      <link rel="stylesheet" href="<?php echo base_url('assets/css/inicio_admin.css') ?>">
+      <link rel="stylesheet" href="<?php echo base_url('assets/css/inicio_admin.css'); ?>">
 
 </head>
 <body>
@@ -34,8 +34,7 @@
           <ul class="nav navbar-nav">
                <!--PARA LA OPCION DE IR AL INICIO-->
             <li><a href="<?php echo base_url(); ?>" style="color:white;"><span class="glyphicon glyphicon-home"></span> Inicio</a></li>
-               <!--PARA LAS OPCIONES DE USUARIO-->
-            <li><a href="<?php echo base_url(); ?>" style="color:white;"><span class="glyphicon glyphicon-user"></span> Usuario</a></li>
+            <li><a href="<?php echo base_url('index.php/User/perfil'); ?>" style="color:white;"><span class="glyphicon glyphicon-user"></span> Usuario</a></li>
 
 
    <!--PARA LA OPCION DE SERVICIO A ALUMNOS-->
