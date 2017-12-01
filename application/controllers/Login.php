@@ -50,7 +50,7 @@ class Login extends CI_Controller {
 	{
 		if($this->input->post('usu') != NULL and $this->input->post('contra') !=NULL)
 		{
-			$query = $this->Inicio_model->login($this->input->post('usu'), $this->input->post('contra'));
+			$query = $this->Inicio_model->login($this->input->post('usu'), md5($this->input->post('contra')));
 			if($query != null)
 			{	//Lógica de inicio de sesión
 				foreach ($query->result() as $res)

@@ -1,7 +1,7 @@
 <?php $this->load->view('Helpers/User/header'); ?>
 
 
-<link rel="stylesheet" type="text/css" href="<?php echo base_url('assets/styles/style.css'); ?>">
+<link rel="stylesheet" href="<?php echo base_url('assets/styles/style.css'); ?>">
 <div class="container">
 	<div class="page-header">
 		<h1>Tutorías</h1>
