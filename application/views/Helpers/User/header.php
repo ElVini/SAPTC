@@ -6,23 +6,14 @@
   <title><?= $titulo?></title>
 
       <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
-<<<<<<< HEAD
-=======
-
-
-
->>>>>>> 761987ea9f05a85995ebc197fc492e685b23093a
       <link rel="stylesheet" href="<?php echo base_url('assets/styles/avisos.css'); ?>">
       <!-- Bootstrap -->
       <link rel="stylesheet" type="text/css" href="<?php echo base_url('assets/styles/bootstrap.min.css'); ?>">
       <link rel="stylesheet" href="<?php echo base_url('assets/styles/zabuto_calendar.css'); ?>">
-<<<<<<< HEAD
       <link rel="stylesheet" href="<?php echo base_url('assets/css/inicio_admin.css'); ?>">
-      <link rel="stylesheet" href="<?php echo base_url('assets/styles/bootstrap.css') ?>">
+      <link rel="stylesheet" href="<?php echo base_url('assets/styles/bootstrap.css'); ?>">
       <link rel="stylesheet" href="<?php echo base_url('assets/styles/bootstrap-dialog.min.css'); ?>">
-=======
       <link rel="stylesheet" href="<?php echo base_url('assets/styles/inicio_admin.css'); ?>">
->>>>>>> 761987ea9f05a85995ebc197fc492e685b23093a
 
 </head>
 <body>

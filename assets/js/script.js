@@ -61,6 +61,7 @@ btnDel.addEventListener('click', function(event) {
 		BootstrapDialog.show({
 			title: 'Confirmar',
 			message: 'El elemento seleccionado será eliminado, esta acción no se puede deshacer, ¿Desea continuar?',
+			type: BootstrapDialog.TYPE_DANGER,
 			buttons: [{
 				label: 'Confirmar',
 				cssClass: 'btn btn-primary',
