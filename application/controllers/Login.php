@@ -37,44 +37,50 @@ class Login extends CI_Controller {
 
 	public function ingresar()
 	{
-		$query = $this->Inicio_model->login($this->input->post('usu'), $this->input->post('contra'));
-		if($query != null)
-		{	//Lógica de inicio de sesión
-			foreach ($query->result() as $res)
-			{
-				//1-Administrador 2-Profesor
-				if($res->Tipo == 1)
+		if($this->input->post('usu') != NULL and $this->input->post('contra') !=NULL)
+		{
+			$query = $this->Inicio_model->login($this->input->post('usu'), $this->input->post('contra'));
+			if($query != null)
+			{	//Lógica de inicio de sesión
+				foreach ($query->result() as $res)
 				{
-					$data = array(
-						'user'   => $res->Usuario,
-						'id'     => $res->Tipo,
-						'login'  => $res->Datosprofesores_idDatosprofesor
-					);
-					$this->session->set_userdata($data);
-					redirect(base_url());
-				}
-				else if($res->Tipo == 2)
-				{
-					$data = array(
-						'user'   => $this->Inicio_model->getNombre($res->Idlogin),
-						'id'     => $res->Tipo,
-						'login'  => $res->Datosprofesores_idDatosprofesor
-					);
-					$this->session->set_userdata($data);
-					$this->load->model('Usuario_model');
-					$datos['titulo']="SAPTC - Inicio";
-					$datos['nombre']=$this->Inicio_model->getNombre($res->Idlogin);
-					$datos['query']=$this->Usuario_model->obtenerRecordatorios();
-					redirect(base_url());
+					//1-Administrador 2-Profesor
+					if($res->Tipo == 1)
+					{
+						$data = array(
+							'user'   => $res->Usuario,
+							'id'     => $res->Tipo,
+							'login'  => $res->Datosprofesores_idDatosprofesor
+						);
+						$this->session->set_userdata($data);
+						redirect(base_url());
+					}
+					else if($res->Tipo == 2)
+					{
+						$data = array(
+							'user'   => $this->Inicio_model->getNombre($res->Idlogin),
+							'id'     => $res->Tipo,
+							'login'  => $res->Datosprofesores_idDatosprofesor
+						);
+						$this->session->set_userdata($data);
+						$this->load->model('Usuario_model');
+						$datos['titulo']="SAPTC - Inicio";
+						$datos['nombre']=$this->Inicio_model->getNombre($res->Idlogin);
+						$datos['query']=$this->Usuario_model->obtenerRecordatorios();
+						redirect(base_url());
+					}
 				}
 			}
+			else
+			{
+				$data['error'] = "Usuario o contraseña incorrectos.";
+			}
 		}
-		else
-		{
-			$data['error'] = true;
-			$data['titulo'] = 'SAPTC - Iniciar sesión';
-			$this->load->view('inicio', $data);
+		else{
+			$data['error'] = "Complete todos los campos.";
 		}
+		$data['titulo'] = 'SAPTC - Iniciar sesión';
+		$this->load->view('inicio', $data);
 	}
 
 	public function logout()

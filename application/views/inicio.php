@@ -2,14 +2,15 @@
 defined('BASEPATH') OR exit('No direct script access allowed');
 ?>
 
-<html>
-<head>
     <meta charset="UTF-8">
     <title><?=$titulo ?></title>
     <link rel="stylesheet" href="<?php echo base_url('assets/styles/acc.css'); ?>">
     <link rel="stylesheet" href="<?php echo base_url('assets/styles/bootstrap.min.css'); ?>" crossorigin="anonymous">
     <link rel="stylesheet" href="<?php echo base_url('assets/css/inicio_admin.css'); ?>">
-</head>
+    <link rel="stylesheet" href="<?php echo base_url('assets/styles/bootstrap-dialog.min.css'); ?>">
+    <script src="<?php echo base_url('assets/js/jquery.js'); ?>"></script>
+    <script src="<?php echo base_url('assets/js/bootstrap.min.js'); ?>"></script>
+    <script src="<?php echo base_url('assets/js/bootstrap-dialog.min.js'); ?>"></script>
 
 <?php $this->load->view('User/Helpers/headeri');?>
 
@@ -20,12 +21,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
   	            <div class="login-panel panel panel-default">
   	                <div class="panel-heading" style="background-color: #2f4159; color: white;">
                        <center> <h3 class="panel-title">Inicio de Sesión</h3></center>
-
   	                </div>
   	                <div class="panel-body">
-
-
-
   	                    <form role="form" method="post" id="cuadroaccp"  action="<?=base_url('index.php/Login/ingresar')?>" novalidate>
   	                        <fieldset>
   	                            <div class="form-group">
@@ -41,7 +38,20 @@ defined('BASEPATH') OR exit('No direct script access allowed');
   	                            </div>
                                 <?php if(isset($error))
                                 {
-                                		echo 'Contraseña incorrecta';
+                                    echo  "
+                                    <script type='text/javascript'>
+                                      BootstrapDialog.show({
+                                          title: '¡Atención!',
+                                          message: '".$error."',
+                                          type: BootstrapDialog.TYPE_DANGER, 
+                                          buttons: [{
+                                              label: 'Aceptar',
+                                              action: function(dialog) {
+                                                  dialog.close();
+                                              }
+                                          }]
+                                      });
+                                      </script>";
                                 }
                                 ?>
   	                            <input id="btn" type="submit" value="Iniciar Sesión" class="btn btn-lg btn-primary btn-block" style="background-color: #2f4159;">
