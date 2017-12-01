@@ -33,6 +33,7 @@
         <div class="collapse navbar-collapse" id="navegacion-fm">
           <ul class="nav navbar-nav">
             <li><a href="<?php echo base_url(); ?>" style="color:white;"><span class="glyphicon glyphicon-home"></span> Inicio</a></li>
+            <li><a href="<?php echo base_url(); ?>" style="color:white;"><span class="glyphicon glyphicon-user"></span> Usuario</a></li>
 
             <li class="dropdown">
               <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" style="color:white;">

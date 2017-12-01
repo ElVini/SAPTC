@@ -7,9 +7,9 @@
 <script src="<?php echo base_url('assets/js/avisos.js'); ?>"></script>
 <script src="https://use.fontawesome.com/eb49eee3f9.js"></script>
 <div class="row container col-xs-12 col-sm-12 col-md-12">
-	<div id="my-calendar" class="col-xs-12 col-sm-12 col-md-12 col-lg-7">
+	<div id="my-calendar" class="col-xs-12 col-sm-12 col-md-7 col-lg-7">
 	</div>
-	<div id="tabla-buttons" class="col-xs-12 col-sm-12 col-md-12 col-lg-5">
+	<div id="tabla-buttons" class="col-xs-12 col-sm-12 col-md-5 col-lg-5">
 	    <div id="div-tabla" class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
 	        <table id="tabla" class="table table-hover">
 	            <thead>
