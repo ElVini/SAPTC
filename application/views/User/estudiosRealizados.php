@@ -1,6 +1,6 @@
 <?php $this->load->view('Helpers/User/header'); ?>
 
-<link rel="stylesheet" href="<?php echo base_url('assets/css/estudiosRealizadosUsuario.css'); ?>">
+<link rel="stylesheet" href="<?php echo base_url('assets/styles/estudiosRealizadosUsuario.css'); ?>">
 
 <div class="row"><p></p></div>
 <div class="row"><p></p></div>
