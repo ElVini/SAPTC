@@ -8,6 +8,7 @@ class User extends CI_Controller
 		parent::__construct();
 		$this->load->model('Usuario_model');
 		$this->load->model('EstudiosRealizados_model');
+		$this->load->model('Perfil_model');
 		$this->load->library(array('session'));
 	}
 
@@ -159,6 +160,42 @@ class User extends CI_Controller
 		$data['estudios'] = $this->EstudiosRealizados_model->getEstudios(/*$idERUser*/2);
 		$data['titulo'] = 'SAPTC - Estudios Realizados';
 		$this->load->view('User/estudiosRealizados', $data);
+	}
+
+	public function perfil()
+	{
+		if($this->session->userdata('id') != 2)
+		{
+			redirect(base_url());
+		}
+		else
+		{
+			$datos = $this->Perfil_model->getData($this->session->userdata('login'));
+			if($datos != null)
+			{
+				foreach($datos->result() as $res)
+				{
+					$data = array(
+						'nombre' 		=> $res->Nombres.' '.$res->Primerapellido.' '.$res->Segundoapellido,
+						'curp' 			=> $res->Curp,
+						'rfc' 			=> $res->RFC,
+						'sexo' 			=> $res->Sexo,
+						'nacimiento' 	=> $res->Fechanacimiento,
+						'nacionalidad' 	=> $res->Nacionalidad,
+						'enacimiento' 	=> $res->Estadodenacimiento,
+						'ecivil' 		=> $res->Estadocivil,
+						'correo' 		=> $res->Correo,
+						'telefonot' 	=> $res->TelefonoTrabajo,
+						'telefonoc' 	=> $res->TelefonoCasa,
+						'img' 			=> $res->foto,
+						'telefonop' 	=> $res->TelefonoPersonal
+
+					);
+				}
+			}
+			$data['titulo'] = 'SAPTC - Perfil maestro';
+			$this->load->view('User/Perfil', $data);
+		}
 	}
 
 }
