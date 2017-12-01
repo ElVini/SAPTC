@@ -1,4 +1,4 @@
-<?php $this->load->view('User/Helpers/header'); ?>
+<?php $this->load->view('Helpers/User/header'); ?>
 
 <link rel="stylesheet" href="<?php echo base_url('assets/css/estudiosRealizadosUsuario.css'); ?>">
 
