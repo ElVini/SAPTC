@@ -9,6 +9,7 @@ class Login extends CI_Controller {
 		$this->load->model('Inicio_model');
 		$this->load->helper('url');
 		$this->load->library(array('session'));
+		$this->load->helper('string');
 	}
 
 	public function index()
@@ -17,7 +18,9 @@ class Login extends CI_Controller {
 		{
 			case '':
 				$data['titulo'] = 'SAPTC - Iniciar sesión';
+				$data['token'] = $this->token();
 				$data['correo_e'] = $this->session->flashdata('correo_e');
+				$data['error'] = $this->session->flashdata('error');
 				$this->load->view('inicio', $data);
 				break;
 
@@ -35,6 +38,13 @@ class Login extends CI_Controller {
 				break;
 		}
 	}
+
+	public function token()
+	{
+			$token = md5(uniqid(rand(),true));
+			$this->session->set_userdata('token',$token);
+			return $token;
+		}
 
 	public function ingresar()
 	{
@@ -74,14 +84,14 @@ class Login extends CI_Controller {
 			}
 			else
 			{
-				$data['error'] = "Usuario o contraseña incorrectos.";
+				$a = "Usuario o contraseña incorrecta.";
 			}
 		}
 		else{
-			$data['error'] = "Complete todos los campos.";
+			$a = "Complete todos los campos.";
 		}
-		$data['titulo'] = 'SAPTC - Iniciar sesión';
-		$this->load->view('inicio', $data);
+		$this->session->set_flashdata('error',$a);
+		redirect(base_url());
 	}
 
 	public function logout()

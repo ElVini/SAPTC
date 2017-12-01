@@ -6,6 +6,7 @@ class Inicio_model extends CI_Model {
 	{
 		parent::__construct();
 		$this->load->database();
+		$this->load->helper('string');
 	}
 
 	public function login($user, $pass)
@@ -47,7 +48,7 @@ class Inicio_model extends CI_Model {
 		if($query->num_rows() > 0){
 			foreach($query->result() as $res)
 			{
-				return $res->Password;
+				return md5($res->Password);
 			}
 		}
 		else{
