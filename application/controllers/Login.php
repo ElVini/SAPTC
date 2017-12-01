@@ -17,6 +17,7 @@ class Login extends CI_Controller {
 		{
 			case '':
 				$data['titulo'] = 'SAPTC - Iniciar sesión';
+				$data['correo_e'] = $this->session->flashdata('correo_e');
 				$this->load->view('inicio', $data);
 				break;
 
@@ -96,4 +97,57 @@ class Login extends CI_Controller {
 		redirect(base_url());
 	}
 
+	public function recordarContra(){
+		$correo = $_POST['correoR'];
+		if(!$this->Inicio_model->getContra($correo)){
+			$a=1;
+		}
+		else{
+				$contra = $this->Inicio_model->getContra($correo);
+				echo $correo;
+				echo $contra;
+			//Load email library
+			$this->load->library('email');
+
+			//SMTP & mail configuration
+			$config = array(
+				'protocol'  => 'smtp',
+				'smtp_host' => 'ssl://smtp.googlemail.com',
+				'smtp_port' => 465,
+				'smtp_user' => 'soporte.saptc@gmail.com',
+				'smtp_pass' => 'soporte.saptc',
+				'mailtype'  => 'html',
+				'charset'   => 'utf-8'
+			);
+			$this->email->initialize($config);
+			$this->email->set_mailtype("html");
+			$this->email->set_newline("\r\n");
+
+
+			$titulo = 'Recuperar contraseña.';
+			$detalles = '<br>Se ha recibido una solicitud de renvío de contraseña.';
+			$c = '<br>Correo: '.$correo;
+			$co = '<br>Contraseña: '.$contra;
+			$htmlContent = $titulo.$detalles.$c.$co;
+			echo $htmlContent;
+
+			$this->email->to($correo);
+			$this->email->from('soporte.saptc@gmail.com','Soporte SAPTC');
+			$this->email->subject('Recuperar contraseña.');
+			$this->email->message($htmlContent);
+
+		 //Send mail
+		 $this->load->library('encrypt');
+		 if($this->email->send()){
+			 //2 - se envió el correo
+			 $a=2;
+ 	 		}
+		 else{
+			 //3 - no se envió el correo
+			 $a=3;
+		 }
+	 	}
+		$this->session->set_flashdata('correo_e',$a);
+		redirect(base_url());
+	}
 }

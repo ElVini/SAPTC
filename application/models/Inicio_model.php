@@ -39,5 +39,20 @@ class Inicio_model extends CI_Model {
 			return $nombre;
 		}
 	}
+
+	public function getContra($correo)
+	{
+		$this->db->where('Usuario',$correo);
+		$query = $this->db->get('login');
+		if($query->num_rows() > 0){
+			foreach($query->result() as $res)
+			{
+				return $res->Password;
+			}
+		}
+		else{
+			return false;
+		}
+	}
 }
 ?>

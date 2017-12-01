@@ -34,11 +34,19 @@
 
         <div class="collapse navbar-collapse" id="navegacion-fm">
           <ul class="nav navbar-nav">
+               <!--PARA LA OPCION DE IR AL INICIO-->
             <li><a href="<?php echo base_url(); ?>" style="color:white;"><span class="glyphicon glyphicon-home"></span> Inicio</a></li>
+<<<<<<< HEAD
             <li><a href="<?php echo base_url('index.php/User/perfil'); ?>" style="color:white;"><span class="glyphicon glyphicon-user"></span> Usuario</a></li>
+=======
+               <!--PARA LAS OPCIONES DE USUARIO-->
+            <li><a href="<?php echo base_url(); ?>" style="color:white;"><span class="glyphicon glyphicon-user"></span> Usuario</a></li>
+>>>>>>> 14dd8e4139004b42537718bcc99c1df51fe945a1
 
+
+   <!--PARA LA OPCION DE SERVICIO A ALUMNOS-->
             <li class="dropdown">
-              <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" style="color:white;">
+              <a href="" class="dropdown-toggle" data-toggle="dropdown" role="button" style="color:white;">
                 <span class="glyphicon glyphicon-apple"></span> Servicios a alumnos <span class="caret"></span>
               </a>
               <ul class="dropdown-menu" role="menu">
@@ -50,8 +58,40 @@
 
               </ul>
             </li>
+   <!--PARA LA OPCION DE ACTIVIDADES PARTICULRES-->
+            <li class="dropdown">
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" style="color:white;">
+                <span class="glyphicon glyphicon-list-alt"></span> Actividades particulares <span class="caret"></span>
+              </a>
+              <ul class="dropdown-menu" role="menu">
+                <li><a href="<?php?>">Proyectos</a> </li>
+                <li class="divider"></li>
+                <li><a href="#" >LGAC</a> </li>
+                <li class="divider" ></li>
+                <li><a href="#" >Producción Académica</a> </li>
 
-            <li><a href="#" style="color:white;"><span class="glyphicon glyphicon-list-alt"></span> Actividades particulares</a> </li>
+              </ul>
+            </li>
+
+      <!--PARA LA OPCION DE ACTIVIDADES PARTICULRES-->
+               <li class="dropdown">
+                 <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" style="color:white;">
+                   <span class="glyphicon glyphicon-apple"></span> Profesor <span class="caret"></span>
+                 </a>
+                 <ul class="dropdown-menu" role="menu">
+                   <li><a href="<?php echo base_url('index.php/User/estudiosRealizados'); ?>">Estudios Realizados</a> </li>
+                   <li class="divider"></li>
+                   <li><a href="<?php echo base_url('index.php/User/datosLaborales'); ?>" >Datos Laborales</a> </li>
+                   <li class="divider" ></li>
+                   <li><a href="#" >Premios o Distinciones</a> </li>
+                   <li class="divider" ></li>
+                   <li><a href="#" >Datos del Cuerpo Académico</a> </li>
+                   <li class="divider" ></li>
+                   <li><a href="#" >Participación en Programas Educativos</a> </li>
+
+                 </ul>
+               </li>
+
 
           </ul>
           <ul class="nav navbar-nav navbar-right">
