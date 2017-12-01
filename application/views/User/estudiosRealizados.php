@@ -34,21 +34,54 @@
 			<table class="table table-hover" id="tablaEstudios">
 				<thead id="TablaCabeza">
 					<tr>
-						<td hidden><b>IDest</b></td>
-						<td><b>Nivel de Estudios</b></td>
-						<td><b>Área</b></td>
-						<td><b>Ámbito</b></td>
-						<td><b>Inició el</b></td>
-						<td><b>Finalizó el</b></td>
+						<!-- <th>idEstudio</th> -->
+						<th>Siglas</th>
+						<th>Estudios En</th>
+						<!-- <th>Institucionnoconsiderada</th>
+						<th>Fecha de Inicio</th>
+						<th>Fecha de Fin</th>
+						<th>Fecha de Obtención</th> -->
+						<th>Área</th>
+						<th>Disciplina</th>
+						<!-- <th>País</th> -->
+						<th>Institución</th>
+						<th>Nivel de Estudios</th>
+						<!-- <th>Id Profesor</th>
+						<th>PDF</th>
+						<th>Status</th> -->
 					</tr>
 				</thead>
 				<tbody>
 
 					<?php
-
-							//echo '<tr id="TablaLinea">';
-
-					?>
+					if($estudios == null)
+					{
+						echo '<tr><td colspan = "13"><center>Aún no se cuenta con estudios realizados</center></td></tr>';
+					}
+					else
+					{
+						foreach($estudios->result() as $query)
+						{
+							echo '<tr id="TablaLinea">';
+							//echo '<td>'.$query->idEstudiosrealizados.'</td>';
+							echo '<td>'.$query->Siglas.'</td>';
+							echo '<td>'.$query->Estudiosen.'</td>';
+							// echo '<td>'.$query->Institucionnoconsiderada.'</td>';
+							// echo '<td>'.$query->Fechadeinicio.'</td>';
+							// echo '<td>'.$query->Fechadefin.'</td>';
+							// echo '<td>'.$query->Fechadeobtencion.'</td>';
+							echo '<td>'.$query->Area.'</td>';
+							echo '<td>'.$query->Disciplina.'</td>';
+							// echo '<td>'.$query->Pais.'</td>';
+							echo '<td>'.$query->Institucion.'</td>';
+							echo '<td>'.$query->Nivelestudios.'</td>';
+							// echo '<td>'.$query->Datosprofesores_idDatosprofesor.'</td>';
+							// echo '<td>'.$query->PDF.'</td>';
+							// echo '<td>'.$query->status.'</td>';
+							echo '</tr>';
+						}
+					}
+				?>
 
 				</tbody>
 			</table>
@@ -63,6 +96,7 @@
 	</div>
 </div>
 
-
+<script type="text/javascript" src="<?php echo base_url('assets/js/jquery-3.2.1.min.js') ?>"></script>
+<script type="text/javascript" src="<?php echo base_url('assets/js/estudiosRealizadosUsuario.js') ?>"></script>
 
 <?php $this->load->view('User/Helpers/footer'); ?>
