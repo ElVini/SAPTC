@@ -1,4 +1,4 @@
-<?php $this->load->view('User/Helpers/header'); ?>
+<?php $this->load->view('Helpers/User/header'); ?>
 <link rel="stylesheet" type="text/css" href="<?php echo base_url('assets/styles/datosLaborales.css') ?>">
 
 <script type="text/javascript" src="<?php echo base_url('assets/js/jquery-3.2.1.min.js'); ?>"></script>
