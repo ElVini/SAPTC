@@ -6,22 +6,16 @@
   <title><?= $titulo?></title>
 
       <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
-
+      <link rel="stylesheet" type="text/css" href="<?php echo base_url('assets/styles/bootstrap.css') ?>">
       <link rel="stylesheet" href="<?php echo base_url('assets/styles/avisos.css'); ?>">
-      <!-- Bootstrap -->
-      <link rel="stylesheet" type="text/css" href="<?php echo base_url('assets/styles/bootstrap.min.css'); ?>">
       <link rel="stylesheet" href="<?php echo base_url('assets/styles/zabuto_calendar.css'); ?>">
-
       <link rel="stylesheet" href="<?php echo base_url('assets/css/inicio_admin.css'); ?>">
-      <link rel="stylesheet" href="<?php echo base_url('assets/styles/bootstrap.css'); ?>">
-      <link rel="stylesheet" href="<?php echo base_url('assets/styles/bootstrap-dialog.min.css'); ?>">
 
-      <link rel="stylesheet" href="<?php echo base_url('assets/styles/inicio_admin.css'); ?>">
-      <script src="<?php echo base_url('assets/js/jquery-3.2.1.min.js'); ?>"></script>
 </head>
 <body>
 
-<input type="hidden" id="base_url" value="<?php echo base_url(); ?>">
+
+
   <header>
     <nav class="navbar navbar-inverse navbar-static-top" style="background-color: #2f4159;"role="navigation">
       <div class="container-fluid">
@@ -75,7 +69,7 @@
       <!--PARA LA OPCION DE ACTIVIDADES PARTICULRES-->
                <li class="dropdown">
                  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" style="color:white;">
-                   <span class="glyphicon glyphicon-apple"></span> Profesor <span class="caret"></span>
+                   <span class="glyphicon glyphicon-education"></span> Profesor <span class="caret"></span>
                  </a>
                  <ul class="dropdown-menu" role="menu">
                    <li><a href="<?php echo base_url('index.php/User/estudiosRealizados'); ?>">Estudios Realizados</a> </li>
@@ -94,33 +88,10 @@
 
           </ul>
           <ul class="nav navbar-nav navbar-right">
-            <li><a id="cerrarSesion" href="#"style="color:white;"><span class="glyphicon glyphicon-log-out" id="cerrar-sesion"></span > Cerrar Sesion</a></li>
+            <li><a href="<?php echo base_url('index.php/Login/logout');?>" style="color:white;"><span class="glyphicon glyphicon-log-out" id="cerrar-sesion"></span > Cerrar Sesion</a></li>
           </ul>
 
         </div>
       </div>
     </nav>
   </header>
-
-  <script>
-  var base_url = $('#base_url').val();
-  $('#cerrarSesion').click(function(){
-      BootstrapDialog.show({
-          title: 'Cerrar sesión',
-          message: '¿Seguro que desea cerrar la sesión?',
-          buttons: [{
-              label: 'Cancelar',
-              cssClass: 'btn-default',
-              action: function(dialog) {
-                  dialog.close();
-              }
-          }, {
-              label: 'Cerrar sesión',
-              cssClass: 'btn-danger',
-              action: function(dialog) {
-                  window.location.href = base_url+'index.php/Login/logout';
-              }
-          }]
-      });
-  });
-</script>
