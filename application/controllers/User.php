@@ -154,7 +154,7 @@ class User extends CI_Controller
 		{
 			redirect(base_url());
 		}
-
+		
 		$idERUser = $this->session->userdata('login');
 		$data['estudios'] = $this->EstudiosRealizados_model->getEstudios(/*$idERUser*/2);
 		$data['titulo'] = 'SAPTC - Estudios Realizados';

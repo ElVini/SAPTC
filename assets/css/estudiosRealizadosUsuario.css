@@ -1,0 +1,22 @@
+.table tbody tr.highlight td {
+  background-color: #B0B0B0;
+}
+.TituloPag{
+  text-align: center;
+  border-top: solid darkgray;
+  border-bottom: solid darkgray;
+}
+.TituloTabla{
+  text-align: left;
+  border-bottom: solid darkgray;
+}
+#TablaCabeza{
+  background-color: #2f4159;
+  color: white;
+}
+#TablaLinea{
+  border-bottom: solid 2px gray;
+}
+#BotonesTabla{
+  float: right;
+}
