@@ -1,5 +1,4 @@
 <?php $this->load->view('Helpers/User/header'); ?>
-<link rel="stylesheet" type="text/css" href="<?php echo base_url('assets/styles/bootstrap.css') ?>">
 <link rel="stylesheet" href="<?php echo base_url('assets/styles/avisos.css'); ?>">
 <link rel="stylesheet" href="<?php echo base_url('assets/styles/zabuto_calendar.css'); ?>">
 <link rel="stylesheet" type="text/css" href="<?php echo base_url('assets/styles/bootstrap-dialog.min.css'); ?>">
@@ -19,7 +18,7 @@
 	                </tr>
 	                <tr>
 	                    <th>Fecha</th>
-	                    <th>Titulo</th>
+	                    <th>Título</th>
 	                    <th>Detalles</th>
 	                </tr>
 	            </thead>

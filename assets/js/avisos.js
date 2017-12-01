@@ -19,9 +19,9 @@ $(document).ready(function()
 		  message: `<div id="divPrueba"> <form id="formulario" method="post"> <input type="text" hidden id="idrecordatorios" name="idrecordatorios"value="">
 		  	          <label>Fecha: </label>
 		  	          <input type="date" id="fecha" name="date" value="`+fecha+`" class="form-control">
-		  	          <label>Titulo: </label>
+		  	          <label>Título: </label>
 		  	          <input type="text" id="titulo" name="title" value="`+titulo+`" class="form-control">
-		  	          <label>Descripcion: </label>
+		  	          <label>Descripción: </label>
 		  	          <input type="text" id="descripcion" name="description" value="`+descripcion+`" class="form-control"><br>
 		  	          <p id="error">  </p>   </form>   </div>`,
 		  buttons: [{
