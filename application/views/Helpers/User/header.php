@@ -6,26 +6,10 @@
   <title><?= $titulo?></title>
 
       <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
-<<<<<<< HEAD
-=======
-
->>>>>>> 63f982260fa3e1a55f63b555350e591eaf145483
+      <link rel="stylesheet" type="text/css" href="<?php echo base_url('assets/styles/bootstrap.css') ?>">
       <link rel="stylesheet" href="<?php echo base_url('assets/styles/avisos.css'); ?>">
-      <!-- Bootstrap -->
-      <link rel="stylesheet" type="text/css" href="<?php echo base_url('assets/styles/bootstrap.min.css'); ?>">
       <link rel="stylesheet" href="<?php echo base_url('assets/styles/zabuto_calendar.css'); ?>">
-<<<<<<< HEAD
-=======
-
->>>>>>> 63f982260fa3e1a55f63b555350e591eaf145483
       <link rel="stylesheet" href="<?php echo base_url('assets/css/inicio_admin.css'); ?>">
-      <link rel="stylesheet" href="<?php echo base_url('assets/styles/bootstrap.css'); ?>">
-      <link rel="stylesheet" href="<?php echo base_url('assets/styles/bootstrap-dialog.min.css'); ?>">
-<<<<<<< HEAD
-=======
-
->>>>>>> 63f982260fa3e1a55f63b555350e591eaf145483
-      <link rel="stylesheet" href="<?php echo base_url('assets/styles/inicio_admin.css'); ?>">
 
 </head>
 <body>
@@ -85,7 +69,7 @@
       <!--PARA LA OPCION DE ACTIVIDADES PARTICULRES-->
                <li class="dropdown">
                  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" style="color:white;">
-                   <span class="glyphicon glyphicon-apple"></span> Profesor <span class="caret"></span>
+                   <span class="glyphicon glyphicon-education"></span> Profesor <span class="caret"></span>
                  </a>
                  <ul class="dropdown-menu" role="menu">
                    <li><a href="<?php echo base_url('index.php/User/estudiosRealizados'); ?>">Estudios Realizados</a> </li>
