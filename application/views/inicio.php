@@ -5,7 +5,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
     <title><?=$titulo ?></title>
     <link rel="stylesheet" href="<?php echo base_url('assets/styles/acc.css'); ?>">
     <link rel="stylesheet" href="<?php echo base_url('assets/styles/bootstrap.min.css'); ?>" crossorigin="anonymous">
-    <link rel="stylesheet" href="<?php echo base_url('assets/css/inicio_admin.css'); ?>">
+    <link rel="stylesheet" href="<?php echo base_url('assets/styles/inicio_admin.css'); ?>">
     <link rel="stylesheet" href="<?php echo base_url('assets/styles/bootstrap-dialog.min.css'); ?>">
     <script src="<?php echo base_url('assets/js/jquery.js'); ?>"></script>
     <script src="<?php echo base_url('assets/js/bootstrap.min.js'); ?>"></script>

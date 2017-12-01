@@ -10,7 +10,7 @@
       <link rel="stylesheet" type="text/css" href="<?php echo base_url('assets/styles/bootstrap.css') ?>">
       <link rel="stylesheet" href="<?php echo base_url('assets/styles/avisos.css'); ?>">
       <link rel="stylesheet" href="<?php echo base_url('assets/styles/zabuto_calendar.css'); ?>">
-      <link rel="stylesheet" href="<?php echo base_url('assets/css/inicio_admin.css') ?>">
+      <link rel="stylesheet" href="<?php echo base_url('assets/styles/inicio_admin.css') ?>">
 
 </head>
 <body>
