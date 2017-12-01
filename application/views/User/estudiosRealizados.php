@@ -1,4 +1,4 @@
-<?php $this->load->view('User/Helpers/header'); ?>
+<?php $this->load->view('Helpers/User/header'); ?>
 
 <link rel="stylesheet" href="<?php echo base_url('assets/css/estudiosRealizadosUsuario.css'); ?>">
 
@@ -8,7 +8,7 @@
 <div class="row"><p></p></div>
 
 <div class="row">
-	<div class="container col-sm-10 col-sm-offset-1 col-md-10 col-md-offset-1container col-xm-12 col-md-8 col-md-offset-2">
+	<div class="container col-sm-10 col-sm-offset-1 col-md-10 container col-xm-12 col-md-8 col-md-offset-2">
 		<section class="TituloPag">
 			<h1><b>Estudios Realizados</b></h1>
 		</section>
@@ -26,8 +26,6 @@
 		</section>
 	</div>
 </div>
-
-<div class="row"><p></p></div>
 
 <div class="row">
 	<div class="container col-xm-12 col-sm-10 col-sm-offset-1">
