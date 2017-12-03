@@ -7,15 +7,13 @@
 
       <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
       <link rel="stylesheet" type="text/css" href="<?php echo base_url('assets/styles/bootstrap.css') ?>">
-      <link rel="stylesheet" href="<?php echo base_url('assets/styles/avisos.css'); ?>">
-      <link rel="stylesheet" href="<?php echo base_url('assets/styles/zabuto_calendar.css'); ?>">
       <link rel="stylesheet" href="<?php echo base_url('assets/css/inicio_admin.css'); ?>">
 
 </head>
 <body>
 
 
-
+  <input type="hidden" id="base_url" value="<?php echo base_url();?>">
   <header>
     <nav class="navbar navbar-inverse navbar-static-top" style="background-color: #2f4159;"role="navigation">
       <div class="container-fluid">
@@ -61,7 +59,7 @@
                 <li class="divider"></li>
                 <li><a href="#" >LGAC</a> </li>
                 <li class="divider" ></li>
-                <li><a href="#" >Producción Académica</a> </li>
+                <li><a href="<?php echo base_url('index.php/User/produccion_academica')?>" >Producción Académica</a> </li>
 
               </ul>
             </li>

@@ -162,6 +162,29 @@ class User extends CI_Controller
 		$data['titulo'] = 'SAPTC - Estudios Realizados';
 		$this->load->view('User/estudiosRealizados', $data);
 	}
+	//produccion academica - scott
+	public function produccion_academica(){
+		if($this->session->userdata('id') != 2)
+		{
+			redirect(base_url());
+		}
+		else{
+			$this->load->model('ProduccionAca_model');
+			$data['titulo'] = 'SAPTC - Producción Académica';
+			$data['query'] = $this->ProduccionAca_model->getData();
+			$this->load->view('User/produccion_academica',$data);
+		}
+	}
+
+	public function produccion_form(){
+		if($this->session->userdata('id') != 2)
+		{
+			redirect(base_url());
+		}
+		else{
+			$this->load->view('forms/produccion_academica');
+		}
+	}
 
 	public function perfil()
 	{

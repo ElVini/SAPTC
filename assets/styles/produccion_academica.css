@@ -1,0 +1,43 @@
+.TituloPag{
+  text-align: center;
+  border-top: solid darkgray;
+  border-bottom: solid darkgray;
+}
+.TituloTabla{
+  text-align: left;
+  border-bottom: solid darkgray;
+}
+#TablaCabeza{
+  background-color: #2f4159;
+  color: white;
+}
+#TablaLinea{
+  border-bottom: solid 2px gray;
+}
+#Input{
+  display: inline-block;
+}
+#LineaInputs{
+  text-align: center;
+  font-size: large;
+}
+#TituloInput{
+  float: left;
+}
+.table tbody tr.highlight td {
+    background-color: #B0B0B0;
+}
+.DivELetrasrojas{
+  color: red;
+  font-size: 20px;
+  display: none;
+}
+#BotonesTabla{
+  float: right;
+}
+#btnAgreg{
+  display: none;
+}
+#btnMod{
+  display: none;
+}
