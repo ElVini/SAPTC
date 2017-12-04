@@ -61,6 +61,7 @@ var parapro =document.getElementById('Para');
 	  && parapro.value != '')
 	  {
 		var formulario = document.getElementById('registro');
+		$('#send').prop('disabled','true');
 		formulario.submit();
 	  }
 	  else{

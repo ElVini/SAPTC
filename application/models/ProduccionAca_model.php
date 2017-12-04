@@ -17,7 +17,14 @@ class ProduccionAca_model extends CI_Model
     }
 	public function agregarProduccion($data)
 	{
-		echo '<pre>'.var_dump($data).'</pre>';
 		$this->db->set($data)->insert('produccionacademica');
+        redirect(base_url('index.php/User/produccion_academica'));
 	}
+
+    public function getLineasGeneracion()
+    {
+        $this->db->where('Datosprofesores_idDatosprofesor', $this->session->userdata('login'));
+        $query = $this->db->get('lineageneracion');
+        return $query;
+    }
 }
