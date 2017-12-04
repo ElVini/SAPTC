@@ -9,7 +9,7 @@
       <link rel="stylesheet" type="text/css" href="<?php echo base_url('assets/styles/bootstrap.css') ?>">
       <link rel="stylesheet" href="<?php echo base_url('assets/styles/bootstrap-dialog.min.css'); ?>">
       <link rel="stylesheet" href="<?php echo base_url('assets/styles/inicio_admin.css'); ?>">
-
+      <script src="<?php echo base_url('assets/js/jquery-3.2.1.min.js'); ?>"></script>
 </head>
 <body>
 
@@ -87,10 +87,33 @@
 
           </ul>
           <ul class="nav navbar-nav navbar-right">
-            <li><a href="<?php echo base_url('index.php/Login/logout');?>" style="color:white;"><span class="glyphicon glyphicon-log-out" id="cerrar-sesion"></span > Cerrar Sesion</a></li>
+           <li><a id="cerrarSesion" href="#"style="color:white;"><span class="glyphicon glyphicon-log-out" id="cerrar-sesion"></span > Cerrar Sesion</a></li>
           </ul>
 
         </div>
       </div>
     </nav>
   </header>
+
+<script>
+  var base_url = $('#base_url').val();
+  $('#cerrarSesion').click(function(){
+      BootstrapDialog.show({
+          title: 'Cerrar sesión',
+          message: '¿Seguro que desea cerrar la sesión?',
+          buttons: [{
+              label: 'Cancelar',
+              cssClass: 'btn-default',
+              action: function(dialog) {
+                  dialog.close();
+              }
+          }, {
+              label: 'Cerrar sesión',
+              cssClass: 'btn-danger',
+              action: function(dialog) {
+                  window.location.href = base_url+'index.php/Login/logout';
+              }
+          }]
+      });
+  });
+</script>
