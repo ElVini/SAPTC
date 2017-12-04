@@ -22,4 +22,10 @@ class Perfil_model extends CI_Model
             return null;
         }
     }
+
+    public function actualizar($data)
+    {
+        $actualizar = 'UPDATE datosprofesores SET RFC = "'.$data['rfc'].'", Estadocivil = "'.$data['ecivil'].'", Correo = "'.$data['correo'].'", TelefonoTrabajo = "'.$data['telt'].'", TelefonoCasa = "'.$data['telc'].'", TelefonoPersonal = "'.$data['telp'].'" WHERE idDatosprofesor = '.$data['id'];
+        $this->db->query($actualizar);
+    }
 }
