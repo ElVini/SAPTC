@@ -75,7 +75,7 @@
                    <li class="divider"></li>
                    <li><a href="<?php echo base_url('index.php/User/datosLaborales'); ?>" >Datos Laborales</a> </li>
                    <li class="divider" ></li>
-                   <li><a href="#" >Premios o Distinciones</a> </li>
+                   <li><a href="<?php echo base_url('index.php/User/premiosoDisticiones'); ?>" >Premios o Distinciones</a> </li>
                    <li class="divider" ></li>
                    <li><a href="#" >Datos del Cuerpo Académico</a> </li>
                    <li class="divider" ></li>
