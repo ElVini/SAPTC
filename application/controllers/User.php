@@ -176,6 +176,22 @@ class User extends CI_Controller
 		}
 	}
 
+	//Para modificar datos de profesores
+	public function datos_profesor()
+	{
+		$data = array(
+			'correo'		=> $this->input->post('nemail'),
+			'rfc'			=> $this->input->post('nrfc'),
+			'telt'			=> $this->input->post('ntelt'),
+			'telc'			=> $this->input->post('ntelc'),
+			'telp'			=> $this->input->post('ntelp'),
+			'ecivil'		=> $this->input->post('necivil'),
+			'id'			=> $this->session->userdata('login')
+		);
+		$this->Perfil_model->actualizar($data);
+		redirect(base_url('index.php/User/Perfil'));
+	}
+
 	public function produccion_form(){
 		if($this->session->userdata('id') != 2)
 		{
@@ -223,7 +239,9 @@ class User extends CI_Controller
 				foreach($datos->result() as $res)
 				{
 					$data = array(
-						'nombre' 		=> $res->Nombres.' '.$res->Primerapellido.' '.$res->Segundoapellido,
+						'nombre' 		=> $res->Nombres,
+						'apellidop'		=> $res->Primerapellido,
+						'apellidom'		=> $res->Segundoapellido,
 						'curp' 			=> $res->Curp,
 						'rfc' 			=> $res->RFC,
 						'sexo' 			=> $res->Sexo,
@@ -278,7 +296,7 @@ class User extends CI_Controller
 	public function agregaDatosLaborales()
 	{
 		$data = $this->input->post();
-    $datos = (object)array(
+    	$datos = (object)array(
 				'idDatoslaborales'=>'',
 		        'Nombramiento'=>$data['nom'],
 		        'Fechadeiniciocontrato'=>$data['fecha_init'],
