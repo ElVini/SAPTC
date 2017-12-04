@@ -287,45 +287,47 @@ class User extends CI_Controller
 		if ($id!=0 )
 		{
 			$data["user"]=$this->datosLaborales_model->tomafila($id);
+			$data['dec']=true;
 			$this->load->view('User/form_datoslaborales', $data);
 		}
 		else
 		{
-			$this->load->view('User/form_datoslaborales');
+			$data['dec']=null;
+			$this->load->view('User/form_datoslaborales', $data);
 		}
 	}
 	public function agregaDatosLaborales()
 	{
 		$data = $this->input->post();
-    	$datos = (object)array(
+    $datos = (object)array(
 				'idDatoslaborales'=>'',
-		        'Nombramiento'=>$data['nom'],
-		        'Fechadeiniciocontrato'=>$data['fecha_init'],
-		        'Fechafincontrato'=>$data['fecha_fin'],
-		        'Tipo'=>$data['tipo_nom'],
+        'Nombramiento'=>$data['nom'],
+        'Fechadeiniciocontrato'=>$data['fecha_init'],
+        'Fechafincontrato'=>$data['fecha_fin'],
+        'Tipo'=>$data['tipo_nom'],
 				'Dedicacion'=>$data['dedicacion'],
 				'NombreDependencia'=>$data['dependencia'],
 				'Unidadacademica'=>$data['unidad'],
 				'Cronologia'=>'',
 				'Datosprofesores_idDatosprofesor'=>$data['profe']
         );
-	$this->datosLaborales_model->insert_data($datos);
+				$this->datosLaborales_model->insert_data($datos);
 	}
 	public function actualizaDatosLaborales()
 	{
 		$data = $this->input->post();
     $datos = (object)array(
 				'idDatoslaborales'=>$data['id_d'],
-		        'Nombramiento'=>$data['nom'],
-		        'Fechadeiniciocontrato'=>$data['fecha_init'],
-		        'Fechafincontrato'=>$data['fecha_fin'],
-		        'Tipo'=>$data['tipo_nom'],
+        'Nombramiento'=>$data['nom'],
+        'Fechadeiniciocontrato'=>$data['fecha_init'],
+        'Fechafincontrato'=>$data['fecha_fin'],
+        'Tipo'=>$data['tipo_nom'],
 				'Dedicacion'=>$data['dedicacion'],
 				'NombreDependencia'=>$data['dependencia'],
 				'Unidadacademica'=>$data['unidad'],
 				'Datosprofesores_idDatosprofesor'=>$data['profe']
         );
-	$this->datosLaborales_model->updateDatoslaborales($datos);
+				$this->datosLaborales_model->updateDatoslaborales($datos);
 	}
 	public function deleteDatol()
 	{
@@ -336,14 +338,16 @@ class User extends CI_Controller
 	public function contratoactual()
 	{
 		$id= $this->uri->segment(3);
-		$data = (object)array('id'=>$id,'Cronologia'=>'Contrato Actual');
+		$data = (object)array('id'=>$id,
+													'Cronologia'=>'Contrato Actual',
+													'profeid'=>$this->session->userdata('login'));
 		$this->datosLaborales_model->contratoactual($data);
 		redirect(base_url()."index.php/User/datosLaborales");
 	}
 	public function contratoprimero()
 	{
 		$id= $this->uri->segment(3);
-		$data = (object)array('id'=>$id,'Cronologia'=>'Primer Contrato');
+		$data = (object)array('id'=>$id,'Cronologia'=>'Primer Contrato','profeid'=>$this->session->userdata('login'));
 		$this->datosLaborales_model->contratoprimero($data);
 		redirect(base_url()."index.php/User/datosLaborales");
 	}

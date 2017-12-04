@@ -96,295 +96,282 @@
 			</div>
 			<br>
 			<input type="text" name="eid" id="eid" hidden="">
-<script type="text/javascript">
-function datos(id)
-{
-	$('#eid').val(id);
-}
-$('#delete').click(function(){
-	var id= $('#eid').val();
-	console.log(id);
-	if(id!='')
-	{	var base_url = "<?php echo base_url(); ?>"
-		BootstrapDialog.show({
-			type: BootstrapDialog.TYPE_DANGER,
-			size: BootstrapDialog.SIZE_LARGE,
-			title: 'Eliminar',
-			animate: false,
-			cssClass: 'dialog',
-			message: '¿Esta seguro de borrar este registro?',
-			closable: false,
-			draggable: true,
-			buttons: [{
-					label: 'Cancelar',
-					cssClass: 'btn-danger',
-					action: function(dialogRef)
-					{	dialogRef.close();
-					}
-				},
-				{
-					label: 'Borrar',
-					id: 'btnBorrar',
-					cssClass: 'btn-primary',
-					action: function()
-					{	window.location= "<?= base_url() ?>index.php/User/deleteDatol/" + id;
-					}
-				}]
-			});
-		}
-		else
-		{	$(".error").show();
-		}
-});
-$('#contratonow').click(function(){
-	var id= $('#eid').val() ;
-	if(id!='')
-	{	var base_url = "<?php echo base_url(); ?>"
-		BootstrapDialog.show({
-			type: BootstrapDialog.TYPE_SUCCESS,
-			size: BootstrapDialog.SIZE_LARGE,
-			title: 'Atención',
-			animate: false,
-			cssClass: 'dialog',
-			message: '¿Esta seguro de marcar este registro como contrato actual?',
-			closable: false,
-			draggable: true,
-			buttons: [{
-						label: 'Cancelar',
-						cssClass: 'btn-danger',
-						action: function(dialogRef)
-						{	dialogRef.close();
-						}
-					},
-					{
-						label: 'OK',
-						id: 'btnOk',
-						cssClass: 'btn-primary',
-						action: function()
-						{	window.location= "<?= base_url()?>index.php/User/contratoactual/" + id;
-						}
-					}]
-				});
-		}
-		else
-		{	$(".error").show();
-		}
-	});
-$('#firstcontrato').click(function(){
-	var id= $('#eid').val() ;
-	if(id!='')
-	{	var base_url = "<?php echo base_url(); ?>"
-		BootstrapDialog.show({
-			type: BootstrapDialog.TYPE_SUCCESS,
-			size: BootstrapDialog.SIZE_LARGE,
-			title: 'Atención',
-			animate: false,
-			cssClass: 'dialog',
-			message: '¿Esta seguro de marcar este registro como primer contrato?',
-			closable: false,
-			draggable: true,
-			buttons: [{
-						label: 'Cancelar',
-						cssClass: 'btn-danger',
-						action: function(dialogRef)
-						{	dialogRef.close();
-						}
-					},
-					{
-						label: 'OK',
-						id: 'btnOk',
-						cssClass: 'btn-primary',
-						action: function()
-						{	window.location= "<?= base_url() ?>index.php/User/contratoprimero/" + id;
-						}
-					}]
-			});
-	}
-	else
-	{	$('.error').show();
-	}
-});
-$("#add").on('click', function(event) {
-			var base_url = "<?php echo base_url(); ?>"
-			BootstrapDialog.show({
-			type: BootstrapDialog.TYPE_PRIMARY,
-			size: BootstrapDialog.SIZE_LARGE,
-			title: 'Agregar Nuevo ',
-			animate: false,
-			cssClass: 'dialog',
-			draggable: true, // es para que puedas mover el dialogo
-      message: function(dialog)
-		          {		var $message = $('<div></div>');
-		              var pageToLoad = dialog.getData('pageToLoad');
-		              $message.load(pageToLoad);
-		              return $message;
-		          },
-      data:
-        {	'pageToLoad': base_url+'index.php/User/form_datoslaborales/'+0
-        },
-		    closable: false,
-		    buttons:[{
-					    label: 'Cancelar',
-			        cssClass: 'btn-danger',
-			        action: function(dialogRef)
-			        			{	dialogRef.close();
-				          	}
-		        	},
-		        	{
-				        label: 'Enviar',
-				        id: 'btnEnviar',
-				        cssClass: 'btn-primary',
-				        action: function()
-				        {	var nom= $('#nom').val();
-				        	var tipo_nom= $('#tipo_nom').val();
-				        	var dedicacion= $('#dedicacion').val();
-				        	var dependencia= $('#dependencia').val();
-									var unidad= $('#unidad').val();
-									var fecha_init= $('#fecha_init').val();
-									var fecha_fin= $('#fecha_fin').val();
-									var cronologia=$('#cronologia').val();
-									var profe= <?= $loginid?>;
-									if( nom !='' && tipo_nom!='' && dedicacion!='' && dependencia!='' && unidad!='' && fecha_init!='' && fecha_fin!='')
-			            {	$.ajax({
-											type:"POST",
-											url: "http://localhost/SAPTC/index.php/User/agregaDatosLaborales",
-											data:{	'nom': nom,
-															'fecha_init': fecha_init,
-															'fecha_fin':fecha_fin,
-															'tipo_nom': tipo_nom,
-															'dedicacion': dedicacion,
-															'dependencia':dependencia,
-															'unidad': unidad,
-															'profe': profe
-														},
-											 success:function (data)
-											 {	BootstrapDialog.alert({
-														title: 'Resultado',
-														message: 'Agregado correctamente',
-														type: BootstrapDialog.TYPE_PRIMARY, // <-- Default value is BootstrapDialog.TYPE_PRIMARY
-														buttonLabel: 'Cerrar',
-														callback: function(result) {
-														  location.reload();
-														  }
-													});
-											  },error:function(jqXHR, textStatus, errorThrown){
-											      console.log('error:: '+ errorThrown);
-											  }
-											});
-			               }
-			               else
-			               {	BootstrapDialog.alert({
-												 title: '¡Atención!',
-												 message: 'Favor de llenar todos los campos',
-												 type: BootstrapDialog.TYPE_DANGER
-										 		});
-			               }
-		            	}
-		     			}]
-		  });
-});
-$("#modify").on('click', function(event) {
-			var base_url = "<?php echo base_url(); ?>";
-			var id= $('#eid').val();
-			if(id!='')
-			{
-				BootstrapDialog.show({
-				type: BootstrapDialog.TYPE_PRIMARY,
-				size: BootstrapDialog.SIZE_LARGE,
-				title: 'Agregar Nuevo ',
-				animate: false,
-				cssClass: 'dialog',
-				draggable: true, // es para que puedas mover el dialogo
-	      message: function(dialog)
-	          {		var $message = $('<div></div>');
-	              var pageToLoad = dialog.getData('pageToLoad');
-	              $message.load(pageToLoad);
-	              return $message;
-	          },
-	      data:
-	      {	'pageToLoad': base_url+'index.php/User/form_datoslaborales/'+id
-	      },
-		    closable: false,
-		    buttons:[{
-				    label: 'Cancelar',
-			      cssClass: 'btn-danger',
-			      action: function(dialogRef)
-			        		 {	dialogRef.close();
-					         }
-		        	},
-		        	{	label: 'Enviar',
-				        id: 'btnEnviar',
-				        cssClass: 'btn-primary',
-				        action: function()
-				        {	var id_d= $('#id_d').val();
-									var nom= $('#nom').val();
-									var tipo_nom= $('#tipo_nom').val();
-									var dedicacion= $('#dedicacion').val();
-									var dependencia= $('#dependencia').val();
-									var unidad= $('#unidad').val();
-									var fecha_init= $('#fecha_init').val();
-									var fecha_fin= $('#fecha_fin').val();
-									var cronologia=$('#cronologia').val();
-									var profe= <?= $loginid?>;
-				          if( nom !='' && tipo_nom!='' && dedicacion!='' && dependencia!='' && unidad!='' && fecha_init!='' && fecha_fin!='')
-				          {	$.ajax({
-											type:"POST",
-											url: "http://localhost/SAPTC/index.php/User/actualizaDatosLaborales",
-											data:{
-														'id_d': id_d,
-														'nom': nom,
-														'fecha_init': fecha_init,
-														'fecha_fin':fecha_fin,
-														'tipo_nom': tipo_nom,
-														'dedicacion': dedicacion,
-														'dependencia':dependencia,
-														'unidad': unidad,
-														'profe': profe
-														},
-					                  success:function (data)
-					                  {	BootstrapDialog.alert({
-										            title: 'Resultado',
-										            message: 'Agregado correctamente',
-										            type: BootstrapDialog.TYPE_PRIMARY, // <-- Default value is BootstrapDialog.TYPE_PRIMARY
-										            buttonLabel: 'Cerrar',
-										            callback: function(result) {
-										                location.reload();
-												            }
-											        });
-			                       },error:function(jqXHR, textStatus, errorThrown){
-			                           console.log('error:: '+ errorThrown);
-			                       }
-										});
-				          }
-									else
-									{	BootstrapDialog.alert({
-											title: '¡Atención!',
-											message: 'Favor de llenar todos los campos',
-											type: BootstrapDialog.TYPE_DANGER
-										});
-				          }
-		            }
-		     		}]
-		  });
-		}
-		else
-		{	$('.error').show();
-		}
-});
-function fecha(el)
-{
-	if ($('#tipo_nom').val() == "Temporal")
-	{
-		$('.fecha').show();
-		formu=true;
-	}
-	else if($('#tipo_nom').val() == "Indeterminado" && el==0)
-	{
-		$('.fecha').hide();
-		formu=false;
-	}
-}
-</script>
 <script type="text/javascript" src="<?php echo base_url('assets/js/datosLaborales.js'); ?>"></script>
+<script type="text/javascript">
+
+  function datos(id)
+  {
+  	$('#eid').val(id);
+  }
+  $('#delete').click(function(){
+  	var id= $('#eid').val();
+  	if(id!='')
+  	{
+  		BootstrapDialog.show({
+  			type: BootstrapDialog.TYPE_DANGER,
+  			size: BootstrapDialog.SIZE_LARGE,
+  			title: 'Eliminar',
+  			animate: false,
+  			cssClass: 'dialog',
+  			message: '¿Esta seguro de borrar este registro?',
+  			closable: false,
+  			draggable: true,
+  			buttons: [{
+  					label: 'Cancelar',
+  					cssClass: 'btn-danger',
+  					action: function(dialogRef)
+  					{	dialogRef.close();
+  					}
+  				},
+  				{
+  					label: 'Borrar',
+  					id: 'btnBorrar',
+  					cssClass: 'btn-primary',
+  					action: function()
+  					{	window.location= "<?= base_url() ?>index.php/User/deleteDatol/" + id;
+  					}
+  				}]
+  			});
+  		}
+  		else
+  		{	$(".error").show();
+  		}
+  });
+  $('#contratonow').click(function(){
+  	var id= $('#eid').val();
+  	if(id !='')
+  	{
+  		BootstrapDialog.show({
+  			type: BootstrapDialog.TYPE_SUCCESS,
+  			size: BootstrapDialog.SIZE_LARGE,
+  			title: 'Atención',
+  			animate: false,
+  			cssClass: 'dialog',
+  			message: '¿Esta seguro de marcar este registro como contrato actual?',
+  			closable: false,
+  			draggable: true,
+  			buttons: [{
+  						label: 'Cancelar',
+  						cssClass: 'btn-danger',
+  						action: function(dialogRef)
+  						{	dialogRef.close();
+  						}
+  					},
+  					{
+  						label: 'OK',
+  						id: 'btnOk',
+  						cssClass: 'btn-primary',
+  						action: function()
+  						{	window.location= "<?= base_url()?>index.php/User/contratoactual/" + id;
+  						}
+  					}]
+  				});
+  		}
+  		else
+  		{	$(".error").show();
+  		}
+  	});
+  $('#firstcontrato').click(function(){
+  	var id= $('#eid').val() ;
+  	if(id!='')
+  	{
+  		BootstrapDialog.show({
+  			type: BootstrapDialog.TYPE_SUCCESS,
+  			size: BootstrapDialog.SIZE_LARGE,
+  			title: 'Atención',
+  			animate: false,
+  			cssClass: 'dialog',
+  			message: '¿Esta seguro de marcar este registro como primer contrato?',
+  			closable: false,
+  			draggable: true,
+  			buttons: [{
+  						label: 'Cancelar',
+  						cssClass: 'btn-danger',
+  						action: function(dialogRef)
+  						{	dialogRef.close();
+  						}
+  					},
+  					{
+  						label: 'OK',
+  						id: 'btnOk',
+  						cssClass: 'btn-primary',
+  						action: function()
+  						{	window.location= "<?= base_url() ?>index.php/User/contratoprimero/" + id;
+  						}
+  					}]
+  			});
+  	}
+  	else
+  	{	$('.error').show();
+  	}
+  });
+  $("#add").on('click', function(event) {
+  			formu=false;
+  			BootstrapDialog.show({
+  			type: BootstrapDialog.TYPE_PRIMARY,
+  			size: BootstrapDialog.SIZE_LARGE,
+  			title: 'Agregar Nuevo ',
+  			animate: false,
+  			cssClass: 'dialog',
+  			draggable: true, // es para que puedas mover el dialogo
+        message: function(dialog)
+  		          {		var $message = $('<div></div>');
+  		              var pageToLoad = dialog.getData('pageToLoad');
+  		              $message.load(pageToLoad);
+  		              return $message;
+  		          },
+        data:
+          {	'pageToLoad': base_url+'index.php/User/form_datoslaborales/'+0
+          },
+  		    closable: false,
+  		    buttons:[{
+  					    label: 'Cancelar',
+  			        cssClass: 'btn-danger',
+  			        action: function(dialogRef)
+  			        			{	dialogRef.close();
+  				          	}
+  		        	},
+  		        	{
+  				        label: 'Enviar',
+  				        id: 'btnEnviar',
+  				        cssClass: 'btn-primary',
+  				        action: function()
+  				        {	var nom= $('#nom').val();
+  				        	var tipo_nom= $('#tipo_nom').val();
+  				        	var dedicacion= $('#dedicacion').val();
+  				        	var dependencia= $('#dependencia').val();
+  									var unidad= $('#unidad').val();
+  									var fecha_init= $('#fecha_init').val();
+  									var fecha_fin= $('#fecha_fin').val();
+  									var cronologia=$('#cronologia').val();
+  									var profe= <?= $loginid?>;
+  									if(nom !='' && tipo_nom!='' && dedicacion!='' && dependencia!='' && unidad!='' && fecha_init!='' && (fecha_fin!='' || formu == false))
+  			            {	$.ajax({
+  											type:"POST",
+  											url: "<?= base_url()?>index.php/User/agregaDatosLaborales",
+  											data:{	'nom': nom,
+  															'fecha_init': fecha_init,
+  															'fecha_fin':fecha_fin,
+  															'tipo_nom': tipo_nom,
+  															'dedicacion': dedicacion,
+  															'dependencia':dependencia,
+  															'unidad': unidad,
+  															'profe': profe
+  														},
+															success: function() {
+																location.reload();
+															}
+  														});
+  			               }
+  			               else
+  			               {	BootstrapDialog.alert({
+  												 title: '¡Atención!',
+  												 message: 'Favor de llenar todos los campos',
+  												 type: BootstrapDialog.TYPE_DANGER
+  										 		});
+  			               }
+  		            	}
+  		     			}]
+  		  });
+  });
+  $("#modify").on('click', function(event) {
+  			var base_url = "<?php echo base_url(); ?>";
+  			var id= $('#eid').val();
+				formu= false;
+  			if(id!='')
+  			{
+  				BootstrapDialog.show({
+  				type: BootstrapDialog.TYPE_PRIMARY,
+  				size: BootstrapDialog.SIZE_LARGE,
+  				title: 'Modificar',
+  				animate: false,
+  				cssClass: 'dialog',
+  				draggable: true, // es para que puedas mover el dialogo
+  	      message: function(dialog)
+  	          {		var $message = $('<div></div>');
+  	              var pageToLoad = dialog.getData('pageToLoad');
+  	              $message.load(pageToLoad);
+  	              return $message;
+  	          },
+  	      data:
+  	      {	'pageToLoad': base_url+'index.php/User/form_datoslaborales/'+id
+  	      },
+  		    closable: false,
+  		    buttons:[{
+  				    label: 'Cancelar',
+  			      cssClass: 'btn-danger',
+  			      action: function(dialogRef)
+  			        		 {	dialogRef.close();
+  					         }
+  		        	},
+  		        	{	label: 'Enviar',
+  				        id: 'btnEnviar',
+  				        cssClass: 'btn-primary',
+  				        action: function()
+  				        {
+  									var nom= $('#nom').val();
+  									var tipo_nom= $('#tipo_nom').val();
+  									var dedicacion= $('#dedicacion').val();
+  									var dependencia= $('#dependencia').val();
+  									var unidad= $('#unidad').val();
+  									var fecha_init= $('#fecha_init').val();
+  									var fecha_fin= $('#fecha_fin').val();
+  									var cronologia=$('#cronologia').val();
+  									var profe= <?= $loginid?>;
+  									if( nom !='' && tipo_nom!='' && dedicacion!='' && dependencia!='' && unidad!='' && fecha_init!='' && (fecha_fin!='' || formu == false ))
+  				          {	$.ajax({
+  											type:"POST",
+  											url: "<?= base_url()?>index.php/User/actualizaDatosLaborales",
+  											data:{
+  														'id_d': id,
+  														'nom': nom,
+  														'fecha_init': fecha_init,
+  														'fecha_fin':fecha_fin,
+  														'tipo_nom': tipo_nom,
+  														'dedicacion': dedicacion,
+  														'dependencia':dependencia,
+  														'unidad': unidad,
+  														'profe': profe
+  														},
+															success: function() {
+																location.reload();
+															}
+  										});
+  				          }
+  									else
+  									{	BootstrapDialog.alert({
+  											title: '¡Atención!',
+  											message: 'Favor de llenar todos los campos',
+  											type: BootstrapDialog.TYPE_DANGER
+  										});
+  				          }
+  		            }
+  		     		}]
+  		  });
+  		}
+  		else
+  		{	$('.error').show();
+  		}
+  });
+  var formu;
+  function fecha(dec)
+  {
+  	if ($('#tipo_nom').val() == "Temporal")
+  	{
+  		$('.fecha').show();
+  		formu=true;
+  	}
+  	else if($('#tipo_nom').val() == "Indeterminado" && dec== null)
+  				{	$('.fecha').hide();
+  					formu=false
+  				}
+  				else
+  					{	$('.fecha').show();
+  						formu=false;
+  					}
+  }
+
+
+</script>
 </body>
 </html>

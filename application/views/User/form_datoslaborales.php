@@ -1,5 +1,4 @@
 <script type="text/javascript">$('.fecha').hide();</script>
-<?php $el=0; ?>
 <?php
 if (isset($user))
 {	foreach ($user->result() as $row)
@@ -15,14 +14,11 @@ if (isset($user))
 		$('#fecha_init').val("<?= $row->Fechadeiniciocontrato;  ?>");
 		$('#fecha_fin').val("<?= $row->Fechafincontrato;  ?>");
 		$('.fecha').show();
-		<?php $el=1; ?>
 </script>
 <?php }} ?>
 <div  id="formulario">
   <form  method="post" action="#" >
     <input type="text" hidden="" name="id_d" id="id_d">
-    <input type="text" hidden="" name="id_fk" id="id_fk">
-    <input type="text" hidden="" name="cronologia" id="cronologia">
     <div class="row">
       <div class="form-group col-xs-12 col-sm-6 col-md-6 col-lg-6">
         <label for="nom">Nombramiento*:</label>
@@ -30,21 +26,22 @@ if (isset($user))
       </div>
       <div class="form-group col-xs-12 col-sm-6 col-md-6 col-lg-6">
         <label for="tipo_nom">Tipo de nombramiento*:</label>
-        <select class="form-control" id="tipo_nom" name="tipo_nom" onchange="fecha(<?= $el ?>)" >
+        <select class="form-control" id="tipo_nom" name="tipo_nom" onchange="fecha(<?= $dec; ?>)" >
           <option value="Indeterminado">Indeterminado</option>
           <option value="Temporal">Temporal</option>
         </select>
-
+			</div>
       </div>
-      <div class="form-group col-xs-12 col-sm-12 col-md-12 col-lg-12">
-        <label for="dedicacion">Dedicación*:</label>
-        <select class="form-control" name="dedicacion" id="dedicacion">
-          <option value="Tiempo completo">Tiempo completo</option>
-          <option value="Medio tiempo">Medio tiempo</option>
-          <option value="Por horas">Por horas</option>
-        </select>
-      </div>
-    </div>
+			<div class="row">
+	      <div class="form-group col-md-12">
+	        <label for="dedicacion">Dedicación*:</label>
+	        <select class="form-control" name="dedicacion" id="dedicacion">
+	          <option value="Tiempo completo">Tiempo completo</option>
+	          <option value="Medio tiempo">Medio tiempo</option>
+	          <option value="Por horas">Por horas</option>
+	        </select>
+	      </div>
+    	</div>
     <div class="row">
       <div class="form-group col-xs-12 col-sm-12 col-md-12 col-lg-6">
         <label for="dependencia">Dependencia de Educación Superior de abscripción*:</label>
@@ -69,15 +66,15 @@ if (isset($user))
         </select>
       </div>
     </div>
-    <div class="row">
-      <div class="form-group col-xs-12 col-sm-6 col-md-6 col-lg-6">
-        <label for="fecha_init">Fecha de inicio del contrato*:
-        <input class="form-control" type="date" name="fecha_init" id="fecha_init" >
-      </div>
-      <div class="form-group col-xs-12 col-sm-6 col-md-6 col-lg-6 fecha">
-        <label for="fecha_fin">Fecha de fin del contrato*:
-        <input class="form-control" type="date" name="fecha_fin" id="fecha_fin" >
-      </div>
-    </div>
+		<div class="row">
+			<div class="form-group col-xs-12 col-sm-6 col-md-6 col-lg-6">
+				<label for="fecha_init">Fecha de inicio del contrato*:</label>
+				<input class="form-control" type="date" name="fecha_init" id="fecha_init">
+			</div>
+			<div class="form-group col-xs-12 col-sm-6 col-md-6 col-lg-6 fecha">
+				<label for="fecha_fin">Fecha de fin del contrato*:</label>
+				<input class="form-control" type="date" name="fecha_fin" id="fecha_fin">
+			</div>
+		</div>
   </form>
 </div>
