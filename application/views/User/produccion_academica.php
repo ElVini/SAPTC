@@ -23,15 +23,6 @@
                 <div class="row"><p></p></div>
                 <div class="row"><p></p></div>
                 <div class="row"><p></p></div>
-
-                <div class="row">
-                  <div class="container col-sm-10 col-sm-offset-1 col-md-10 col-md-offset-1">
-                    <section class="TituloTabla">
-                      <h4><b>Producción</b></h4>
-                    </section>
-                  </div>
-                </div>
-
                 <div class="row"><p></p></div>
 
                 <div class="row">
@@ -47,8 +38,8 @@
                             <td><b>Tipo de producción</b></td>
                             <td><b>Para<br>CA</b></td>
                             <td><b>Miembros<br>CA</b></td>
-                            <td><b>LGACs<br>Ind</b></td>
-                            <td><b>LAGCs<br>CA</b></td>
+                            <!-- <td><b>LGACs<br>Ind</b></td> -->
+                            <!-- <td><b>LAGCs<br>CA</b></td> -->
                           </tr>
                         </thead>
 
@@ -63,10 +54,10 @@
                       <td>'.$produccion->Numcitada.'</td>
                       <td>'.$produccion->Tipoproduccion.'</td>
                       <td>'.$produccion->ParaCA.'</td>
-                      <td>'.$produccion->MiembrosCA.'</td>
-                      <td>'.$produccion->Numlineasind.'</td>
-                      <td>'.$produccion->NumlineasCA.'</td>
-                      <td hidden>'.$produccion->HorasSemanales.'</td>
+                      <td>'.$produccion->MiembrosCA.'</td>'
+                      // <td>'.$produccion->Numlineasind.'</td>
+                      // <td>'.$produccion->NumlineasCA.'</td>
+                      .'<td hidden>'.$produccion->HorasSemanales.'</td>
 
                           </tr>';
                       $inputId++;

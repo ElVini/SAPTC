@@ -181,8 +181,10 @@ class User extends CI_Controller
 		{
 			redirect(base_url());
 		}
-		else{
-			$this->load->view('forms/produccion_academica');
+		else
+		{
+			$data['query'] = $this->ProduccionAca_model->getLineasGeneracion();
+			$this->load->view('forms/produccion_academica',$data);
 		}
 	}
 
