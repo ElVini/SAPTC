@@ -11,6 +11,7 @@ class User extends CI_Controller
 		$this->load->model('EstudiosRealizados_model');
 		$this->load->model('Perfil_model');
 		$this->load->model('ProduccionAca_model');
+		$this->load->model('premiosoDistinciones_model');
 		$this->load->library(array('session'));
 	}
 
@@ -346,7 +347,100 @@ class User extends CI_Controller
 		$this->datosLaborales_model->contratoprimero($data);
 		redirect(base_url()."index.php/User/datosLaborales");
 	}
+	// Premios o distinciones
+	public function premiosoDisticiones()
+	{
+		if($this->session->userdata('id') != 2)
+		{
+			redirect(base_url());
+		}
+		else if($this->session->userdata('id') == 2)
+		{
+			$data['titulo'] = 'SAPTC - Premios o Distinciones';
+			$data['datos'] = $this->premiosoDistinciones_model->obtiene($this->session->userdata('login'));
+			$data['loginid']= $this->session->userdata('login');
+			$data["inst"]=$this->premiosoDistinciones_model->obtienei();
+			$this->load->view('User/premiosoDistinciones', $data);
+		}
+		else
+		{
+			redirect(base_url());
+		}
+	}
+	public function formu_premios($id)
+	{
+		if ($id!=0 )
+		{
+			$data["user"]=$this->premiosoDistinciones_model->tomafila($id);
+			$data["inst"]=$this->premiosoDistinciones_model->obtienei();
+			$this->load->view('User/formulario_premios', $data);
+		}
+		else
+		{
+			$data["inst"]=$this->premiosoDistinciones_model->obtienei();
+			$this->load->view('User/formulario_premios', $data);
+		}
+	}
+	public function agregaPremiosoDistinciones()
+	{
+		$data = $this->input->post();
+		if ( $this->input->post('io')==0)
+		{
+			$dato = (object)array('Nombre'=>$data['ins']);
+			$this->premiosoDistinciones_model->insert_ins($dato);
+			$inst=$this->premiosoDistinciones_model->obtienei();
+			foreach ($inst->result() as $row){
+			}
+			$datos = (object)array('Nombre'=>$data['npd'],'Fecha'=>$data['f'],
+							'Otrainstitucion'=>$data['oio'],'Motivo'=>$data['m'],
+							'Datosprofesores_idDatosprofesor'=>$data['profe'],
+							'Instituciones_idInstituciones'=>$row->idInstituciones);
+		}
+		else
+		{		$datos = (object)array('Nombre'=>$data['npd'],'Fecha'=>$data['f'],
+							'Otrainstitucion'=>$data['oio'],'Motivo'=>$data['m'],
+							'Datosprofesores_idDatosprofesor'=>$data['profe'],
+							'Instituciones_idInstituciones'=>$data['io']);
+		}
 
+	$this->premiosoDistinciones_model->insert_data($datos);
+	}
+	public function agregaInstitucion()
+	{
+		$data = $this->input->post();
+		$datos = (object)array(
+						'Nombre'=>$data['ins']
+				);
+	$this->premiosoDistinciones_model->insert_ins($datos);
+	}
+	public function deletePremios()
+	{
+		$id= $this->uri->segment(3);
+		$this->premiosoDistinciones_model->delete_data($id);
+		redirect(base_url()."index.php/User/premiosoDisticiones");
+	}
+	public function actualizaPremios()
+	{
+		$data = $this->input->post();
+		if ( $this->input->post('io')==0)
+		{
+			$dato = (object)array('Nombre'=>$data['ins']);
+			$this->premiosoDistinciones_model->insert_ins($dato);
+			$inst=$this->premiosoDistinciones_model->obtienei();
+			foreach ($inst->result() as $row){
+			}
+			$datos = (object)array('idPremios'=>$data['id'],'Nombre'=>$data['npd'],
+								'Fecha'=>$data['f'],'Otrainstitucion'=>$data['oio'],
+								'Motivo'=>$data['m'],'Instituciones_idInstituciones'=>$row->idInstituciones);
+		}
+		else
+		{
+			$datos = (object)array('idPremios'=>$data['id'],'Nombre'=>$data['npd'],
+							'Fecha'=>$data['f'],'Otrainstitucion'=>$data['oio'],
+							'Motivo'=>$data['m'],'Instituciones_idInstituciones'=>$data['io']);
+		}
+		$this->premiosoDistinciones_model->updatePremios($datos);
+	}
 }
 
 ?>
