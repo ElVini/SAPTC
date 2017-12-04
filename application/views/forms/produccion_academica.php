@@ -1,5 +1,5 @@
 
-          <form method="post" name="registro" id="registro" action="./">
+          <form method="post" name="registro" id="registro" action="<?php echo base_url('index.php/User/addProduccion') ?>">
               <div class="row" >
               <div class="col-md-4">
                   <label>Titulo*: </label>
@@ -68,5 +68,5 @@
               </div>
     </form>
     <div class="ErrorInputs" hidden>
-      <p>Por favor llene todos los campos</p>
+      <p>Por favor llene los campos obligatorios</p>
     </div>

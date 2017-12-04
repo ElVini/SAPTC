@@ -2,10 +2,11 @@
 <html>
   <head>
     <meta name=viewport width=device-width initial-scale=1 >
-    <link rel="stylesheet" type="text/css" href="<?php echo base_url('assets/styles/bootstrap.min.css') ?>">
+	<link rel="stylesheet" type="text/css" href="<?php echo base_url('assets/styles/bootstrap.min.css') ?>">
     <link rel="stylesheet" type="text/css" href="<?php echo base_url('assets/styles/header-user-dropdown.css'); ?>">
     <link rel="stylesheet" type="text/css" href="<?php echo base_url('assets/styles/color.css'); ?>">
     <link rel="stylesheet" type="text/css" href="<?php echo base_url('assets/styles/bootstrap-dialog.min.css'); ?>">
+
     <title><?=$titulo ?></title>
   </head>
 

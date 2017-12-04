@@ -33,8 +33,37 @@ function cargarDialogo(ajaxreturn){
 		id: "send",
 		cssClass: 'btn-primary',
 		action: function(dialogRef){
-
+			send();
 		  }
 	  }]
 	});
+}
+
+function send(){
+var titulopro = document.getElementById('Titulo');
+var anopro = document.getElementById('Ano');
+var citaspro = document.getElementById('Citas');
+var tipopro = document.getElementById('tipoproduccion');
+var indpro = document.getElementById('Ind');
+var miembrospro = document.getElementById('Miembros');
+var capro =document.getElementById('CA');
+var horaspro =document.getElementById('Horas');
+var parapro =document.getElementById('Para');
+
+  	if(  titulopro.value != ''
+	  && anopro.value !=''
+	  && citaspro.value != ''
+	  && tipopro.value != ''
+	  && indpro.value != ''
+	  && miembrospro.value != ''
+	  && capro.value != ''
+	  && horaspro.value != ''
+	  && parapro.value != '')
+	  {
+		var formulario = document.getElementById('registro');
+		formulario.submit();
+	  }
+	  else{
+		  $(".ErrorInputs").show('slow');
+	  }
 }

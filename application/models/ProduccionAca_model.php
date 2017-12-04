@@ -15,4 +15,9 @@ class ProduccionAca_model extends CI_Model
         $query = $this->db->get('produccionacademica');
 		return $query;
     }
+	public function agregarProduccion($data)
+	{
+		echo '<pre>'.var_dump($data).'</pre>';
+		$this->db->set($data)->insert('produccionacademica');
+	}
 }

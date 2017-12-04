@@ -10,6 +10,7 @@ class User extends CI_Controller
 		$this->load->model('datosLaborales_model');
 		$this->load->model('EstudiosRealizados_model');
 		$this->load->model('Perfil_model');
+		$this->load->model('ProduccionAca_model');
 		$this->load->library(array('session'));
 	}
 
@@ -169,7 +170,6 @@ class User extends CI_Controller
 			redirect(base_url());
 		}
 		else{
-			$this->load->model('ProduccionAca_model');
 			$data['titulo'] = 'SAPTC - Producción Académica';
 			$data['query'] = $this->ProduccionAca_model->getData();
 			$this->load->view('User/produccion_academica',$data);
@@ -183,6 +183,29 @@ class User extends CI_Controller
 		}
 		else{
 			$this->load->view('forms/produccion_academica');
+		}
+	}
+
+	public function addProduccion(){
+		if($this->session->userdata('id') != 2)
+		{
+			redirect(base_url());
+		}
+		else{
+			$data = array(
+			'Titulo' => $_POST['Titulo'],
+			'Ano'=> $_POST['Ano'],
+			'Numcitada' => $_POST['Citas'],
+			'Tipoproduccion' => $_POST['tipoproduccion'],
+			'Numlineasind' => $_POST['Ind'],
+			'MiembrosCA' => $_POST['Miembros'],
+			'NumlineasCA' => $_POST['CA'],
+			'HorasSemanales' => $_POST['Horas'],
+			'ParaCA' => $_POST['Para'],
+			'Lineageneracion_idLineageneracion' => 1,//$_POST['idAModificar']);
+			'Datosprofesores_idDatosprofesor' => $this->session->userdata('login')
+			);
+			$this->ProduccionAca_model->agregarProduccion($data);
 		}
 	}
 
