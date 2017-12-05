@@ -1,0 +1,10 @@
+.img-perfil {
+    border-radius: 100%;
+    width: 100px;
+    height: 80px;
+    margin-bottom: 20px;
+}
+
+.nombre {
+    vertical-align: middle;
+}
