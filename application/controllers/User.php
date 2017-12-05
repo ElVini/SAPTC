@@ -12,6 +12,7 @@ class User extends CI_Controller
 		$this->load->model('Perfil_model');
 		$this->load->model('ProduccionAca_model');
 		$this->load->model('premiosoDistinciones_model');
+		$this->load->model('CuerpoAcademico_model');
 		$this->load->library(array('session'));
 	}
 //Inicio

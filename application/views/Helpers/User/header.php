@@ -33,8 +33,6 @@
           <ul class="nav navbar-nav">
                <!--PARA LA OPCION DE IR AL INICIO-->
             <li><a href="<?php echo base_url(); ?>" style="color:white;"><span class="glyphicon glyphicon-home"></span> Inicio</a></li>
-            <li><a href="<?php echo base_url('index.php/User/perfil'); ?>" style="color:white;"><span class="glyphicon glyphicon-user"></span> Usuario</a></li>
-
 
    <!--PARA LA OPCION DE SERVICIO A ALUMNOS-->
             <li class="dropdown">
@@ -77,12 +75,14 @@
                    <li class="divider" ></li>
                    <li><a href="<?php echo base_url('index.php/User/premiosoDisticiones'); ?>" >Premios o Distinciones</a> </li>
                    <li class="divider" ></li>
-                   <li><a href="#" >Datos del Cuerpo Académico</a> </li>
+                   <li><a href="<?php echo base_url('index.php/User/cuerpoAcademico'); ?>" >Datos del Cuerpo Académico</a> </li>
                    <li class="divider" ></li>
                    <li><a href="#" >Participación en Programas Educativos</a> </li>
 
                  </ul>
                </li>
+               <!-- CAMBIO POR ITZEL  -->
+               <li><a href="<?php echo base_url('index.php/User/perfil'); ?>" style="color:white;"><span class="glyphicon glyphicon-user"></span> Usuario</a></li>
 
 
           </ul>
