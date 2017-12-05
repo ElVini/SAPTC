@@ -1,5 +1,4 @@
-<?php
-defined('BASEPATH') OR exit('No direct script access allowed');
+<?php defined('BASEPATH') OR exit('No direct script access allowed');
   class PremiosoDistinciones_model extends CI_Model
   {
     function __construct()
@@ -9,10 +8,13 @@ defined('BASEPATH') OR exit('No direct script access allowed');
    	}
     public function obtiene($id)
  	  {
-      $query = $this->db->query('SELECT * FROM premios WHERE Datosprofesores_idDatosprofesor = '.$id);
+      $this->db->from('premios');
+      $this->db->where('Datosprofesores_idDatosprofesor',$id);
+      $this->db->order_by("Fecha", "ASC");
+      $query = $this->db->get();
       if($query->num_rows()>0)
   		{
-  			return $query;
+  			return $query->result();
   		}
   		else
   		{
@@ -21,7 +23,9 @@ defined('BASEPATH') OR exit('No direct script access allowed');
     }
     public function obtienei()
     {
-      $query = $this->db->query('SELECT * FROM instituciones');
+      $this->db->from('instituciones');
+      $query= $this->db->order_by("Nombre", "ASC");
+      $query = $this->db->get();
       if($query->num_rows()>0)
       {
         return $query;
@@ -52,6 +56,12 @@ defined('BASEPATH') OR exit('No direct script access allowed');
     function insert_ins($data)
     {
       return $this->db->insert("instituciones", $data);
+    }
+    function tomafilaIns($nombre)
+    {
+      $this->db->where("Nombre", $nombre);
+      $query= $this->db->get("instituciones");
+      return $query->result(); 
     }
 
   }

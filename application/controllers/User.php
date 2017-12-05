@@ -394,9 +394,8 @@ class User extends CI_Controller
 		{
 			$dato = (object)array('Nombre'=>$data['ins']);
 			$this->premiosoDistinciones_model->insert_ins($dato);
-			$inst=$this->premiosoDistinciones_model->obtienei();
-			foreach ($inst->result() as $row){
-			}
+			$inst= $this->premiosoDistinciones_model->tomafilaIns($data['ins']);
+			foreach ($inst as $row ) {}
 			$datos = (object)array('Nombre'=>$data['npd'],'Fecha'=>$data['f'],
 							'Otrainstitucion'=>$data['oio'],'Motivo'=>$data['m'],
 							'Datosprofesores_idDatosprofesor'=>$data['profe'],
