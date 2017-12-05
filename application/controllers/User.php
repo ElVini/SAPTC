@@ -14,7 +14,7 @@ class User extends CI_Controller
 		$this->load->model('premiosoDistinciones_model');
 		$this->load->library(array('session'));
 	}
-
+//Inicio
 	public function index()
 	{
 		if($this->session->userdata('tipo') !='2')
@@ -49,7 +49,8 @@ class User extends CI_Controller
 
 		redirect(base_url());
 	}
-
+// Fin  de inicio
+//Tutorías
 	public function tutorias()
 	{
 		if($this->session->userdata('id') != 2)
@@ -134,7 +135,9 @@ class User extends CI_Controller
 		);
 		$this->Usuario_model->modificarTutoria($this->input->post('id'), $data);
 	}
+	//Fin de tutorías
 
+//Docencias
 	public function docencias()
 	{
 		if($this->session->userdata('id') != 2)
@@ -151,7 +154,9 @@ class User extends CI_Controller
 			redirect(base_url());
 		}
 	}
+	//Fin de docencias
 
+	//Estudios Realizados
 	public function estudiosRealizados()
 	{
 		if($this->session->userdata('id') != 2)
@@ -164,6 +169,8 @@ class User extends CI_Controller
 		$data['titulo'] = 'SAPTC - Estudios Realizados';
 		$this->load->view('User/estudiosRealizados', $data);
 	}
+	//Fin de estudios realizados
+
 	//produccion academica - scott
 	public function produccion_academica(){
 		if($this->session->userdata('id') != 2)
@@ -175,22 +182,6 @@ class User extends CI_Controller
 			$data['query'] = $this->ProduccionAca_model->getData();
 			$this->load->view('User/produccion_academica',$data);
 		}
-	}
-
-	//Para modificar datos de profesores
-	public function datos_profesor()
-	{
-		$data = array(
-			'correo'		=> $this->input->post('nemail'),
-			'rfc'			=> $this->input->post('nrfc'),
-			'telt'			=> $this->input->post('ntelt'),
-			'telc'			=> $this->input->post('ntelc'),
-			'telp'			=> $this->input->post('ntelp'),
-			'ecivil'		=> $this->input->post('necivil'),
-			'id'			=> $this->session->userdata('login')
-		);
-		$this->Perfil_model->actualizar($data);
-		redirect(base_url('index.php/User/Perfil'));
 	}
 
 	public function produccion_form(){
@@ -226,6 +217,24 @@ class User extends CI_Controller
 			);
 			$this->ProduccionAca_model->agregarProduccion($data);
 		}
+	}
+	//Fin de producción académica
+
+//Datos profesor
+	//Para modificar datos de profesores
+	public function datos_profesor()
+	{
+		$data = array(
+			'correo'		=> $this->input->post('nemail'),
+			'rfc'			=> $this->input->post('nrfc'),
+			'telt'			=> $this->input->post('ntelt'),
+			'telc'			=> $this->input->post('ntelc'),
+			'telp'			=> $this->input->post('ntelp'),
+			'ecivil'		=> $this->input->post('necivil'),
+			'id'			=> $this->session->userdata('login')
+		);
+		$this->Perfil_model->actualizar($data);
+		redirect(base_url('index.php/User/Perfil'));
 	}
 
 	public function perfil()
@@ -265,6 +274,7 @@ class User extends CI_Controller
 			$this->load->view('User/Perfil', $data);
 		}
 	}
+
 	// Datos laborales
 	public function datosLaborales()
 	{
@@ -353,6 +363,8 @@ class User extends CI_Controller
 		$this->datosLaborales_model->contratoprimero($data);
 		redirect(base_url()."index.php/User/datosLaborales");
 	}
+	//Fin de datos Laborales
+
 	// Premios o distinciones
 	public function premiosoDisticiones()
 	{
@@ -446,6 +458,74 @@ class User extends CI_Controller
 		}
 		$this->premiosoDistinciones_model->updatePremios($datos);
 	}
+//fin de premiosoDisticiones
+
+	//Datos del cuerpo académico
+	public function cuerpoAcademico(){
+		if($this->session->userdata('id') != 2)
+		{
+			redirect(base_url());
+		}
+		else{
+			$data['titulo'] = 'SAPTC - Cuerpo Académico';
+			$data['cuerpoAc'] = $this->CuerpoAcademico_model->obtenerCuerpoAcademico();
+			if(is_object($data['cuerpoAc']) && (count(get_object_vars($data['cuerpoAc'])) > 0)){
+				$data['cuerpoAcLi'] = $this->CuerpoAcademico_model->obtenerLineaCA($data['cuerpoAc']);
+			}
+
+			$this->load->view('User/cuerpoAcademico',$data);
+		}
+	}
+
+	public function formCuerpoAcademico(){
+		if($this->session->userdata('id') != 2)
+		{
+			redirect(base_url());
+		}
+		else{
+			$this->load->view('forms/cuerpoAcademico');
+		}
+	}
+
+	public function formCuerpoAcademicoA(){
+		if($this->session->userdata('id') != 2)
+		{
+			redirect(base_url());
+		}
+		else{
+			$data['cuerposAcademicos'] = $this->CuerpoAcademico_model->todosCA();
+			$this->load->view('forms/cuerpoAcademico2',$data);
+		}
+	}
+
+	public function modCuerpo(){
+		$id = $_POST['idca'];
+		$nombre = $_POST['nombre'];
+		$grado = $_POST['grado'];
+		$clave = $_POST['clave'];
+		$this->CuerpoAcademico_model->modificarCuerpo($id,$nombre,$grado,$clave);
+		redirect(base_url('index.php/User/cuerpoAcademico'));
+	}
+
+	public function elimCuerpo(){
+		$this->CuerpoAcademico_model->eliminarCuerpo($this->session->userdata('login'));
+		redirect(base_url('index.php/User/cuerpoAcademico'));
+	}
+
+	public function unirseCA(){
+		$idCA = $_POST['cuerpoAcademicoE'];
+		$this->CuerpoAcademico_model->unirseACA($this->session->userdata('login'),$idCA);
+		redirect(base_url('index.php/User/cuerpoAcademico'));
+	}
+
+	public function agCuerpoN(){
+		$nombre = $_POST['nombre'];
+		$grado = $_POST['grado'];
+		$clave = $_POST['clave'];
+		$this->CuerpoAcademico_model->agregarCuerpo($this->session->userdata('login'),$nombre,$grado,$clave);
+		redirect(base_url('index.php/User/cuerpoAcademico'));
+	}
+//fin de datos del cuerpo academico
 }
 
 ?>
