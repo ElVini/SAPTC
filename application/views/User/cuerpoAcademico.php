@@ -65,10 +65,10 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 			</table>
 		</div>
 		<div id="BotonesTabla">
-			<button type="button" id="eliminarCA" class="btn btn-danger">Eliminar</button>
       <?php if($cuerpoAc==NULL) {
         echo '<button type="button" id="modificarCA" class="btn btn-success">Agregar</button>';
       } else{
+        echo '<button type="button" id="eliminarCA" class="btn btn-danger">Eliminar</button> ';
         echo '<button type="button" id="modificarCA" class="btn btn-primary">Modificar</button>';
        } ?>
 		</div>

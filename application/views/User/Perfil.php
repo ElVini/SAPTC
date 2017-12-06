@@ -17,6 +17,10 @@
     <div class="col-md-12">
         <h2><?php echo $nombre. ' ' .$apellidop. ' '. $apellidom  ?></h2>
     </div></center>
+    <form action="<?php echo base_url('index.php/User/Imagen'); ?>" method="post" enctype="multipart/form-data">
+        <input type="file" name="foto" accept=".jpg">
+        <input type="submit" class="btn btn-primary" value="Enviar">
+    </form>
 </div>
 
 

@@ -285,6 +285,25 @@ class User extends CI_Controller
 		}
 	}
 
+	//Para modificar la imagen de usuario
+	public function Imagen()
+	{
+		$config['upload_path'] = './assets/img/users/';
+		$config['allowed_types'] = 'jpg|png|jpeg';
+		$this->load->library('upload', $config);
+		if($this->upload->do_upload('foto'))
+		{
+			$data = $this->upload->data();
+			$this->Perfil_model->imagen($data['file_name'], $this->session->userdata('login'));
+			echo $data['file_name']. ' '. $this->session->userdata('login');
+			redirect(base_url('index.php/User/perfil'));
+		}
+		else
+		{
+			echo $this->upload->display_errors();
+		}
+	}
+
 	// Datos laborales
 	public function datosLaborales()
 	{
@@ -534,6 +553,12 @@ class User extends CI_Controller
 		$clave = $_POST['clave'];
 		$this->CuerpoAcademico_model->agregarCuerpo($this->session->userdata('login'),$nombre,$grado,$clave);
 		redirect(base_url('index.php/User/cuerpoAcademico'));
+	}
+
+	public function checarCA(){
+		if(isset($_POST['nombre']) || isset($_POST['clave'])){
+					$this->CuerpoAcademico_model->chkCA($_POST['nombre'],$_POST['clave']);
+		}
 	}
 //fin de datos del cuerpo academico
 }
