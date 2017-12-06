@@ -419,11 +419,11 @@ class User extends CI_Controller
 		if ($id!=0 )
 		{
 			$data["user"]=$this->premiosoDistinciones_model->tomafila($id);
-			$this->load->view('User/formulario_premios', $data);
+			$this->load->view('forms/premiosoDistinciones', $data);
 		}
 		else
 		{
-			$this->load->view('User/formulario_premios', $data);
+			$this->load->view('forms/premiosoDistinciones', $data);
 		}
 	}
 	public function agregaPremiosoDistinciones()

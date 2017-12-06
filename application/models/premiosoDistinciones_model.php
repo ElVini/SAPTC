@@ -61,7 +61,7 @@
     {
       $this->db->where("Nombre", $nombre);
       $query= $this->db->get("instituciones");
-      return $query->result(); 
+      return $query->result();
     }
 
   }

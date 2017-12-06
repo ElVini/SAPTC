@@ -35,7 +35,7 @@
                 <td style="width: 15%;"><b>Fecha</b></td>
                 <td style="width: 25%;"><b>Institucion Otorgante</b></td>
                 <td style="width: 35%;"><b>Motivo</b></td>
-              </tr>
+              </tr> 
             </thead>
             <tbody>
               <?php if($datos!= null)
