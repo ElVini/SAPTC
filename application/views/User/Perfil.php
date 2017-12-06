@@ -12,12 +12,15 @@
 
 <div class="row" style="background-color:#EEEEEE;">
     <center><div class="col-md-12">
-        <img src="<?php echo base_url().$img ?>" height="100px" width="100px" style="border-radius: 100%;" alt="imagen de perfil">
-
+        <img src="<?php echo base_url('assets/img/users/admin.jpg') ?>" height="100px" width="100px" style="border-radius: 100%;" title="<?php echo $nombre. ' ' .$apellidop. ' '. $apellidom  ?>" alt="<?php echo "Imagen de ".$nombre ?>">
     </div>
     <div class="col-md-12">
         <h2><?php echo $nombre. ' ' .$apellidop. ' '. $apellidom  ?></h2>
     </div></center>
+    <form action="<?php echo base_url('index.php/User/Imagen'); ?>" method="post" enctype="multipart/form-data">
+        <input type="file" name="foto" accept=".jpg">
+        <input type="submit" class="btn btn-primary" value="Enviar">
+    </form>
 </div>
 
 
