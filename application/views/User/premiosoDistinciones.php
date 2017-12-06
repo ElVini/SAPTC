@@ -35,7 +35,7 @@
                 <td style="width: 15%;"><b>Fecha</b></td>
                 <td style="width: 25%;"><b>Institucion Otorgante</b></td>
                 <td style="width: 35%;"><b>Motivo</b></td>
-              </tr>
+              </tr> 
             </thead>
             <tbody>
               <?php if($datos!= null)
@@ -79,6 +79,5 @@
     </div>
   </div>
   <input type="text" name="id_p" id="id_p" hidden="">
-  <input type="text" name="profe" id="profe" hidden="" value="<?= $loginid ?>">
   <script type="text/javascript">var base_url = "<?php echo base_url();?>";</script>
   <script type="text/javascript" src="<?php echo base_url('assets/js/premiosoDistinciones.js'); ?>"></script>

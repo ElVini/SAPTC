@@ -2,7 +2,6 @@ var base_url = $('#base_url').val();
 $(document).ready(function(){
   $('#modificarCA').click(function() {
     var idCA = $('#tablaCA tr:nth-child(1) td:nth-child(1)').text();
-    console.log('aaa'+isNaN(idCA));
     if(isNaN(idCA)){
       BootstrapDialog.show({
             message: $('<div></div>').load(base_url+'index.php/User/formCuerpoAcademicoA'),

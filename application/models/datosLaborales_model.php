@@ -9,7 +9,10 @@ defined('BASEPATH') OR exit('No direct script access allowed');
    	}
     public function obtiene($id)
  	  {
-      $query = $this->db->query('SELECT * FROM datoslaborales WHERE Datosprofesores_idDatosprofesor = '.$id);
+      $this->db->from('datoslaborales');
+      $this->db->where('Datosprofesores_idDatosprofesor',$id);
+      $this->db->order_by("Fechadeiniciocontrato", "ASC");
+      $query = $this->db->get();
       if($query->num_rows()>0)
   		{
   			return $query;

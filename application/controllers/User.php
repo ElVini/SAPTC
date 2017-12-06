@@ -279,8 +279,28 @@ class User extends CI_Controller
 					);
 				}
 			}
+			$data['query'] = $this->Usuario_model->obtenerRecordatorios();
 			$data['titulo'] = 'SAPTC - Perfil maestro';
 			$this->load->view('User/Perfil', $data);
+		}
+	}
+
+	//Para modificar la imagen de usuario
+	public function Imagen()
+	{
+		$config['upload_path'] = './assets/img/users/';
+		$config['allowed_types'] = 'jpg|png|jpeg';
+		$this->load->library('upload', $config);
+		if($this->upload->do_upload('foto'))
+		{
+			$data = $this->upload->data();
+			$this->Perfil_model->imagen($data['file_name'], $this->session->userdata('login'));
+			echo $data['file_name']. ' '. $this->session->userdata('login');
+			redirect(base_url('index.php/User/perfil'));
+		}
+		else
+		{
+			echo $this->upload->display_errors();
 		}
 	}
 
@@ -295,7 +315,6 @@ class User extends CI_Controller
 		{
 			$data['titulo'] = 'SAPTC - Datos Laborales';
 			$data['datos'] = $this->datosLaborales_model->obtiene($this->session->userdata('login'));
-			$data['loginid']= $this->session->userdata('login');
 			$this->load->view('User/datosLaborales', $data);
 		}
 		else
@@ -309,45 +328,40 @@ class User extends CI_Controller
 		{
 			$data["user"]=$this->datosLaborales_model->tomafila($id);
 			$data['dec']=true;
-			$this->load->view('User/form_datoslaborales', $data);
+			$this->load->view('forms/datoslaborales', $data);
 		}
 		else
 		{
 			$data['dec']=null;
-			$this->load->view('User/form_datoslaborales', $data);
+			$this->load->view('forms/datoslaborales', $data);
 		}
 	}
 	public function agregaDatosLaborales()
-	{
-		$data = $this->input->post();
-    $datos = (object)array(
-				'idDatoslaborales'=>'',
-        'Nombramiento'=>$data['nom'],
-        'Fechadeiniciocontrato'=>$data['fecha_init'],
-        'Fechafincontrato'=>$data['fecha_fin'],
-        'Tipo'=>$data['tipo_nom'],
-				'Dedicacion'=>$data['dedicacion'],
-				'NombreDependencia'=>$data['dependencia'],
-				'Unidadacademica'=>$data['unidad'],
+	{		$datos = (object)array(
+        'Nombramiento'=>$this->input->post('nom'),
+        'Fechadeiniciocontrato'=>$this->input->post('fecha_init'),
+        'Fechafincontrato'=>$this->input->post('fecha_fin'),
+        'Tipo'=>$this->input->post('tipo_nom'),
+				'Dedicacion'=>$this->input->post('dedicacion'),
+				'NombreDependencia'=>$this->input->post('dependencia'),
+				'Unidadacademica'=>$this->input->post('unidad'),
 				'Cronologia'=>'',
-				'Datosprofesores_idDatosprofesor'=>$data['profe']
+				'Datosprofesores_idDatosprofesor'=>$this->session->userdata('login')
         );
 				$this->datosLaborales_model->insert_data($datos);
 	}
-	public function actualizaDatosLaborales()
+	public function actualizaDatosLaborales($id)
 	{
-		$data = $this->input->post();
-    $datos = (object)array(
-				'idDatoslaborales'=>$data['id_d'],
-        'Nombramiento'=>$data['nom'],
-        'Fechadeiniciocontrato'=>$data['fecha_init'],
-        'Fechafincontrato'=>$data['fecha_fin'],
-        'Tipo'=>$data['tipo_nom'],
-				'Dedicacion'=>$data['dedicacion'],
-				'NombreDependencia'=>$data['dependencia'],
-				'Unidadacademica'=>$data['unidad'],
-				'Datosprofesores_idDatosprofesor'=>$data['profe']
-        );
+		$datos = (object)array(
+					'idDatoslaborales'=>$id,
+	        'Nombramiento'=>$this->input->post('nom'),
+	        'Fechadeiniciocontrato'=>$this->input->post('fecha_init'),
+	        'Fechafincontrato'=>$this->input->post('fecha_fin'),
+	        'Tipo'=>$this->input->post('tipo_nom'),
+					'Dedicacion'=>$this->input->post('dedicacion'),
+					'NombreDependencia'=>$this->input->post('dependencia'),
+					'Unidadacademica'=>$this->input->post('unidad'),
+	        );
 				$this->datosLaborales_model->updateDatoslaborales($datos);
 	}
 	public function deleteDatol()
@@ -359,9 +373,7 @@ class User extends CI_Controller
 	public function contratoactual()
 	{
 		$id= $this->uri->segment(3);
-		$data = (object)array('id'=>$id,
-													'Cronologia'=>'Contrato Actual',
-													'profeid'=>$this->session->userdata('login'));
+		$data = (object)array('id'=>$id,'Cronologia'=>'Contrato Actual','profeid'=>$this->session->userdata('login'));
 		$this->datosLaborales_model->contratoactual($data);
 		redirect(base_url()."index.php/User/datosLaborales");
 	}
@@ -385,7 +397,6 @@ class User extends CI_Controller
 		{
 			$data['titulo'] = 'SAPTC - Premios o Distinciones';
 			$data['datos'] = $this->premiosoDistinciones_model->obtiene($this->session->userdata('login'));
-			$data['loginid']= $this->session->userdata('login');
 			$data["inst"]=$this->premiosoDistinciones_model->obtienei();
 			$this->load->view('User/premiosoDistinciones', $data);
 		}
@@ -396,39 +407,36 @@ class User extends CI_Controller
 	}
 	public function formu_premios($id)
 	{
+		$data["inst"]=$this->premiosoDistinciones_model->obtienei();
 		if ($id!=0 )
 		{
 			$data["user"]=$this->premiosoDistinciones_model->tomafila($id);
-			$data["inst"]=$this->premiosoDistinciones_model->obtienei();
-			$this->load->view('User/formulario_premios', $data);
+			$this->load->view('forms/premiosoDistinciones', $data);
 		}
 		else
 		{
-			$data["inst"]=$this->premiosoDistinciones_model->obtienei();
-			$this->load->view('User/formulario_premios', $data);
+			$this->load->view('forms/premiosoDistinciones', $data);
 		}
 	}
 	public function agregaPremiosoDistinciones()
 	{
-		$data = $this->input->post();
 		if ( $this->input->post('io')==0)
-		{
-			$dato = (object)array('Nombre'=>$data['ins']);
+		{ $dato = (object)array('Nombre'=>$this->input->post('oio'));
 			$this->premiosoDistinciones_model->insert_ins($dato);
-			$inst= $this->premiosoDistinciones_model->tomafilaIns($data['ins']);
+			$inst= $this->premiosoDistinciones_model->tomafilaIns($this->input->post('oio'));
 			foreach ($inst as $row ) {}
-			$datos = (object)array('Nombre'=>$data['npd'],'Fecha'=>$data['f'],
-							'Otrainstitucion'=>$data['oio'],'Motivo'=>$data['m'],
-							'Datosprofesores_idDatosprofesor'=>$data['profe'],
-							'Instituciones_idInstituciones'=>$row->idInstituciones);
+			$dec = $row->idInstituciones;
 		}
 		else
-		{		$datos = (object)array('Nombre'=>$data['npd'],'Fecha'=>$data['f'],
-							'Otrainstitucion'=>$data['oio'],'Motivo'=>$data['m'],
-							'Datosprofesores_idDatosprofesor'=>$data['profe'],
-							'Instituciones_idInstituciones'=>$data['io']);
+		{	$dec = $this->input->post('io');
 		}
-
+		$datos = (object)array(
+							'Nombre'=>$this->input->post('npd'),
+							'Fecha'=>$this->input->post('f'),
+							'Otrainstitucion'=>$this->input->post('oio'),
+							'Motivo'=>$this->input->post('m'),
+							'Datosprofesores_idDatosprofesor'=>$this->session->userdata('login'),
+							'Instituciones_idInstituciones'=>$dec);
 	$this->premiosoDistinciones_model->insert_data($datos);
 	}
 	public function agregaInstitucion()
@@ -445,26 +453,26 @@ class User extends CI_Controller
 		$this->premiosoDistinciones_model->delete_data($id);
 		redirect(base_url()."index.php/User/premiosoDisticiones");
 	}
-	public function actualizaPremios()
-	{
-		$data = $this->input->post();
-		if ( $this->input->post('io')==0)
+	public function actualizaPremios($id)
+	{	if ( $this->input->post('io')==0)
 		{
-			$dato = (object)array('Nombre'=>$data['ins']);
+			$dato = (object)array('Nombre'=>$this->input->post('oio'));
 			$this->premiosoDistinciones_model->insert_ins($dato);
-			$inst=$this->premiosoDistinciones_model->obtienei();
-			foreach ($inst->result() as $row){
+			$inst= $this->premiosoDistinciones_model->tomafilaIns($this->input->post('oio'));
+			foreach ($inst as $row){
 			}
-			$datos = (object)array('idPremios'=>$data['id'],'Nombre'=>$data['npd'],
-								'Fecha'=>$data['f'],'Otrainstitucion'=>$data['oio'],
-								'Motivo'=>$data['m'],'Instituciones_idInstituciones'=>$row->idInstituciones);
+			$dec = $row->idInstituciones;
 		}
 		else
-		{
-			$datos = (object)array('idPremios'=>$data['id'],'Nombre'=>$data['npd'],
-							'Fecha'=>$data['f'],'Otrainstitucion'=>$data['oio'],
-							'Motivo'=>$data['m'],'Instituciones_idInstituciones'=>$data['io']);
+		{$dec = $this->input->post('io');
 		}
+		$datos = (object)array(
+						'idPremios'=>$id,
+						'Nombre'=>$this->input->post('npd'),
+						'Fecha'=>$this->input->post('f'),
+						'Otrainstitucion'=>$this->input->post('oio'),
+						'Motivo'=>$this->input->post('m'),
+						'Instituciones_idInstituciones'=>$dec);
 		$this->premiosoDistinciones_model->updatePremios($datos);
 	}
 //fin de premiosoDisticiones
@@ -533,6 +541,12 @@ class User extends CI_Controller
 		$clave = $_POST['clave'];
 		$this->CuerpoAcademico_model->agregarCuerpo($this->session->userdata('login'),$nombre,$grado,$clave);
 		redirect(base_url('index.php/User/cuerpoAcademico'));
+	}
+
+	public function checarCA(){
+		if(isset($_POST['nombre']) || isset($_POST['clave'])){
+					$this->CuerpoAcademico_model->chkCA($_POST['nombre'],$_POST['clave']);
+		}
 	}
 //fin de datos del cuerpo academico
 }

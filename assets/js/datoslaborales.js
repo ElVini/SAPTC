@@ -6,8 +6,7 @@ $(document).ready(function(){
   		$(this).addClass('highlight');
   });
   $('#delete').click(function(){
-  	var id= $('#eid').val();
-  	if(id!='')
+  	if($('#eid').val()!='')
   	{ BootstrapDialog.show({
   			type: BootstrapDialog.TYPE_DANGER,
   			title: 'Eliminar',
@@ -24,7 +23,7 @@ $(document).ready(function(){
           				{   label: 'Borrar',
             					cssClass: 'btn-danger',
             					action: function()
-            					{	window.location= base_url+"index.php/User/deleteDatol/" + id;
+            					{	window.location= base_url+"index.php/User/deleteDatol/" + $('#eid').val();
             					}
           				}]
   			});
@@ -34,8 +33,7 @@ $(document).ready(function(){
   		}
   });
   $('#contratonow').click(function(){
-  	var id= $('#eid').val();
-  	if(id !='')
+  	if($('#eid').val() !='')
   	{ BootstrapDialog.show({
   			title: '¡Atención!',
   			cssClass: 'dialog',
@@ -51,7 +49,7 @@ $(document).ready(function(){
         					{   label: 'OK',
           						cssClass: 'btn-primary',
           						action: function()
-          						{	window.location= base_url+"index.php/User/contratoactual/" + id;
+          						{	window.location= base_url+"index.php/User/contratoactual/" + $('#eid').val();
           						}
         					}]
   				});
@@ -61,8 +59,7 @@ $(document).ready(function(){
   		}
   });
   $('#firstcontrato').click(function(){
-  	var id= $('#eid').val() ;
-  	if(id!='')
+  	if($('#eid').val()!='')
   	{ BootstrapDialog.show({
   			title: '¡Atención!',
   			cssClass: 'dialog',
@@ -78,7 +75,7 @@ $(document).ready(function(){
         					{   label: 'OK',
           						cssClass: 'btn-primary',
           						action: function()
-          						{	window.location= base_url+"index.php/User/contratoprimero/" + id;
+          						{	window.location= base_url+"index.php/User/contratoprimero/" + $('#eid').val();
           						}
             			}]
       			});
@@ -88,7 +85,6 @@ $(document).ready(function(){
       	}
   });
   $("#add").on('click', function(event) {
-			formu=false;
 			BootstrapDialog.show({
   			title: 'Agregar Nuevo ',
   			cssClass: 'dialog',
@@ -102,21 +98,15 @@ $(document).ready(function(){
       				          	}
   		        	 },
   		        	 {  label: 'Enviar',
+                    id: 'enviar', 
     				        cssClass: 'btn-primary',
     				        action: function()
-    				        { if($('#nom').val() !='' && $('#tipo_nom').val()!='' && $('#dedicacion').val()!='' &&  $('#dependencia').val()!='' && $('#unidad').val()!='' && $('#fecha_init')!='' && ($('#fecha_fin').val()!='' || formu == false))
-    			            {	$.ajax({
+    				        { if($('#nom').val() !='' && $('#tipo_nom').val()!='' && $('#dedicacion').val()!='' &&  $('#dependencia').val()!='' && $('#unidad').val()!='' && $('#fecha_init').val() !=''  && ($('#fecha_fin').val()!='' || formu == false))
+    			            {	$('#enviar').attr("disabled", true);
+                        $.ajax({
       											type:"POST",
       											url: base_url+"index.php/User/agregaDatosLaborales",
-      											data:{	'nom': $('#nom').val(),
-      															'fecha_init': $('#fecha_init').val(),
-      															'fecha_fin':$('#fecha_fin').val(),
-      															'tipo_nom':  $('#tipo_nom').val(),
-      															'dedicacion': $('#dedicacion').val(),
-      															'dependencia':$('#dependencia').val(),
-      															'unidad': $('#unidad').val(),
-      															'profe': $('#profe').val()
-      														},
+      											data:$("form").serialize(),
 														success: function() {
 															location.reload();
 														}
@@ -134,15 +124,14 @@ $(document).ready(function(){
 		  });
   });
   $("#modify").on('click', function(event) {
-			var id= $('#eid').val();
 			formu= false;
-			if(id!='')
+			if($('#eid').val()!='')
 			{  BootstrapDialog.show({
   				title: 'Modificar',
   				cssClass: 'dialog',
   				draggable: true,
           closable: false,
-  	      message: $('<div></div>').load( base_url+'index.php/User/form_datoslaborales/'+id),
+  	      message: $('<div></div>').load( base_url+'index.php/User/form_datoslaborales/'+$('#eid').val()),
   		    buttons:[{  label: 'Cancelar',
           			      cssClass: 'btn-danger',
           			      action: function(dialogRef)
@@ -153,19 +142,11 @@ $(document).ready(function(){
                       cssClass: 'btn-primary',
                       action: function()
                       { if( $('#nom').val() !='' && $('#tipo_nom').val()!='' &&  $('#dedicacion').val()!='' && $('#dependencia').val()!='' && $('#unidad').val()!='' && $('#fecha_init').val()!='' && ($('#fecha_fin').val()!='' || formu == false ))
-                        {	$.ajax({
+                        {
+                          $.ajax({
                       			type:"POST",
-                      			url: base_url+"index.php/User/actualizaDatosLaborales",
-                        		data:{  'id_d': id,
-                        						'nom': $('#nom').val(),
-                        						'fecha_init': $('#fecha_init').val(),
-                        						'fecha_fin':$('#fecha_fin').val(),
-                        						'tipo_nom': $('#tipo_nom').val(),
-                        						'dedicacion': $('#dedicacion').val(),
-                        						'dependencia':$('#dependencia').val(),
-                        						'unidad': $('#unidad').val(),
-                        						'profe': $('#profe').val()
-                        					},
+                      			url: base_url+"index.php/User/actualizaDatosLaborales/"+$('#eid').val(),
+                        		data:$("form").serialize(),
                 						success: function() {
                 							location.reload();
                 						}
@@ -190,7 +171,7 @@ $(document).ready(function(){
 function datos(id)
 {$('#eid').val(id);
 }
-var formu;
+var formu=false;
 function fecha(dec)
 {
   if ($('#tipo_nom').val() == "Temporal")
