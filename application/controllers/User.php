@@ -214,7 +214,7 @@ class User extends CI_Controller
 			'Numlineasind' => $_POST['Ind'],
 			'MiembrosCA' => $_POST['Miembros'],
 			'NumlineasCA' => $_POST['CA'],
-			'HorasSemanales' => $_POST['Horas'],
+			//'HorasSemanales' => $_POST['Horas'],
 			'ParaCA' => $_POST['Para'],
 			'Lineageneracion_idLineageneracion' => 1,//$_POST['idAModificar']);
 			'Datosprofesores_idDatosprofesor' => $this->session->userdata('login')
