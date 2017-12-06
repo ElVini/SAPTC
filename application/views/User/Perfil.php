@@ -12,8 +12,7 @@
 
 <div class="row" style="background-color:#EEEEEE;">
     <center><div class="col-md-12">
-        <img src="<?php echo base_url().$img ?>" height="100px" width="100px" style="border-radius: 100%;" alt="imagen de perfil">
-
+        <img src="<?php echo base_url('assets/img/users/admin.jpg') ?>" height="100px" width="100px" style="border-radius: 100%;" title="<?php echo $nombre. ' ' .$apellidop. ' '. $apellidom  ?>" alt="<?php echo "Imagen de ".$nombre ?>">
     </div>
     <div class="col-md-12">
         <h2><?php echo $nombre. ' ' .$apellidop. ' '. $apellidom  ?></h2>
