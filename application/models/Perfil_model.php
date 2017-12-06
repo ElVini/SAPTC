@@ -28,4 +28,10 @@ class Perfil_model extends CI_Model
         $actualizar = 'UPDATE datosprofesores SET RFC = "'.$data['rfc'].'", Estadocivil = "'.$data['ecivil'].'", Correo = "'.$data['correo'].'", TelefonoTrabajo = "'.$data['telt'].'", TelefonoCasa = "'.$data['telc'].'", TelefonoPersonal = "'.$data['telp'].'" WHERE idDatosprofesor = '.$data['id'];
         $this->db->query($actualizar);
     }
+
+    public function imagen($img, $id)
+    {
+        $SQL = "UPDATE datosprofesores SET foto = 'assets/img/users/".$img."' WHERE idDatosprofesor = " .$id;
+        $this->db->query($SQL);
+    }
 }
