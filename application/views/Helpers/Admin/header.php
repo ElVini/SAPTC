@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title> UPSIN | SAPTC   </title>
+  <title><?=$titulo?></title>
 
       <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
       <link rel="stylesheet" href="<?php echo base_url('assets/styles/bootstrap.min.css') ?>">
@@ -39,7 +39,7 @@
                 Usuarios <span class="caret"></span>
               </a>
               <ul class="dropdown-menu" role="menu">
-                <li><a href="#" >Control de usuario</a> </li>
+                <li><a href="<?php echo base_url('index.php/Administrador/Usuarios'); ?>" >Control de usuario</a> </li>
                 <li class="divider"></li>
                 <li><a href="#" >Estado de Usuarios</a> </li>
 

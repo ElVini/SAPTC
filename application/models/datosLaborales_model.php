@@ -29,15 +29,51 @@ defined('BASEPATH') OR exit('No direct script access allowed');
    	}
     function contratoactual($data)
     {
-      $this->db->where('idDatoslaborales', $data->id);
-      $this->db->set('Cronologia',$data->Cronologia);
-   		return $this->db->update('datoslaborales');
+      $query = $this->db->query('SELECT * FROM datoslaborales WHERE Datosprofesores_idDatosprofesor = '.$data->profeid);
+      if ($query->num_rows()==1)
+      {
+        $this->db->where('Datosprofesores_idDatosprofesor', $data->profeid);
+        $this->db->where('idDatoslaborales', $data->id);
+        $this->db->set('Cronologia','Primero y actual');
+     		return $this->db->update('datoslaborales');
+      }
+      else {
+        $this->db->where('Datosprofesores_idDatosprofesor', $data->profeid);
+        $this->db->where('Cronologia', 'Primero y actual');
+        $this->db->set('Cronologia','');
+        $this->db->update('datoslaborales');
+        $this->db->where('Datosprofesores_idDatosprofesor', $data->profeid);
+        $this->db->where('Cronologia', 'Contrato Actual');
+        $this->db->set('Cronologia','');
+        $this->db->update('datoslaborales');
+        $this->db->where('idDatoslaborales', $data->id);
+        $this->db->set('Cronologia',$data->Cronologia);
+     		return $this->db->update('datoslaborales');
+      }
     }
     function contratoprimero($data)
     {
-      $this->db->where('idDatoslaborales', $data->id);
-      $this->db->set('Cronologia',$data->Cronologia);
-      return $this->db->update('datoslaborales');
+      $query = $this->db->query('SELECT * FROM datoslaborales WHERE Datosprofesores_idDatosprofesor = '.$data->profeid);
+      if ($query->num_rows()==1)
+      {
+        $this->db->where('Datosprofesores_idDatosprofesor', $data->profeid);
+        $this->db->where('idDatoslaborales', $data->id);
+        $this->db->set('Cronologia','Primero y actual');
+        return $this->db->update('datoslaborales');
+      }
+      else {
+        $this->db->where('Datosprofesores_idDatosprofesor', $data->profeid);
+        $this->db->where('Cronologia', 'Primero y actual');
+        $this->db->set('Cronologia','');
+        $this->db->update('datoslaborales');
+        $this->db->where('Datosprofesores_idDatosprofesor', $data->profeid);
+        $this->db->where('Cronologia', 'Primer Contrato');
+        $this->db->set('Cronologia','');
+        $this->db->update('datoslaborales');
+        $this->db->where('idDatoslaborales', $data->id);
+        $this->db->set('Cronologia',$data->Cronologia);
+        return $this->db->update('datoslaborales');
+      }
     }
 
     function tomafila($id)
