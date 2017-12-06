@@ -279,6 +279,7 @@ class User extends CI_Controller
 					);
 				}
 			}
+			$data['query'] = $this->Usuario_model->obtenerRecordatorios();
 			$data['titulo'] = 'SAPTC - Perfil maestro';
 			$this->load->view('User/Perfil', $data);
 		}
