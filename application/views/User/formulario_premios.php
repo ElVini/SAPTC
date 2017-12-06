@@ -1,19 +1,15 @@
-
 <?php
 if (isset($user))
-{	foreach ($user->result() as $row)
-	{
+{ foreach ($user->result() as $row)
+  { echo "<script type='text/javascript'>
+            $('#npd').val('$row->Nombre ');
+            $('#f').val('$row->Fecha');
+            $('#io').val('$row->Instituciones_idInstituciones');
+            $('#m').val('$row->Motivo  ');
+          </script>";
+  }
+}
 ?>
-<script type="text/javascript">
-		$('#npd').val("<?= $row->Nombre;  ?>");
-		$('#f').val("<?= $row->Fecha;  ?>");
-		$('#io').val("<?= $row->Instituciones_idInstituciones;  ?>");
-		$('#m').val("<?= $row->Motivo;  ?>");
-</script>
-
-<?php }}
-
- ?>
  <?php if ( $inst!= null){ ?>
 	 <script type="text/javascript">
 	 	$('.otra').hide();

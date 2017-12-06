@@ -386,7 +386,6 @@ class User extends CI_Controller
 		{
 			$data['titulo'] = 'SAPTC - Premios o Distinciones';
 			$data['datos'] = $this->premiosoDistinciones_model->obtiene($this->session->userdata('login'));
-			$data['loginid']= $this->session->userdata('login');
 			$data["inst"]=$this->premiosoDistinciones_model->obtienei();
 			$this->load->view('User/premiosoDistinciones', $data);
 		}
@@ -397,39 +396,36 @@ class User extends CI_Controller
 	}
 	public function formu_premios($id)
 	{
+		$data["inst"]=$this->premiosoDistinciones_model->obtienei();
 		if ($id!=0 )
 		{
 			$data["user"]=$this->premiosoDistinciones_model->tomafila($id);
-			$data["inst"]=$this->premiosoDistinciones_model->obtienei();
 			$this->load->view('User/formulario_premios', $data);
 		}
 		else
 		{
-			$data["inst"]=$this->premiosoDistinciones_model->obtienei();
 			$this->load->view('User/formulario_premios', $data);
 		}
 	}
 	public function agregaPremiosoDistinciones()
 	{
-		$data = $this->input->post();
 		if ( $this->input->post('io')==0)
-		{
-			$dato = (object)array('Nombre'=>$data['ins']);
+		{ $dato = (object)array('Nombre'=>$this->input->post('oio'));
 			$this->premiosoDistinciones_model->insert_ins($dato);
-			$inst= $this->premiosoDistinciones_model->tomafilaIns($data['ins']);
+			$inst= $this->premiosoDistinciones_model->tomafilaIns($this->input->post('oio'));
 			foreach ($inst as $row ) {}
-			$datos = (object)array('Nombre'=>$data['npd'],'Fecha'=>$data['f'],
-							'Otrainstitucion'=>$data['oio'],'Motivo'=>$data['m'],
-							'Datosprofesores_idDatosprofesor'=>$data['profe'],
-							'Instituciones_idInstituciones'=>$row->idInstituciones);
+			$dec = $row->idInstituciones;
 		}
 		else
-		{		$datos = (object)array('Nombre'=>$data['npd'],'Fecha'=>$data['f'],
-							'Otrainstitucion'=>$data['oio'],'Motivo'=>$data['m'],
-							'Datosprofesores_idDatosprofesor'=>$data['profe'],
-							'Instituciones_idInstituciones'=>$data['io']);
+		{	$dec = $this->input->post('io');
 		}
-
+		$datos = (object)array(
+							'Nombre'=>$this->input->post('npd'),
+							'Fecha'=>$this->input->post('f'),
+							'Otrainstitucion'=>$this->input->post('oio'),
+							'Motivo'=>$this->input->post('m'),
+							'Datosprofesores_idDatosprofesor'=>$this->session->userdata('login'),
+							'Instituciones_idInstituciones'=>$dec);
 	$this->premiosoDistinciones_model->insert_data($datos);
 	}
 	public function agregaInstitucion()
@@ -446,26 +442,26 @@ class User extends CI_Controller
 		$this->premiosoDistinciones_model->delete_data($id);
 		redirect(base_url()."index.php/User/premiosoDisticiones");
 	}
-	public function actualizaPremios()
-	{
-		$data = $this->input->post();
-		if ( $this->input->post('io')==0)
+	public function actualizaPremios($id)
+	{	if ( $this->input->post('io')==0)
 		{
-			$dato = (object)array('Nombre'=>$data['ins']);
+			$dato = (object)array('Nombre'=>$this->input->post('oio'));
 			$this->premiosoDistinciones_model->insert_ins($dato);
-			$inst=$this->premiosoDistinciones_model->obtienei();
-			foreach ($inst->result() as $row){
+			$inst= $this->premiosoDistinciones_model->tomafilaIns($this->input->post('oio'));
+			foreach ($inst as $row){
 			}
-			$datos = (object)array('idPremios'=>$data['id'],'Nombre'=>$data['npd'],
-								'Fecha'=>$data['f'],'Otrainstitucion'=>$data['oio'],
-								'Motivo'=>$data['m'],'Instituciones_idInstituciones'=>$row->idInstituciones);
+			$dec = $row->idInstituciones;
 		}
 		else
-		{
-			$datos = (object)array('idPremios'=>$data['id'],'Nombre'=>$data['npd'],
-							'Fecha'=>$data['f'],'Otrainstitucion'=>$data['oio'],
-							'Motivo'=>$data['m'],'Instituciones_idInstituciones'=>$data['io']);
+		{$dec = $this->input->post('io');
 		}
+		$datos = (object)array(
+						'idPremios'=>$id,
+						'Nombre'=>$this->input->post('npd'),
+						'Fecha'=>$this->input->post('f'),
+						'Otrainstitucion'=>$this->input->post('oio'),
+						'Motivo'=>$this->input->post('m'),
+						'Instituciones_idInstituciones'=>$dec);
 		$this->premiosoDistinciones_model->updatePremios($datos);
 	}
 //fin de premiosoDisticiones

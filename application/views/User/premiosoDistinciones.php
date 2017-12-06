@@ -79,6 +79,5 @@
     </div>
   </div>
   <input type="text" name="id_p" id="id_p" hidden="">
-  <input type="text" name="profe" id="profe" hidden="" value="<?= $loginid ?>">
   <script type="text/javascript">var base_url = "<?php echo base_url();?>";</script>
   <script type="text/javascript" src="<?php echo base_url('assets/js/premiosoDistinciones.js'); ?>"></script>
