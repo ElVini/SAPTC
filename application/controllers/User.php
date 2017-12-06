@@ -202,8 +202,11 @@ class User extends CI_Controller
 		{
 			redirect(base_url());
 		}
-		else{
+		//tome un valor random para saber si se enviaron todos los elementos es decir, que se quiere modificar o añadir por lo cual requiere todos
+		//los elementos
+		else if(isset($_POST['Titulo'])){
 			$data = array(
+			'idProduccionacademica' => isset($_POST['id'])? $_POST['id']: null,
 			'Titulo' => $_POST['Titulo'],
 			'Ano'=> $_POST['Ano'],
 			'Numcitada' => $_POST['Citas'],
@@ -217,6 +220,11 @@ class User extends CI_Controller
 			'Datosprofesores_idDatosprofesor' => $this->session->userdata('login')
 			);
 			$this->ProduccionAca_model->agregarProduccion($data);
+		}
+		else
+		{
+			$id = $_POST['id'];
+			$this->ProduccionAca_model->agregarProduccion($id);
 		}
 	}
 	//Fin de producción académica

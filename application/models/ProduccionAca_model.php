@@ -17,7 +17,20 @@ class ProduccionAca_model extends CI_Model
     }
 	public function agregarProduccion($data)
 	{
-		$this->db->set($data)->insert('produccionacademica');
+		if(isset($data['idProduccionacademica'])){
+			$this->db->where('idProduccionacademica',$data['idProduccionacademica']);
+			$this->db->set($data);
+			$this->db->update('produccionacademica');
+		}
+		//Hago lo mismo que en el controlador
+		else if(isset($data['Titulo']))
+		{
+			$this->db->set($data)->insert('produccionacademica');
+		}
+		else{
+			$this->db->where('idProduccionacademica',$data);
+			$this->db->delete('produccionacademica');
+		}
         redirect(base_url('index.php/User/produccion_academica'));
 	}
 

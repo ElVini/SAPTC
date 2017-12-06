@@ -3,8 +3,14 @@
     <style media="screen">
         div.tagsinput span.tag{
             background-color: #EEEEEE;
-            color: black;
+            color: #555;
             border: 1px solid #EEEEEE;
+        }
+
+        div.tagsinput{
+            border-radius: 4px;
+            box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075);
+            transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
         }
 
         div.tagsinput span.tag a{
@@ -23,7 +29,7 @@
               </div>
               <div class="col-md-4">
                   <label>Num. Citas*: </label>
-                  <input type="number" name="Citas" id="Citas" class="form-control">
+                  <input type="number"min="0" name="Citas" id="Citas" class="form-control">
               </div>
           </div>
 
@@ -58,7 +64,7 @@
                       <option value="">Seleccione línea </option>
                       <?php
                       foreach ($query->result() as $linea) {
-                          echo '<option value="'.$linea->Nombre.'">'.$linea->Nombre;
+                          echo '<option value="'.$linea->idLineageneracion.'">'.$linea->Nombre;
                       } ?>
                   </select>
                   <!-- <input type="text" name="Ind" id="Ind" class="form-control"> -->
@@ -72,11 +78,11 @@
           <div class="row">
             <div class="col-md-4">
                 <label>LAGCs CA*: </label>
-                <input type="number" name="CA" id="CA" class="form-control">
+                <input type="number" min="0"name="CA" id="CA" class="form-control">
             </div>
               <div class="col-md-4">
                   <label>Horas semanales*: </label>
-                  <input type="number" name="Horas" id="Horas" class="form-control">
+                  <input type="number" min="0" name="Horas" id="Horas" class="form-control">
               </div>
               <div class="col-md-4">
                   <label>Para CA*: <br></label>
@@ -86,6 +92,8 @@
               <div id="msj">
                   <p>* Campos obligatorios</p>
               </div>
+
+              <input type="hidden" name="id" id="id"value="">
     </form>
     <div class="ErrorInputs" hidden>
       <p>Por favor llene los campos obligatorios</p>

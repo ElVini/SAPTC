@@ -54,10 +54,10 @@
                       <td>'.$produccion->Numcitada.'</td>
                       <td>'.$produccion->Tipoproduccion.'</td>
                       <td>'.$produccion->ParaCA.'</td>
-                      <td>'.$produccion->MiembrosCA.'</td>'
-                      // <td>'.$produccion->Numlineasind.'</td>
-                      // <td>'.$produccion->NumlineasCA.'</td>
-                      .'<td hidden>'.$produccion->HorasSemanales.'</td>
+                      <td>'.$produccion->MiembrosCA.'</td>
+                      <td hidden>'.$produccion->Numlineasind.'</td>
+                      <td hidden>'.$produccion->NumlineasCA.'</td>
+                      <td hidden>'.$produccion->HorasSemanales.'</td>
 
                           </tr>';
                       $inputId++;
@@ -76,6 +76,7 @@
             <div id="divParaError" class="DivELetrasrojas">
               <p>Seleccione un registro</p>
             </div>
+			<div id="delete_form"></div> <!-- aqui inserto el id en un formulario para eliminar el registro -->
 
 
           </div>
