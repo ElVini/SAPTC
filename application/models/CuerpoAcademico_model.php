@@ -72,6 +72,25 @@ class CuerpoAcademico_model extends CI_Model
       $this->db->insert('cuerpoacademico_miembros');
     }
 
+		public function chkCA($nombre, $clave){
+			$a=1;
+			$this->db->where('Nombre', $nombre);
+			$query =  $this->db->get('cuerpoacademico');
+			foreach ($query->result() as $q) {
+				echo "1";
+				$a=0;
+			}
+
+			$this->db->where('Clave', $clave);
+			$query =  $this->db->get('cuerpoacademico');
+			foreach ($query->result() as $q) {
+				echo "2";
+				$a=0;
+			}
+			if($a==1){
+				echo "a";
+			}
+		}
 }
 
 ?>

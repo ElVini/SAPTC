@@ -12,7 +12,7 @@
   </div>
   <div class="row">
     <div class="col-md-12">
-      <a href="#" id="nuevoCA">¿No encuentra el Cuerpo Académico? Agregalo.</a>
+      <a href="#" id="nuevoCA">¿No encuentra el Cuerpo Académico? Agrégalo.</a>
     </div>
   </div>
 </form>

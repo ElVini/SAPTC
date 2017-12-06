@@ -534,6 +534,12 @@ class User extends CI_Controller
 		$this->CuerpoAcademico_model->agregarCuerpo($this->session->userdata('login'),$nombre,$grado,$clave);
 		redirect(base_url('index.php/User/cuerpoAcademico'));
 	}
+
+	public function checarCA(){
+		if(isset($_POST['nombre']) || isset($_POST['clave'])){
+					$this->CuerpoAcademico_model->chkCA($_POST['nombre'],$_POST['clave']);
+		}
+	}
 //fin de datos del cuerpo academico
 }
 
