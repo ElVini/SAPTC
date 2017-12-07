@@ -193,10 +193,16 @@ class User extends CI_Controller
 		else
 		{
 			$data['query'] = $this->ProduccionAca_model->getLineasGeneracion();
+			if(isset($_POST['id'])){
+				$data['id'] = $_POST['id'];
+			}
 			$this->load->view('forms/produccion_academica',$data);
 		}
 	}
-
+	public function mostrarDetalles(){
+		$data['query'] = $this->ProduccionAca_model->getLineasGeneracion();
+		$this->load->view('Detalles/produccion_detalles',$data);
+	}
 	public function addProduccion(){
 		if($this->session->userdata('id') != 2)
 		{

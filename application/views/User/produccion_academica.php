@@ -37,7 +37,7 @@
                             <td><b>Citas</b></td>
                             <td><b>Tipo de producción</b></td>
                             <td><b>Para<br>CA</b></td>
-                            <td><b>Miembros<br>CA</b></td>
+                            <!--<td><b>Miembros<br>CA</b></td> -->
 							<td></td>
                             <!-- <td><b>LGACs<br>Ind</b></td> -->
                             <!-- <td><b>LAGCs<br>CA</b></td> -->
@@ -49,14 +49,15 @@
                     $inputId = 0;
                     foreach ($query->result() as $produccion) {
 					  $miembros = $produccion->MiembrosCA != "" ? $produccion->MiembrosCA: "-";
+					  $paraCA = $produccion->ParaCA == 1 ? "Sí": "No";
                       echo '<tr id="TablaLinea">
 	                      <td hidden>'.$produccion->idProduccionacademica.'</td>
 	                      <td>'.$produccion->Titulo.'</td>
 	                      <td>'.$produccion->Ano.'</td>
 	                      <td>'.$produccion->Numcitada.'</td>
 	                      <td>'.$produccion->Tipoproduccion.'</td>
-	                      <td>'.$produccion->ParaCA.'</td>
-	                      <td>'.$miembros.'</td>
+	                      <td>'.$paraCA.'</td>
+	                      <td hidden>'.$miembros.'</td>
 	                      <td hidden>'.$produccion->Numlineasind.'</td>
 	                      <td hidden>'.$produccion->NumlineasCA.'</td>
 	                      <td hidden>'.$produccion->HorasSemanales.'</td>
