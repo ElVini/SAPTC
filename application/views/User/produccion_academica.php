@@ -38,6 +38,7 @@
                             <td><b>Tipo de producción</b></td>
                             <td><b>Para<br>CA</b></td>
                             <td><b>Miembros<br>CA</b></td>
+							<td></td>
                             <!-- <td><b>LGACs<br>Ind</b></td> -->
                             <!-- <td><b>LAGCs<br>CA</b></td> -->
                           </tr>
@@ -47,19 +48,20 @@
                   <?php
                     $inputId = 0;
                     foreach ($query->result() as $produccion) {
+					  $miembros = $produccion->MiembrosCA != "" ? $produccion->MiembrosCA: "-";
                       echo '<tr id="TablaLinea">
-                      <td hidden>'.$produccion->idProduccionacademica.'</td>
-                      <td>'.$produccion->Titulo.'</td>
-                      <td>'.$produccion->Ano.'</td>
-                      <td>'.$produccion->Numcitada.'</td>
-                      <td>'.$produccion->Tipoproduccion.'</td>
-                      <td>'.$produccion->ParaCA.'</td>
-                      <td>'.$produccion->MiembrosCA.'</td>
-                      <td hidden>'.$produccion->Numlineasind.'</td>
-                      <td hidden>'.$produccion->NumlineasCA.'</td>
-                      <td hidden>'.$produccion->HorasSemanales.'</td>
-
-                          </tr>';
+	                      <td hidden>'.$produccion->idProduccionacademica.'</td>
+	                      <td>'.$produccion->Titulo.'</td>
+	                      <td>'.$produccion->Ano.'</td>
+	                      <td>'.$produccion->Numcitada.'</td>
+	                      <td>'.$produccion->Tipoproduccion.'</td>
+	                      <td>'.$produccion->ParaCA.'</td>
+	                      <td>'.$miembros.'</td>
+	                      <td hidden>'.$produccion->Numlineasind.'</td>
+	                      <td hidden>'.$produccion->NumlineasCA.'</td>
+	                      <td hidden>'.$produccion->HorasSemanales.'</td>
+						  <td id="detalles"><a href="#">Ver detalles</a></td>
+                     	</tr>';
                       $inputId++;
 				  	}
                   ?>

@@ -59,17 +59,14 @@
                 </select>
               </div>
               <div class="col-md-4">
-                  <label>LGACs Ind</label>
-                  <select class="form-control" name="Ind" id="Ind">
-                      <option value="">Seleccione línea </option>
-                      <?php
-                      foreach ($query->result() as $linea) {
-                          echo '<option value="'.$linea->idLineageneracion.'">'.$linea->Nombre;
-                      } ?>
+                  <label>Para CA*: <br></label>
+                  <select class="form-control" name="Para" id="para">
+                      <option value="0">No</option>
+                      <option value="1" selected>Sí</option>
                   </select>
                   <!-- <input type="text" name="Ind" id="Ind" class="form-control"> -->
               </div>
-              <div class="col-md-4">
+              <div class="col-md-4" id="div-miembros">
                   <label>Miembros CA*: </label>
                   <input type="text" name="Miembros" id="Miembros" class="form-control" data-role="tagsinput">
               </div>
@@ -81,12 +78,20 @@
                 <input type="number" min="0"name="CA" id="CA" class="form-control">
             </div>
               <div class="col-md-4">
-                  <label>Horas semanales*: </label>
-                  <input type="number" min="0" name="Horas" id="Horas" class="form-control">
+
+                  <!-- <label>Horas semanales*: </label>
+                  <input type="number" min="0" name="Horas" id="Horas" class="form-control"> -->
+                  <label>LGACs Ind</label>
+                  <select class="form-control" name="Ind" id="Ind">
+                      <option value="">Seleccione línea </option>
+                      <?php
+                      foreach ($query->result() as $linea) {
+                          echo '<option value="'.$linea->idLineageneracion.'">'.$linea->Nombre;
+                      } ?>
+                  </select>
               </div>
               <div class="col-md-4">
-                  <label>Para CA*: <br></label>
-                  <input type="text" name="Para" id="Para" class="form-control">
+
               </div>
           </div>
               <div id="msj">

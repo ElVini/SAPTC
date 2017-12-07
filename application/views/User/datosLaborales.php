@@ -35,7 +35,7 @@
 								<th><p>Fecha de inicio de contrato</p></th>
 								<th><p>Fecha de fin de contrato</p></th>
 								<th><p>Tipo</p></th>
-								<!--<th><p>Dependencia</p></th>-->
+								<th><p>Dependencia</p></th>
 								<th><p>Cronología</p></th>
 							</tr>
 						</thead>
@@ -46,28 +46,28 @@
 							foreach ($datos->result() as $row){
 						?>
 							<tr id="TablaLinea" onclick="datos('<?php echo $row->idDatoslaborales?>')">
-					        <td style="width: 16%"><?= $row->Nombramiento?></td>
+					        <td style="width: 10%"><?= $row->Nombramiento?></td>
 					        <td style="width: 10%"><?= $row->Dedicacion?></td>
 					        <td style="width: 20%"><?= $row->Unidadacademica?></td>
-					        <td style="width: 13%"><?= date_format(date_create($row->Fechadeiniciocontrato), "d / m / Y")?></td>
+					        <td style="width: 10%"><?= date_format(date_create($row->Fechadeiniciocontrato), "d / m / Y")?></td>
 									<?php if ($row->Fechafincontrato == 0000-00-00)
 									{
-										echo '<td>00 / 00 / 0000</td>';
+										echo '<td style="width: 10%">00 / 00 / 0000</td>';
 									}
 									else
 									{
-										echo '<td style="width: 13%">'.date_format(date_create($row->Fechafincontrato), "d / m / Y").'</td>';
+										echo '<td style="width: 10%">'.date_format(date_create($row->Fechafincontrato), "d / m / Y").'</td>';
 									}?>
-									<td style="width: 13%"><?= $row->Tipo?></td>
-									<!--<td style="width: 20%"><?= $row->NombreDependencia?></td>-->
-					        <td style="width: 15%"><?= $row->Cronologia?></td>
+									<td style="width: 10%"><?= $row->Tipo?></td>
+									<td style="width: 20%"><?= $row->NombreDependencia?></td>
+					        <td style="width: 10%"><?= $row->Cronologia?></td>
 							</tr>
 						<?php
 							}
 						}
 						else
 						{
-							echo '<tr><td colspan = "5" align="center">No tiene registros</td></tr>';
+							echo '<tr><td colspan = "8" align="center">No tiene registros</td></tr>';
 						}
 						?>
 						</tbody>
@@ -97,7 +97,6 @@
 		</div>
 	</div>
 	<input type="text" name="eid" id="eid" hidden="">
-	<input type="text" name="profe" id="profe" hidden="" value="<?= $loginid?>">
 	<script type="text/javascript">
 		var base_url = "<?php echo base_url();?>";
 	</script>

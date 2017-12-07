@@ -17,7 +17,8 @@ class ProduccionAca_model extends CI_Model
     }
 	public function agregarProduccion($data)
 	{
-		if(isset($data['idProduccionacademica'])){
+		if($data['idProduccionacademica']!=null){
+            echo "entra aqui";
 			$this->db->where('idProduccionacademica',$data['idProduccionacademica']);
 			$this->db->set($data);
 			$this->db->update('produccionacademica');
@@ -25,6 +26,7 @@ class ProduccionAca_model extends CI_Model
 		//Hago lo mismo que en el controlador
 		else if(isset($data['Titulo']))
 		{
+            echo "entra aquix2";
 			$this->db->set($data)->insert('produccionacademica');
 		}
 		else{

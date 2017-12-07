@@ -83,10 +83,7 @@ $(document).ready(function()
       $("#formulario")[0].reset();
   });
   $('#tabla').on('click', 'tbody tr', function(event) {
-
-
     $(this).addClass('highlight').siblings().removeClass('highlight');
-
     $(".DivELetrasrojas").hide('slow');
   });
 
