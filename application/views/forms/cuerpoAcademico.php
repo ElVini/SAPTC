@@ -12,8 +12,12 @@
         <input type="text" name="clave" id="clave" class="form-control">
     </div>
     <div class="col-md-4">
-        <label>Grado: </label>
-        <input type="text" name="grado" id="grado" class="form-control">
+        <label>Grado de consolidación: </label>
+        <select class="form-control" name="grado" id="grado">
+            <option value="">Seleccione uno</option>
+            <option value="En consolidación">En consolidación</option>
+            <option value="Consolidado">Consolidado</option>
+        </select>
     </div>
   </div>
 </form>
@@ -26,28 +30,48 @@
 
 
 <script type="text/javascript">
+var acc = 0;
+var nombre="", clave="";
 $(document).ready(function(){
-  //<?php //echo base_url('index.php/User/modCuerpo') ?>
   var base_url = $('#base_url').val();
   var idCA = $('#tablaCA tr:nth-child(1) td:nth-child(1)').text();
   if(!isNaN(idCA)){
+    //1 - es para modificar
+    acc=1;
     $('#cuerpoAcadForm').attr("action", base_url+'index.php/User/modCuerpo');
     document.getElementById('idca').value = idCA;
     document.getElementById('nombre').value = $('#tablaCA tr:nth-child(1) td:nth-child(2)').text();
     document.getElementById('clave').value = $('#tablaCA tr:nth-child(1) td:nth-child(3)').text();
     document.getElementById('grado').value = $('#tablaCA tr:nth-child(1) td:nth-child(4)').text();
+    nombre = document.getElementById('nombre').value;
+    clave = document.getElementById('clave').value;
   }
   else{
+    //2 - es para agregar
+    acc=2;
     $('#cuerpoAcadForm').attr("action", base_url+'index.php/User/agCuerpoN');
   }
 });
 
 $('#btnAcepCA').click(function(){
+
   if($('#nombre').val() != "" && $('#clave').val() != "" && $('#grado').val() != ""){
+    var n = $('#nombre').val();
+    var c = $('#clave').val();
+
+    if(acc==1){
+      if(nombre == n){
+        n=0;
+      }
+      if(clave == c){
+        c=0;
+      }
+    }
+
     $.ajax({
         type: "POST",
         url: 'checarCA',
-        data: "nombre="+$('#nombre').val() + "&clave=" + $('#clave').val(),
+        data: "nombre="+ n + "&clave=" + c+"&accion="+acc,
         cache: false,
         success: function(response)
         {

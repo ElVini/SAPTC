@@ -13,6 +13,7 @@ class User extends CI_Controller
 		$this->load->model('ProduccionAca_model');
 		$this->load->model('premiosoDistinciones_model');
 		$this->load->model('CuerpoAcademico_model');
+		$this->load->model('Docencia_model');
 		$this->load->library(array('session'));
 	}
 //Inicio
@@ -551,10 +552,70 @@ class User extends CI_Controller
 
 	public function checarCA(){
 		if(isset($_POST['nombre']) || isset($_POST['clave'])){
-					$this->CuerpoAcademico_model->chkCA($_POST['nombre'],$_POST['clave']);
+					$this->CuerpoAcademico_model->chkCA($_POST['nombre'],$_POST['clave'],$_POST['accion']);
 		}
 	}
 //fin de datos del cuerpo academico
+
+//Docencia
+	public function docencia(){
+		if($this->session->userdata('id') != 2)
+		{
+			redirect(base_url());
+		}
+		else{
+			$data['titulo'] = 'SAPTC - Docencia';
+			$data['docencias'] = $this->Docencia_model->obtenerDocencias();
+			$this->load->view('User/docencia',$data);
+		}
+	}
+
+	public function formDocencia(){
+		if($this->session->userdata('id') != 2)
+		{
+			redirect(base_url());
+		}
+		else{
+			$data['dependencias'] = $this->Docencia_model->obtenerDependencia();
+			$this->load->view('forms/docencia',$data);
+		}
+	}
+
+	public function agrDocencia(){
+		$nombre = $_POST['nombre'];
+		$pre = $_POST['pre'];
+		$fei = $_POST['fei'];
+		$noa = $_POST['noa'];
+		$dus = $_POST['dus'];
+		$ham = $_POST['ham'];
+		$hos = $_POST['hos'];
+		$np = $_POST['np'];
+		$od = $_POST['od'];
+		$this->Docencia_model->agreDocencica($nombre, $pre, $fei, $noa, $dus, $ham, $hos, $np, $od);
+		redirect(base_url('index.php/User/docencia'));
+	}
+
+	public function mdDocencia(){
+		$id = $_POST['idd'];
+		$nombre = $_POST['nombre'];
+		$pre = $_POST['pre'];
+		$fei = $_POST['fei'];
+		$noa = $_POST['noa'];
+		$dus = $_POST['dus'];
+		$ham = $_POST['ham'];
+		$hos = $_POST['hos'];
+		$np = $_POST['np'];
+		$this->Docencia_model->modDocencica($id,$nombre, $pre, $fei, $noa, $dus, $ham, $hos, $np);
+		redirect(base_url('index.php/User/docencia'));
+	}
+
+	public function elimDocencia(){
+		$id = $this->uri->segment(3);
+		$this->Docencia_model->elimiDocencica($id);
+		redirect(base_url('index.php/User/docencia'));	
+	}
+
+//Fin de docencia
 }
 
 ?>

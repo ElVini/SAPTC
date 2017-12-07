@@ -42,7 +42,7 @@
               <ul class="dropdown-menu" role="menu">
                 <li><a href="<?php echo base_url('index.php/User/tutorias'); ?>">Tutorias</a> </li>
                 <li class="divider"></li>
-                <li><a href="#" >Docencias</a> </li>
+                <li><a href="<?php echo base_url('index.php/User/docencia'); ?>" >Docencias</a> </li>
                 <li class="divider" ></li>
                 <li><a href="#" >Dirección individualizada</a> </li>
 
@@ -63,7 +63,7 @@
               </ul>
             </li>
 
-      <!--PARA LA OPCION DE ACTIVIDADES PARTICULRES-->
+      <!--PARA LA OPCION DE ACTIVIDADES DEL PROFESOR-->
                <li class="dropdown">
                  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" style="color:white;">
                    <span class="glyphicon glyphicon-education"></span> Profesor <span class="caret"></span>
