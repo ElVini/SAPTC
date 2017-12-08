@@ -51,6 +51,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
             <th hidden>Horas de asesorías mensuales</th>
             <th hidden>Horas semanales</th>
             <th hidden>Nombre de la Dependencia</th>
+            <th hidden>Fecha de inicio</th>
             <th></th>
 					</tr>
 				</thead>
@@ -68,6 +69,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                 <td hidden><?php echo $d->Horasasesoriamensual; ?></td>
                 <td hidden><?php echo $d->Horassemanales; ?></td>
                 <td hidden><?php echo $d->NombreDependencia; ?></td>
+                <td hidden><?php echo $d->Fechainicio; ?></td>
                 <td id="detalles"><a href="#">Ver detalles.</a></td>
               </tr>
               <?php
@@ -117,7 +119,7 @@ $('td:not(#detalles)').click(function(){
       id=$(this).parent().children('td:nth-child(1)').first().html();
       nombre = $(this).parent().children('td:nth-child(2)').first().html();
       programae = $(this).parent().children('td:nth-child(3)').first().html();
-      fechai = $(this).parent().children('td:nth-child(4)').first().html();
+      fechai = $(this).parent().children('td:nth-child(10)').first().html();
       numa = $(this).parent().children('td:nth-child(5)').first().html();
       durs = $(this).parent().children('td:nth-child(6)').first().html();
       horam = $(this).parent().children('td:nth-child(7)').first().html();
@@ -133,7 +135,7 @@ $('td:not(#detalles)').click(function(){
     id=$(this).parent().parent().children('td:nth-child(1)').first().html();
     nombre = $(this).parent().parent().children('td:nth-child(2)').first().html();
     programae = $(this).parent().parent().children('td:nth-child(3)').first().html();
-    fechai = $(this).parent().parent().children('td:nth-child(4)').first().html();
+    fechai = $(this).parent().parent().children('td:nth-child(10)').first().html();
     numa = $(this).parent().parent().children('td:nth-child(5)').first().html();
     durs = $(this).parent().parent().children('td:nth-child(6)').first().html();
     horam = $(this).parent().parent().children('td:nth-child(7)').first().html();
@@ -188,6 +190,10 @@ $('td:not(#detalles)').click(function(){
       $(".error").show('slow');
     }
     else{
+      if($(this).attr('id') == 'agDocencia' && id != ""){
+        id="";
+        $('td').parent().removeClass('highlight');
+      }
       BootstrapDialog.show({
             message: $('<div></div>').load(base_url+'index.php/User/formDocencia'),
             type: BootstrapDialog.TYPE_PRIMARY,
