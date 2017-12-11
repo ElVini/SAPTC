@@ -32,11 +32,9 @@
 								<th><p>Nombramiento</p></th>
 								<th><p>Dedicacion</p></th>
 								<th><p>Unidad Academica de abscripción</p></th>
-								<th><p>Fecha de inicio de contrato</p></th>
-								<th><p>Fecha de fin de contrato</p></th>
-								<th><p>Tipo</p></th>
-								<th><p>Dependencia</p></th>
+								<th><p>Inicio de contrato</p></th>
 								<th><p>Cronología</p></th>
+								<th><p>Detalles</p></th>
 							</tr>
 						</thead>
 						<tbody>
@@ -45,22 +43,14 @@
 						{
 							foreach ($datos->result() as $row){
 						?>
-							<tr id="TablaLinea" onclick="datos('<?php echo $row->idDatoslaborales?>')">
-					        <td style="width: 10%"><?= $row->Nombramiento?></td>
-					        <td style="width: 10%"><?= $row->Dedicacion?></td>
-					        <td style="width: 20%"><?= $row->Unidadacademica?></td>
-					        <td style="width: 10%"><?= date_format(date_create($row->Fechadeiniciocontrato), "d / m / Y")?></td>
-									<?php if ($row->Fechafincontrato == 0000-00-00)
-									{
-										echo '<td style="width: 10%">00 / 00 / 0000</td>';
-									}
-									else
-									{
-										echo '<td style="width: 10%">'.date_format(date_create($row->Fechafincontrato), "d / m / Y").'</td>';
-									}?>
-									<td style="width: 10%"><?= $row->Tipo?></td>
-									<td style="width: 20%"><?= $row->NombreDependencia?></td>
-					        <td style="width: 10%"><?= $row->Cronologia?></td>
+							<tr id="TablaLinea">
+								<td hidden="" id="<?= $row->idDatoslaborales?>"></td>
+				        <td style="width: 23%"><?= $row->Nombramiento?></td>
+				        <td style="width: 12%"><?= $row->Dedicacion?></td>
+				        <td style="width: 28%"><?= $row->Unidadacademica?></td>
+				        <td style="width: 15%"><?= date_format(date_create($row->Fechadeiniciocontrato), "d / m / Y")?></td>
+				        <td style="width: 12%"><?= $row->Cronologia?></td>
+								<td style="width: 10%"><a href="#" class="detalles" id="<?= $row->idDatoslaborales?>">Ver detalles</a></td>
 							</tr>
 						<?php
 							}
@@ -75,6 +65,7 @@
 				</div>
 			</div>
 	</div>
+
 	<div align="center">
 		<div class="row">
 			<div class="col-sm-12 col-md-4 col-lg-4">
@@ -82,10 +73,10 @@
 					<script type="text/javascript">
 						$(".error").hide();
 					</script>
-					<p>*No ha seleccionado ningun elemento</p>
+					<p>*No ha seleccionado ningún elemento</p>
 				</div>
 			</div>
-			<div class="col-sm-6 col-md-4 col-lg-4">
+			<div class="col-sm-6 col-md-4 col-lg-4" style="margin-bottom: 5px;">
 				<button class="btn btn-default" id="contratonow">Contrato actual</button>
 				<button  class="btn btn-default" id="firstcontrato">Primer contrato</button>
 			</div>

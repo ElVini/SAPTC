@@ -96,3 +96,13 @@ label, input[type="submit"]
   font-weight: 100;
   color: red;
 }
+a:hover
+{
+  color: #0066ff;
+  text-decoration: none;
+}
+a:link
+{
+  color: #668cff;
+  text-decoration: none;
+}

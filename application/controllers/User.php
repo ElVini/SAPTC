@@ -329,19 +329,24 @@ class User extends CI_Controller
 			redirect(base_url());
 		}
 	}
-	public function form_datoslaborales($id)
+	public function form_datoslaborales($id, $el)
 	{
-		if ($id!=0 )
+
+		if($el==0)
+		{
+			$data['es']=0; 
+			$data["user"]=$this->datosLaborales_model->tomafila($id);
+		}
+		elseif ($id!=0 )
 		{
 			$data["user"]=$this->datosLaborales_model->tomafila($id);
 			$data['dec']=true;
-			$this->load->view('forms/datoslaborales', $data);
 		}
 		else
 		{
 			$data['dec']=null;
-			$this->load->view('forms/datoslaborales', $data);
 		}
+		$this->load->view('forms/datoslaborales', $data);
 	}
 	public function agregaDatosLaborales()
 	{		$datos = (object)array(
@@ -612,7 +617,7 @@ class User extends CI_Controller
 	public function elimDocencia(){
 		$id = $this->uri->segment(3);
 		$this->Docencia_model->elimiDocencica($id);
-		redirect(base_url('index.php/User/docencia'));	
+		redirect(base_url('index.php/User/docencia'));
 	}
 
 //Fin de docencia

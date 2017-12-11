@@ -1,22 +1,24 @@
-// Premios o Distinciones JS
-  function datos(id)
-  {$('#id_p').val(id);
-  }
+
   function otraInstitucion()
-  { if ($('#io').val() == 0)
+  { if ($('#io').val() == 0 &&  $('#io').val() !="")
     { $('.otra').show();
     }
-    else if ($('#io').val() != 0)
+    else if ($('#io').val() != 0 )
     { $('.otra').hide();
       $('#oio').val('');
     }
   }
 $(document).ready(function(){
-  $('#tablaEstudios').on('click', 'tbody tr', function(event) {
-    $(".error").hide();
-    $(this).addClass('highlight');
-    $('tbody tr').removeClass('highlight');
-    $(this).addClass('highlight');
+  $('#tablaEstudios').on('click', 'tbody tr', function(event){
+    if($(this).attr('class') == 'highlight'){
+      $(this).removeClass('highlight');
+      $('#id_p').val('');
+    }
+    else{
+      $(this).addClass('highlight').siblings().removeClass('highlight');
+      $('#id_p').val($(this).children().attr("id"));
+      $('.error').hide();
+    }
   });
   $("#add").on('click', function(event) {
         BootstrapDialog.show({
