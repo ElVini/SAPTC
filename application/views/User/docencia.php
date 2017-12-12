@@ -85,9 +85,9 @@ defined('BASEPATH') OR exit('No direct script access allowed');
       <p>No ha seleccionado ningun elemento</p>
     </div>
 		<div id="BotonesTabla">
-      <button type="button" id="agDocencia" class="btn btn-success agregarD">Agregar</button>
       <button type="button" id="eliminarD" class="btn btn-danger">Eliminar</button>
       <button type="button" id="modDocencia" class="btn btn-primary agregarD">Modificar</button>
+      <button type="button" id="agDocencia" class="btn btn-success agregarD">Agregar</button>
 		</div>
 	</div>
 </div>
