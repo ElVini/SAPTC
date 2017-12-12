@@ -10,7 +10,7 @@
  	  {
       $this->db->from('premios');
       $this->db->where('Datosprofesores_idDatosprofesor',$id);
-      $this->db->order_by("Fecha", "ASC");
+      //$this->db->order_by("Fecha", "ASC");
       $query = $this->db->get();
       if($query->num_rows()>0)
   		{

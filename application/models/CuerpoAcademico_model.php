@@ -72,24 +72,53 @@ class CuerpoAcademico_model extends CI_Model
       $this->db->insert('cuerpoacademico_miembros');
     }
 
-		public function chkCA($nombre, $clave){
-			$a=1;
-			$this->db->where('Nombre', $nombre);
-			$query =  $this->db->get('cuerpoacademico');
-			foreach ($query->result() as $q) {
-				echo "1";
-				$a=0;
+		public function chkCA($nombre, $clave, $accion){
+			//agregar
+			if($accion == 2){
+				$a=1;
+				$this->db->where('Nombre', $nombre);
+				$query1 =  $this->db->get('cuerpoacademico');
+				foreach ($query1->result() as $q1) {
+					echo "1";
+					$a=0;
+				}
+
+				$this->db->where('Clave', $clave);
+				$query2 =  $this->db->get('cuerpoacademico');
+				foreach ($query2->result() as $q2) {
+					echo "2";
+					$a=0;
+				}
+				if($a==1){
+					echo "a";
+				}
 			}
 
-			$this->db->where('Clave', $clave);
-			$query =  $this->db->get('cuerpoacademico');
-			foreach ($query->result() as $q) {
-				echo "2";
-				$a=0;
+			//modificar
+			if($accion == 1){
+				$a=1;
+				if($nombre != "0"){
+					$this->db->where('Nombre', $nombre);
+					$query3 =  $this->db->get('cuerpoacademico');
+					foreach ($query3->result() as $q3) {
+						echo "1";
+						$a=0;
+					}
+				}
+
+				if ($clave != "0") {
+					$this->db->where('Clave', $clave);
+					$query4 =  $this->db->get('cuerpoacademico');
+					foreach ($query4->result() as $q4) {
+						echo "2";
+						$a=0;
+					}
+				}
+				if($a==1){
+					echo " a";
+				}
 			}
-			if($a==1){
-				echo "a";
-			}
+
 		}
 }
 

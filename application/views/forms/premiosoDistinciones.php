@@ -31,6 +31,7 @@ if (isset($user))
         <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
             <label for="io" >Institucion Otorgante*: </label>
               <select type="text" name="io" id="io" class="form-control" onclick="otraInstitucion()">
+                <option value="">Seleccione...</option>
                 <?php
 									if ( $inst!=null)
 									{

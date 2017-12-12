@@ -11,7 +11,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  	  {
       $this->db->from('datoslaborales');
       $this->db->where('Datosprofesores_idDatosprofesor',$id);
-      $this->db->order_by("Fechadeiniciocontrato", "ASC");
+      //$this->db->order_by("Fechadeiniciocontrato", "ASC");
       $query = $this->db->get();
       if($query->num_rows()>0)
   		{

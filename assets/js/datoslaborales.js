@@ -1,13 +1,35 @@
+
 $(document).ready(function(){
-  $('#tablaEstudios').on('click', 'tbody tr', function(event) {
-  		$(".error").hide();
-  		$(this).addClass('highlight');
-  		$('tbody tr').removeClass('highlight');
-  		$(this).addClass('highlight');
+  $('#tablaEstudios').on('click', 'tbody tr', function(event){
+		if($(this).attr('class') == 'highlight'){
+			$(this).removeClass('highlight');
+      $('#eid').val('');
+		}
+		else{
+			$(this).addClass('highlight').siblings().removeClass('highlight');
+			$('#eid').val($(this).children().attr("id"));
+      $('.error').hide();
+		}
+	});
+  $('.detalles').click(function(){
+    $(this).attr("id");
+    BootstrapDialog.show({
+        title: 'Detalles',
+        cssClass: 'dialog',
+        draggable: true,
+        message: $('<div></div>').load( base_url+'index.php/User/form_datoslaborales/'+$(this).attr("id")+'/'+0),
+        buttons:[{  label: 'Cerrar',
+                    cssClass: 'btn-default',
+                    action: function(dialogRef)
+                           {	dialogRef.close();
+                           }
+                 }]
+      });
   });
   $('#delete').click(function(){
   	if($('#eid').val()!='')
-  	{ BootstrapDialog.show({
+  	{
+      BootstrapDialog.show({
   			type: BootstrapDialog.TYPE_DANGER,
   			title: 'Eliminar',
   			cssClass: 'dialog',
@@ -90,7 +112,7 @@ $(document).ready(function(){
   			cssClass: 'dialog',
   			draggable: true,
         closable: false,
-        message: $('<div></div>').load( base_url+'index.php/User/form_datoslaborales/'+0),
+        message: $('<div></div>').load( base_url+'index.php/User/form_datoslaborales/'+0+'/'+1),
   		  buttons:[{  label: 'Cancelar',
       			        cssClass: 'btn-danger',
       			        action: function(dialogRef)
@@ -98,7 +120,7 @@ $(document).ready(function(){
       				          	}
   		        	 },
   		        	 {  label: 'Enviar',
-                    id: 'enviar', 
+                    id: 'enviar',
     				        cssClass: 'btn-primary',
     				        action: function()
     				        { if($('#nom').val() !='' && $('#tipo_nom').val()!='' && $('#dedicacion').val()!='' &&  $('#dependencia').val()!='' && $('#unidad').val()!='' && $('#fecha_init').val() !=''  && ($('#fecha_fin').val()!='' || formu == false))
@@ -131,7 +153,7 @@ $(document).ready(function(){
   				cssClass: 'dialog',
   				draggable: true,
           closable: false,
-  	      message: $('<div></div>').load( base_url+'index.php/User/form_datoslaborales/'+$('#eid').val()),
+  	      message: $('<div></div>').load( base_url+'index.php/User/form_datoslaborales/'+$('#eid').val()+'/'+1),
   		    buttons:[{  label: 'Cancelar',
           			      cssClass: 'btn-danger',
           			      action: function(dialogRef)
@@ -168,9 +190,7 @@ $(document).ready(function(){
   		}
   });
 });
-function datos(id)
-{$('#eid').val(id);
-}
+
 var formu=false;
 function fecha(dec)
 {
@@ -178,7 +198,7 @@ function fecha(dec)
   { $('.fecha').show();
     formu=true;
   }
-  else if($('#tipo_nom').val() == "Indeterminado" && dec== null)
+  else if($('#tipo_nom').val() == "Indeterminado" && dec== null || $('#tipo_nom').val() == "")
       {	$('.fecha').hide();
       	formu=false
       }

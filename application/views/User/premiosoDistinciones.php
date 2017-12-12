@@ -35,13 +35,14 @@
                 <td style="width: 15%;"><b>Fecha</b></td>
                 <td style="width: 25%;"><b>Institucion Otorgante</b></td>
                 <td style="width: 35%;"><b>Motivo</b></td>
-              </tr> 
+              </tr>
             </thead>
             <tbody>
               <?php if($datos!= null)
                     { foreach ($datos as $row){
               ?>
-              <tr id="TablaLinea" onclick="datos('<?php echo $row->idPremios?>')">
+              <tr id="TablaLinea">
+                <td hidden="" id="<?= $row->idPremios ?>"></td>
                 <td><?= $row->Nombre?></td>
                 <td><?= date_format(date_create($row->Fecha), "d / m / Y")?></td>
                 <?php foreach($inst->result() as $raw){
@@ -68,7 +69,7 @@
         	<script type="text/javascript">
         		$(".error").hide();
         	</script>
-        	<p>*No ha seleccionado ningun elemento</p>
+        	<p>*No ha seleccionado ningún elemento</p>
         </div>
       </div>
       <div class="col-sx-12 col-sm-5 col-md-4 col-lg-4">

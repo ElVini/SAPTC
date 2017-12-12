@@ -100,9 +100,6 @@
 
               <input type="hidden" name="id" id="id"value="">
     </form>
-    <div class="ErrorInputs" hidden>
-      <p>Por favor llene los campos obligatorios</p>
-    </div>
     <script type="text/javascript">
 
         $('#Miembros').tagsInput({
@@ -114,4 +111,33 @@
            'removeWithBackspace' : true,
            'placeholderColor' : 'black'
         });
+
+        $('#para').change(function(){
+            if($('#para').val() == 1)
+              $('#div-miembros').show();
+            else
+              {
+                  $('#div-miembros').hide();
+                  $('#Miembros').importTags('');
+              }
+        });
+        if(id!= -1){
+            var paraCA = $(".highlight ").children('td:nth-child(6)').first().html() == 'Sí'? 1:0;
+            $('#id').val(id);
+            $('#Titulo').val($(".highlight ").children('td:nth-child(2)').first().html());
+            $('#Ano').val($(".highlight ").children('td:nth-child(3)').first().html());
+            $('#Citas').val($(".highlight ").children('td:nth-child(4)').first().html());
+            $('#tipoproduccion').val($(".highlight ").children('td:nth-child(5)').first().html());
+            $('#para').val(paraCA);
+            if($('#para').val() == 1){
+                $('#Miembros').importTags($(".highlight ").children('td:nth-child(7)').first().html());
+            }
+            else{
+                $('#div-miembros').hide();
+            }
+            $('#Ind').val($(".highlight ").children('td:nth-child(8)').first().html());
+            $('#CA').val($(".highlight ").children('td:nth-child(9)').first().html());
+            id=-1;
+            //$('#Horas').val($(".highlight ").children('td:nth-child(10)').first().html());
+        }
     </script>

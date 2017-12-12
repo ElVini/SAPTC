@@ -38,9 +38,7 @@ $(document).ready(function(){
             btnOKClass: 'btn-danger',
             callback: function(result) {
                 if(result) {
-                    var idCA = $('#tablaCA tr:nth-child(1) td:nth-child(1)').text();
-                    console.log(idCA);
-                    location.href = base_url+'index.php/User/elimCuerpo';
+                    location.href = base_url+'index.php/User/elimCuerpo/';
                 }
             }
         });
