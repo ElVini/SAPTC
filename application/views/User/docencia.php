@@ -141,25 +141,30 @@ $('td:not(#detalles)').click(function(){
     horam = $(this).parent().parent().children('td:nth-child(7)').first().html();
     horas = $(this).parent().parent().children('td:nth-child(8)').first().html();
     nombredep = $(this).parent().parent().children('td:nth-child(9)').first().html();
-  /*  BootstrapDialog.show({
-          message: $('<div></div>').load(base_url+'index.php/User/formDocencia'),
+    BootstrapDialog.show({
+          message: $('<div></div>').load(base_url+'index.php/User/formDocenciaDetalles'),
           type: BootstrapDialog.TYPE_PRIMARY,
           title: 'Docencia',
+          onhidden: function(dialogRef){
+            id="";
+            nombre = "";
+            programae = "";
+            fechai = "";
+            numa = "";
+            durs = "";
+            horam = "";
+            horas = "";
+            nombredep = "";
+            },
           buttons: [{
-                id: 'btnAcepD',
-                label: 'Enviar',
-                cssClass: 'btn-primary',
-                action: function() {
-                }
-            }, {
               id: 'btnCanD',
-              label: 'Cancelar',
-              cssClass: 'btn-danger',
+              label: 'OK',
+              cssClass: 'btn-default',
               action: function(dialog){
                    dialog.close();
               }
            }]
-      });*/
+      });
 	});
 
   $('#eliminarD').click(function(){
@@ -184,9 +189,7 @@ $('td:not(#detalles)').click(function(){
   });
 
   $('.agregarD').click(function(){
-    console.log($(this).attr('id'));
     if($(this).attr('id') == 'modDocencia' && id==""){
-      console.log($(this).attr('id'));
       $(".error").show('slow');
     }
     else{

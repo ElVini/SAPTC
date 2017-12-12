@@ -334,7 +334,7 @@ class User extends CI_Controller
 
 		if($el==0)
 		{
-			$data['es']=0; 
+			$data['es']=0;
 			$data["user"]=$this->datosLaborales_model->tomafila($id);
 		}
 		elseif ($id!=0 )
@@ -618,6 +618,17 @@ class User extends CI_Controller
 		$id = $this->uri->segment(3);
 		$this->Docencia_model->elimiDocencica($id);
 		redirect(base_url('index.php/User/docencia'));
+	}
+
+	public function formDocenciaDetalles(){
+		if($this->session->userdata('id') != 2)
+		{
+			redirect(base_url());
+		}
+		else{
+			$data['dependencias'] = $this->Docencia_model->obtenerDependencia();
+			$this->load->view('Detalles/docencia',$data);
+		}
 	}
 
 //Fin de docencia
