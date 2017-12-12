@@ -1,6 +1,20 @@
 <?php $this->load->view('Helpers/User/header'); ?>
-<link rel="stylesheet" type="text/css" href="<?php echo base_url('assets/styles/bootstrap.min.css') ?>">|
+<script type="text/javascript" src="<?php echo base_url('assets/js/jquery-3.2.1.min.js') ?>"></script>
+<link rel="stylesheet" type="text/css" href="<?php echo base_url('assets/styles/bootstrap.min.css') ?>">
+<script type="text/javascript" src="<?php echo base_url('assets/js/bootstrap.min.js') ?>"></script>
+<link rel="stylesheet" type="text/css" href="<?php echo base_url('assets/styles/bootstrap-dialog.min.css') ?>">
+<script type="text/javascript" src="<?php echo base_url('assets/js/bootstrap-dialog.min.js') ?>"></script>
 <link rel="stylesheet" href="<?php echo base_url('assets/styles/estudiosRealizadosUsuario.css'); ?>">
+
+<script type="text/javascript">
+var idsER = [
+	<?php foreach ($estudios->result() as $query)
+	{
+		echo '"'.$query->idEstudiosrealizados.'",';
+	} ?>
+
+]
+</script>
 
 <div class="row"><p></p></div>
 <div class="row"><p></p></div>
@@ -49,6 +63,7 @@
 						<!-- <th>Id Profesor</th>
 						<th>PDF</th>
 						<th>Status</th> -->
+						<th></th>
 					</tr>
 				</thead>
 				<tbody>
@@ -56,13 +71,14 @@
 					<?php
 					if($estudios == null)
 					{
-						echo '<tr><td colspan = "13"><center>Aún no se cuenta con estudios realizados</center></td></tr>';
+						echo '<tr><td colspan = "6"><center>Aún no se cuenta con estudios realizados</center></td></tr>';
 					}
 					else
 					{
+						$x = 0;
 						foreach($estudios->result() as $query)
 						{
-							echo '<tr id="TablaLinea">';
+							echo '<tr id="TablaLinea" data-valor="'.$x.'">';
 							//echo '<td>'.$query->idEstudiosrealizados.'</td>';
 							echo '<td>'.$query->Siglas.'</td>';
 							echo '<td>'.$query->Estudiosen.'</td>';
@@ -73,12 +89,22 @@
 							echo '<td>'.$query->Area.'</td>';
 							echo '<td>'.$query->Disciplina.'</td>';
 							// echo '<td>'.$query->Pais.'</td>';
-							echo '<td>'.$query->Institucion.'</td>';
+
+							echo '<td>';
+							if($query->Institucion == "Otra"){
+								echo $query->Institucionnoconsiderada;
+							}else {
+								echo $query->Institucion;
+							}
+							echo '</td>';
 							echo '<td>'.$query->Nivelestudios.'</td>';
 							// echo '<td>'.$query->Datosprofesores_idDatosprofesor.'</td>';
 							// echo '<td>'.$query->PDF.'</td>';
 							// echo '<td>'.$query->status.'</td>';
+							echo '<td id="detalles"><a href="#">Ver detalles</a></td>';
+
 							echo '</tr>';
+							$x++;
 						}
 					}
 				?>
@@ -96,7 +122,6 @@
 	</div>
 </div>
 
-<script type="text/javascript" src="<?php echo base_url('assets/js/jquery-3.2.1.min.js') ?>"></script>
 <script type="text/javascript" src="<?php echo base_url('assets/js/estudiosRealizadosUsuario.js') ?>"></script>
 
 <?php $this->load->view('User/Helpers/footer'); ?>

@@ -17,6 +17,9 @@
 #TablaLinea{
   border-bottom: solid 2px gray;
 }
+#tablaEstudios{
+  cursor: default;
+}
 #BotonesTabla{
   float: right;
 }

@@ -170,6 +170,102 @@ class User extends CI_Controller
 		$data['titulo'] = 'SAPTC - Estudios Realizados';
 		$this->load->view('User/estudiosRealizados', $data);
 	}
+	public function ERform($id)
+	{
+		if($this->session->userdata('id') != 2)
+		{
+			redirect(base_url());
+		}
+		$data['datos'] = $this->EstudiosRealizados_model->getEstudio($id);
+		$data['instituciones'] = $this->EstudiosRealizados_model->getInstituciones();
+		$this->load->view('forms/estudiosRealizados', $data);
+	}
+	public function ERAgregar()
+	{
+		if($this->session->userdata('id') != 2)
+		{
+			redirect(base_url());
+		}
+		$datos = $this->input->post();
+
+		$idProfesor = 2;//aqui pones lo del id del profesor
+
+
+		if(
+				isset($datos['nivel']) &&
+				isset($datos['siglas']) &&
+				isset($datos['estudiosen']) &&
+				isset($datos['area']) &&
+				isset($datos['disciplina']) &&
+				isset($datos['otrainstit']) &&
+				isset($datos['BInstit']) &&
+				isset($datos['fechainicio']) &&
+				isset($datos['fechafin']) &&
+				isset($datos['fechaobt']) &&
+				isset($datos['pais'])
+		){
+			if($datos['BInstit'] == 1){
+					//Se inserta la institucion en la tabla instit
+					$dats = (object)array(
+						'Nivelestudios' => $datos['nivel'],
+						'Siglas' => $datos['siglas'],
+						'Estudiosen' => $datos['estudiosen'],
+						'Area' => $datos['area'],
+						'Disciplina' => $datos['disciplina'],
+						'Institucionnoconsiderada' => $datos['otrainstit'],
+						'Institucion' => 'Otra',
+						'Fechadeinicio' => $datos['fechainicio'],
+						'Fechadefin' => $datos['fechafin'],
+						'Fechadeobtencion' => $datos['fechaobt'],
+						'Pais' => $datos['pais'],
+						'Datosprofesores_idDatosprofesor' => $idProfesor,
+						'PDF' => null,
+						'status' => 1
+					);
+					$this->EstudiosRealizados_model->setInstitucionER($datos['otrainstit']);
+					$this->EstudiosRealizados_model->insertarEstudioRealizado($dats);
+			}
+			if($datos['BInstit'] == 0){
+				//nomas metes los datos
+				//otra instit nomas es null
+				$dats = (object)array(
+					'Nivelestudios' => $datos['nivel'],
+					'Siglas' => $datos['siglas'],
+					'Estudiosen' => $datos['estudiosen'],
+					'Area' => $datos['area'],
+					'Disciplina' => $datos['disciplina'],
+					'Institucion' => $datos['otrainstit'],
+					'Institucionnoconsiderada' => '',
+					'Fechadeinicio' => $datos['fechainicio'],
+					'Fechadefin' => $datos['fechafin'],
+					'Fechadeobtencion' => $datos['fechaobt'],
+					'Pais' => $datos['pais'],
+					'Datosprofesores_idDatosprofesor' => $idProfesor,
+					'PDF' => null,
+					'status' => 1
+				);
+				$error = $this->EstudiosRealizados_model->insertarEstudioRealizado($dats);
+				//print_r($error);
+			}
+
+		}
+	}
+	public function EREliminar()
+	{
+		if($this->session->userdata('id') != 2)
+		{
+			redirect(base_url());
+		}
+		$datos = $this->input->post();
+
+		if(
+				isset($datos['id'])
+		){
+
+			$error = $this->EstudiosRealizados_model->eliminarEstudioRealizado($datos['id']);
+			//print_r($error);
+		}
+	}
 	//Fin de estudios realizados
 
 	//produccion academica - scott
