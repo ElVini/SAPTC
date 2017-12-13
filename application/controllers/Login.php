@@ -30,11 +30,19 @@ class Login extends CI_Controller {
 				break;
 
 			case '2':
-				$this->load->model('Usuario_model');
-				$data['titulo'] = 'SAPTC - Inicio';
-				$data['nombre'] = $this->session->userdata('user');
-				$data['query'] = $this->Usuario_model->obtenerRecordatorios($this->session->userdata('login'));
-				$this->load->view('User/inicio', $data);
+				if($this->Inicio_model->verificarEstado($this->session->userdata('login')) == 0)
+				{
+					$this->load->view('errors/error');
+					$this->session->sess_destroy();
+				}
+				else
+				{
+					$this->load->model('Usuario_model');
+					$data['titulo'] = 'SAPTC - Inicio';
+					$data['nombre'] = $this->session->userdata('user');
+					$data['query'] = $this->Usuario_model->obtenerRecordatorios($this->session->userdata('login'));
+					$this->load->view('User/inicio', $data);
+				}
 				break;
 		}
 	}
@@ -80,6 +88,7 @@ class Login extends CI_Controller {
 						$datos['nombre']=$this->Inicio_model->getNombre($res->Idlogin);
 						$datos['query']=$this->Usuario_model->obtenerRecordatorios();
 						redirect(base_url());
+
 					}
 				}
 			}
@@ -92,10 +101,11 @@ class Login extends CI_Controller {
 			$a = "Complete todos los campos.";
 		}
 		$this->session->set_flashdata('error',$a);
-		redirect(base_url());
 	}
 
 	public function logout()
+	redirect(base
+	_url());
 	{
 		$data = array(
 			'user'   => '',
