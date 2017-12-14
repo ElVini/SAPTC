@@ -101,11 +101,11 @@ class Login extends CI_Controller {
 			$a = "Complete todos los campos.";
 		}
 		$this->session->set_flashdata('error',$a);
+		redirect(base_url());
 	}
 
 	public function logout()
 	{
-		redirect(base_url());
 		$data = array(
 			'user'   => '',
 			'id'     => '',
