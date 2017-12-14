@@ -104,9 +104,8 @@ class Login extends CI_Controller {
 	}
 
 	public function logout()
-	redirect(base
-	_url());
 	{
+		redirect(base_url());
 		$data = array(
 			'user'   => '',
 			'id'     => '',
