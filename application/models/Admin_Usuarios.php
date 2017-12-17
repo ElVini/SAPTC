@@ -17,6 +17,22 @@ class Admin_Usuarios extends CI_Model
         $query = $this->db->query($usuarios);
         return $query;
     }
+
+    //Para modificar el estado del profesor
+    public function modificarEstado($id)
+    {
+        $query = $this->db->query('SELECT Estatus FROM datosprofesores WHERE idDatosprofesor = '.$id);
+        $e = $query->row();
+        if($e->Estatus == 1)
+        {
+            $this->db->query('UPDATE datosprofesores SET Estatus = 0 WHERE idDatosprofesor = '.$id);
+        }
+        if($e->Estatus == 0)
+        {
+            $this->db->query('UPDATE datosprofesores SET Estatus = 1 WHERE idDatosprofesor = '.$id);
+
+        }
+    }
 }
 
 ?>

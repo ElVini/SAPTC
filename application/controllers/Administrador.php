@@ -40,6 +40,13 @@ class Administrador extends CI_Controller {
 		$id = $this->input->get('id');
 	}
 
+	//Para activar o desactivar un perfil
+	public function modPerfil()
+	{
+		$this->Admin_Usuarios->modificarEstado($this->input->get('id'));
+		redirect(base_url('index.php/Administrador/Usuarios'));
+	}
+
 
 
 

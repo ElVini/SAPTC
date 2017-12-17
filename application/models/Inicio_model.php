@@ -55,5 +55,12 @@ class Inicio_model extends CI_Model {
 			return false;
 		}
 	}
+
+	public function verificarEstado($id)
+	{
+		$query = $this->db->query('SELECT Estatus FROM datosprofesores WHERE idDatosprofesor = '.$id);
+		$r = $query->row();
+		return $r->Estatus;
+	}
 }
 ?>
