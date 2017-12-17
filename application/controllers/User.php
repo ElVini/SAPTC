@@ -189,66 +189,241 @@ class User extends CI_Controller
 		}
 		$datos = $this->input->post();
 
+		print_r($datos);
+
+		$nombreDoc = $_FILES['PDFInputModal']['name'];
+	  $tamDoc = $_FILES['PDFInputModal']['size'];
+	  $tipoDoc = $_FILES['PDFInputModal']['type'];
+	  $tmpDoc = $_FILES['PDFInputModal']['tmp_name'];
+	  $errorDoc = $_FILES['PDFInputModal']['error'];
+	  $extensionDoc = strtolower(substr($nombreDoc,strpos($nombreDoc,'.')+1));
+
+		echo '<br>$nombreDoc: '.$nombreDoc;
+		echo '<br>$tamDoc: '.$tamDoc;
+		echo '<br>$tipoDoc: '.$tipoDoc;
+		echo '<br>$tmpDoc: '.$tmpDoc;
+		echo '<br>$errorDoc: '.$errorDoc;
+		echo '<br>$extensionDoc: '.$extensionDoc;
+
 		$idProfesor = 2;//aqui pones lo del id del profesor
 
+		if(isset($datos['estadoER']) && $datos['estadoER'] == 'Obtenido')
+		{
+				if(isset($nombreDoc))
+				{
+						if(
+							($extensionDoc == 'pdf' || $extensionDoc == 'png' || $extensionDoc == 'jpeg' || $extensionDoc == 'jpg')
+							&& ($tipoDoc == 'application/pdf' || $tipoDoc == 'image/jpeg' || $tipoDoc == 'image/png')
+						)
+						{
+							if(
+									isset($datos['nivel']) &&
+									isset($datos['siglas']) &&
+									isset($datos['estudiosen']) &&
+									isset($datos['area']) &&
+									isset($datos['disciplina']) &&
+									isset($datos['otrainstit']) &&
+									isset($datos['BInstit']) &&
+									isset($datos['fechainicio']) &&
+									isset($datos['fechafin']) &&
+									isset($datos['fechaobt']) &&
+									isset($datos['pais'])
+							){
+										//Se inserta la institucion en la tabla instit
 
-		if(
-				isset($datos['nivel']) &&
-				isset($datos['siglas']) &&
-				isset($datos['estudiosen']) &&
-				isset($datos['area']) &&
-				isset($datos['disciplina']) &&
-				isset($datos['otrainstit']) &&
-				isset($datos['BInstit']) &&
-				isset($datos['fechainicio']) &&
-				isset($datos['fechafin']) &&
-				isset($datos['fechaobt']) &&
-				isset($datos['pais'])
-		){
-			if($datos['BInstit'] == 1){
-					//Se inserta la institucion en la tabla instit
-					$dats = (object)array(
-						'Nivelestudios' => $datos['nivel'],
-						'Siglas' => $datos['siglas'],
-						'Estudiosen' => $datos['estudiosen'],
-						'Area' => $datos['area'],
-						'Disciplina' => $datos['disciplina'],
-						'Institucionnoconsiderada' => $datos['otrainstit'],
-						'Institucion' => 'Otra',
-						'Fechadeinicio' => $datos['fechainicio'],
-						'Fechadefin' => $datos['fechafin'],
-						'Fechadeobtencion' => $datos['fechaobt'],
-						'Pais' => $datos['pais'],
-						'Datosprofesores_idDatosprofesor' => $idProfesor,
-						'PDF' => null,
-						'status' => 1
-					);
-					$this->EstudiosRealizados_model->setInstitucionER($datos['otrainstit']);
-					$this->EstudiosRealizados_model->insertarEstudioRealizado($dats);
-			}
-			if($datos['BInstit'] == 0){
-				//nomas metes los datos
-				//otra instit nomas es null
-				$dats = (object)array(
-					'Nivelestudios' => $datos['nivel'],
-					'Siglas' => $datos['siglas'],
-					'Estudiosen' => $datos['estudiosen'],
-					'Area' => $datos['area'],
-					'Disciplina' => $datos['disciplina'],
-					'Institucion' => $datos['otrainstit'],
-					'Institucionnoconsiderada' => '',
-					'Fechadeinicio' => $datos['fechainicio'],
-					'Fechadefin' => $datos['fechafin'],
-					'Fechadeobtencion' => $datos['fechaobt'],
-					'Pais' => $datos['pais'],
-					'Datosprofesores_idDatosprofesor' => $idProfesor,
-					'PDF' => null,
-					'status' => 1
-				);
-				$error = $this->EstudiosRealizados_model->insertarEstudioRealizado($dats);
-				//print_r($error);
-			}
+										//ocupas el id del insertado
+										// if(!is_dir('assets/documentos/EstudiosRealizados/'.$v))
+										// 	mkdir('assets/documentos/EstudiosRealizados/'.$v, 0777, TRUE)
 
+										$instit = '';
+										$noinstit = '';
+
+										if($datos['BInstit'] == 1)
+										{
+											$instit = 'Otra';
+											$noinstit = $datos['otrainstit'];
+											$this->EstudiosRealizados_model->setInstitucionER($datos['otrainstit']);
+										}
+										if($datos['BInstit'] == 0)
+										{
+											$instit = $datos['otrainstit'];
+											$noinstit = '';
+										}
+										$dats = (object)array(
+											'Nivelestudios' => $datos['nivel'],
+											'Siglas' => $datos['siglas'],
+											'Estudiosen' => $datos['estudiosen'],
+											'Area' => $datos['area'],
+											'Disciplina' => $datos['disciplina'],
+											'Institucionnoconsiderada' => $noinstit,
+											'Institucion' => $instit,
+											'EstadoEstudio' => $datos['estadoER'],
+											'Fechadeinicio' => $datos['fechainicio'],
+											'Fechadefin' => $datos['fechafin'],
+											'Fechadeobtencion' => $datos['fechaobt'],
+											'Pais' => $datos['pais'],
+											'Datosprofesores_idDatosprofesor' => $idProfesor,
+											'PDF' => null,
+											'status' => 1
+										);
+										$arreglo = $this->EstudiosRealizados_model->insertarEstudioRealizado($dats);
+										if($arreglo['error']['message'] == '')
+										{
+											//si no hubo error al insertar el estudio
+											//se sube el documento
+
+											//crear carpeta
+											if(!is_dir('assets/documentos/EstudiosRealizados/'.$idProfesor))
+											 	mkdir('assets/documentos/EstudiosRealizados/'.$idProfesor, 0777, TRUE);
+
+											$ubicaDoc = 'assets/documentos/EstudiosRealizados/'.$idProfesor.'/';
+											if(!move_uploaded_file($tmpDoc, $ubicaDoc.$arreglo['lastID'].'.'.$extensionDoc))
+											{
+												//si erro al subir, borro lo de la tabla
+												$this->EstudiosRealizados_model->eliminarEstudioRealizado($arreglo['lastID']);
+												echo '<br><br><b>SUCEDIO UN ERROR AL SUBIR EL DOC Y TUVIMOS QUE BORRAR DE LA TABLA</b>';
+											}
+											else
+											{
+												//update al pdf
+												$this->EstudiosRealizados_model->cambiarRuta($arreglo['lastID'],$ubicaDoc.$arreglo['lastID'].'.'.$extensionDoc);
+												echo '<br><br><b>SE SUBIO E INCERTO BIEN, VERY GOOD</b>';
+											}
+										}
+							}
+							else
+								;//algun error, pq no un dato esta vacio-
+						}
+						else
+							;//mando algun archivo que no es aceptado
+				}
+				else
+					;//no mando archivo
+		}
+		else {
+			// para cuando no sea OBTENIDO
+/////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////
+			if(isset($datos['estadoER']) && $datos['estadoER'] == 'Finalizado\Por obtener')
+			{
+				if(
+						isset($datos['nivel']) &&
+						isset($datos['siglas']) &&
+						isset($datos['estudiosen']) &&
+						isset($datos['area']) &&
+						isset($datos['disciplina']) &&
+						isset($datos['otrainstit']) &&
+						isset($datos['BInstit']) &&
+						isset($datos['fechainicio']) &&
+						isset($datos['fechafin']) &&
+						isset($datos['pais'])
+				){
+
+							//Se inserta la institucion en la tabla instit
+							//si BInstit es 1
+
+							$instit = '';
+							$noinstit = '';
+
+							if($datos['BInstit'] == 1)
+							{
+								$instit = 'Otra';
+								$noinstit = $datos['otrainstit'];
+								$this->EstudiosRealizados_model->setInstitucionER($datos['otrainstit']);
+							}
+							if($datos['BInstit'] == 0)
+							{
+								$instit = $datos['otrainstit'];
+								$noinstit = '';
+							}
+
+							$dats = (object)array(
+								'Nivelestudios' => $datos['nivel'],
+								'Siglas' => $datos['siglas'],
+								'Estudiosen' => $datos['estudiosen'],
+								'Area' => $datos['area'],
+								'Disciplina' => $datos['disciplina'],
+								'Institucionnoconsiderada' => $noinstit,
+								'Institucion' => $instit,
+								'EstadoEstudio' => $datos['estadoER'],
+								'Fechadeinicio' => $datos['fechainicio'],
+								'Fechadefin' => $datos['fechafin'],
+								'Pais' => $datos['pais'],
+								'Datosprofesores_idDatosprofesor' => $idProfesor,
+								'PDF' => null,
+								'status' => 1
+							);
+							$arreglo = $this->EstudiosRealizados_model->insertarEstudioRealizado($dats);
+							// print_r($arreglo['error']['message']);
+				}
+				else
+					;//algun error, pq no un dato esta vacio
+
+			}
+/////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////
+			if(isset($datos['estadoER']) && $datos['estadoER'] == 'En Progreso')
+			{
+				if(
+						isset($datos['nivel']) &&
+						isset($datos['siglas']) &&
+						isset($datos['estudiosen']) &&
+						isset($datos['area']) &&
+						isset($datos['disciplina']) &&
+						isset($datos['otrainstit']) &&
+						isset($datos['BInstit']) &&
+						isset($datos['fechainicio']) &&
+						isset($datos['pais'])
+				){
+
+							//Se inserta la institucion en la tabla instit
+							//si BInstit es 1
+
+							$instit = '';
+							$noinstit = '';
+
+							if($datos['BInstit'] == 1)
+							{
+								$instit = 'Otra';
+								$noinstit = $datos['otrainstit'];
+								$this->EstudiosRealizados_model->setInstitucionER($datos['otrainstit']);
+							}
+							if($datos['BInstit'] == 0)
+							{
+								$instit = $datos['otrainstit'];
+								$noinstit = '';
+							}
+
+							$dats = (object)array(
+								'Nivelestudios' => $datos['nivel'],
+								'Siglas' => $datos['siglas'],
+								'Estudiosen' => $datos['estudiosen'],
+								'Area' => $datos['area'],
+								'Disciplina' => $datos['disciplina'],
+								'Institucionnoconsiderada' => $noinstit,
+								'Institucion' => $instit,
+								'EstadoEstudio' => $datos['estadoER'],
+								'Fechadeinicio' => $datos['fechainicio'],
+								'Pais' => $datos['pais'],
+								'Datosprofesores_idDatosprofesor' => $idProfesor,
+								'PDF' => null,
+								'status' => 1
+							);
+							$arreglo = $this->EstudiosRealizados_model->insertarEstudioRealizado($dats);
+							// print_r($arreglo['error']['message']);
+				}
+				else
+					;//algun error, pq no un dato esta vacio
+
+			}
 		}
 	}
 	public function EREliminar()
@@ -262,10 +437,64 @@ class User extends CI_Controller
 		if(
 				isset($datos['id'])
 		){
-
+			$ruta = $this->EstudiosRealizados_model->getRuta($datos['id']);
+			echo $datos['id'];
+			unlink($ruta->result()[0]->PDF);
 			$error = $this->EstudiosRealizados_model->eliminarEstudioRealizado($datos['id']);
 			//print_r($error);
 		}
+	}
+	public function creaCarpeta()
+	{
+		$v = 2;
+		if(!is_dir('assets/documentos/EstudiosRealizados/'.$v)){
+			if(mkdir('assets/documentos/EstudiosRealizados/'.$v, 0777, TRUE))
+				echo 'true';
+			else
+				echo 'false';//algun error al crearla xd
+			echo '<br>'.base_url('assets/documentos/EstudiosRealizados/2');
+		}else {
+			echo 'La direccion/carpeta ya existe brother';
+		}
+
+	}
+	public function borraArchivo()
+	{
+		if(!is_dir('assets/documentos/EstudiosRealizados/2/22'))
+		{
+			if(unlink('assets/documentos/EstudiosRealizados/2/22'))
+				echo 'se borro';
+			else
+				{echo 'no se borro';
+				redirect("https://youtube.com.mx");}
+				//queria ver si aunque da error te redirige
+		}else {
+			echo 'No existe ese archivo o se no se pudo borrar brother';
+		}
+
+	}
+	public function testYid()
+	{
+		$dats = (object)array(
+			'Nivelestudios' => 'test',
+			'Siglas' => 'test',
+			'Estudiosen' => 'test',
+			'Area' => 'test',
+			'Disciplina' => 'test',
+			'Institucion' => 'test',
+			'Institucionnoconsiderada' => '',
+			'Fechadeinicio' => '11/11/1111',
+			'Fechadefin' => '11/11/1111',
+			'Fechadeobtencion' => '11/11/1111',
+			'Pais' => 'test',
+			'Datosprofesores_idDatosprofesor' => 2,
+			'PDF' => null,
+			'status' => 1
+		);
+		$error = $this->EstudiosRealizados_model->insertarEstudioRealizado($dats);
+		print_r($error);
+		if($error['message'] == '')
+			echo 'no hubo error';
 	}
 	//Fin de estudios realizados
 

@@ -38,17 +38,34 @@ $(document).ready(function(){
             cssClass: 'btn-primary',
             action: function(dialogItself){
 
+              //por si de repente cambio estado, que no se suba ese valor
+              if($('#estadoER').val() == 'En Progreso'){
+                $('#FechaFinalizado').val('');
+                $('#FechaObtenido').val('');
+              }
+              if($('#estadoER').val() == 'Finalizado'){
+                $('#FechaObtenido').val('');
+              }
+
               if($('#NivelEst').val() != "" && CaracteresValidosER($('#NivelEst').val()) &&
                  $('#siglas').val() != "" && CaracteresValidosER($('#siglas').val()) &&
                  $('#EstdiosEn').val() != "" && CaracteresValidosER($('#EstdiosEn').val()) &&
                  $('#Area').val() != "" && CaracteresValidosER($('#Area').val()) &&
                  $('#Discip').val() != "" && CaracteresValidosER($('#Discip').val()) &&
                  $('#otraInstit').val() != "" && CaracteresValidosER($('#otraInstit').val()) &&
-                 $('#FechaIni').val() != "" && CaracteresValidosER($('#FechaIni').val()) &&
-                 $('#FechaFin').val() != "" && CaracteresValidosER($('#FechaFin').val()) &&
-                 $('#FechaObt').val() != "" && CaracteresValidosER($('#FechaObt').val()) &&
-                 $('#pais').val() != "" && CaracteresValidosER($('#pais').val())
+                 // $('#FechaIni').val() != "" && CaracteresValidosER($('#FechaIni').val()) &&
+                 // $('#FechaFin').val() != "" && CaracteresValidosER($('#FechaFin').val()) &&
+                 // $('#FechaObt').val() != "" && CaracteresValidosER($('#FechaObt').val()) &&
+                 $('#pais').val() != "" && CaracteresValidosER($('#pais').val()) &&
+                 ($('#estadoER').val() == 'En Progreso' && $('#FechaIni').val() != "") ||
+                 ($('#estadoER').val() == 'Finalizado\\Por obtener' && $('#FechaIni').val() != "" && $('#FechaFin').val() != "") ||
+                 ($('#estadoER').val() == 'Obtenido' && $('#FechaIni').val() != "" && $('#FechaFin').val() != "" && $('#FechaObt').val() != "" && document.getElementById("PDFInputModal").files.length > 0)
                 ){
+
+                  var file_extension = document.getElementById('PDFInputModal').value.split('.').pop();
+                  if(($('#estadoER').val() == 'Obtenido' && (file_extension=='pdf'||file_extension=='png'||file_extension=='jpg'||file_extension=='jpeg')) || $('#estadoER').val() == 'Finalizado\\Por obtener' || $('#estadoER').val() == 'En Progreso')
+                  {
+                  //////////////
                    BootstrapDialog.show({
                            title: '¿Seguro?',
                            message: '¿Esta seguro que desea agregar estos estudios?',
@@ -67,35 +84,11 @@ $(document).ready(function(){
                                action: function(dialog){
 
                                  var BInstit = ($('#selectInstit').val() == "Otra")?1:0;
+                                 $('#BInstit').val(BInstit);
                                  //se agrega si es 1
 
-                                 $.ajax({
-                                    type:"POST",
-                                    url:base_url+"index.php/User/ERAgregar",
-                                    data:{
-                                      'nivel' : $('#NivelEst').val(),
-                                      'siglas' : $('#siglas').val(),
-                                      'estudiosen' : $('#EstdiosEn').val(),
-                                      'area' : $('#Area').val(),
-                                      'disciplina' : $('#Discip').val(),
-                                      'otrainstit' : $('#otraInstit').val(),
-                                      'BInstit' : BInstit,
-                                      'fechainicio' : $('#FechaIni').val(),
-                                      'fechafin' : $('#FechaFin').val(),
-                                      'fechaobt' : $('#FechaObt').val(),
-                                      'pais' : $('#pais').val()
-                                    },
-                                    success:function (data)
-                                    {
-                                        alert('Datos agregados correctamente');
-                                        //location.reload();
-                                    },error:function(jqXHR, textStatus, errorThrown){
-                                        console.log('error:: '+ errorThrown);
-                                    }
-
-                            });
-
                                  $('.btnSi').prop('disabled', true);
+                                 $('#formER').submit();
                                    //location.reload();
                                    // PONLO CUANDO LE DES OK AL agregado correctamente
                                    dialog.close();
@@ -104,6 +97,10 @@ $(document).ready(function(){
                            }
                          ]
                        });
+                       /////////////////////
+                     }
+
+
                }else{
 
                  if(
@@ -135,6 +132,16 @@ $(document).ready(function(){
                       )
                          {
                             alert('Por favor solo ingrese caracteres validos');
+                         }else {
+                           if(document.getElementById("PDFInputModal").files.length < 1)
+                           {
+                             alert('Por favor suba un archivo');
+                           }else {
+                             if(file_extension!='pdf'&&file_extension!='png'&&file_extension!='jpg'&&file_extension!='jpeg')
+                             {
+                               alert('Ingrese un archivo con una de las extensiones permitidas');
+                             }
+                           }
                          }
                }
             }

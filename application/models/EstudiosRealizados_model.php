@@ -38,18 +38,39 @@ class EstudiosRealizados_model extends CI_Model
 		$query = $this->db->query('SELECT * FROM instituciones');
 		return $query;
 	}
+	public function getRuta($id)
+	{
+		$query = $this->db->query('SELECT * FROM estudiosrealizados WHERE idEstudiosrealizados = '.$id);;
+		return $query;
+	}
 	public function setInstitucionER($Institucion)
 	{
-		$dat = array(
-			'Nombre' => $Institucion
-		);
-		$this->db->insert('instituciones', $dat);
+		$query = $this->db->query('SELECT Nombre FROM instituciones WHERE Nombre = "'.$Institucion.'"');
+		if(count($query->result()) == 0)
+		{
+			$dat = array(
+				'Nombre' => $Institucion
+			);
+			$this->db->insert('instituciones', $dat);
+		}
 	}
 	public function insertarEstudioRealizado($data)
 	{
 		$this->db->insert('estudiosrealizados', $data);
-		return $this->db->error();
+		// return $this->db->insert_id();
+		$dat = array(
+			'error' => $this->db->error(),
+			'lastID' => $this->db->insert_id()
+		);
+		return $dat;
 	}
+	function cambiarRuta($id,$ruta)
+	{
+
+        $dat = array('PDF' => $ruta);
+        $this->db->where('idEstudiosrealizados', $id);
+        $this->db->update('estudiosrealizados', $dat);
+  }
 	public function eliminarEstudioRealizado($id)
 	{
 		$this -> db -> where('idEstudiosrealizados', $id);
