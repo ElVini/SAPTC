@@ -1,17 +1,38 @@
 <?php $this->load->view('Helpers/User/header'); ?>
 <script type="text/javascript" src="<?php echo base_url('assets/js/jquery-3.2.1.min.js') ?>"></script>
 <link rel="stylesheet" type="text/css" href="<?php echo base_url('assets/styles/bootstrap.min.css') ?>">
-<script type="text/javascript" src="<?php echo base_url('assets/js/bootstrap.min.js') ?>"></script>
+
 <link rel="stylesheet" type="text/css" href="<?php echo base_url('assets/styles/bootstrap-dialog.min.css') ?>">
 <script type="text/javascript" src="<?php echo base_url('assets/js/bootstrap-dialog.min.js') ?>"></script>
 <link rel="stylesheet" href="<?php echo base_url('assets/styles/estudiosRealizadosUsuario.css'); ?>">
-
 <script type="text/javascript">
 var idsER = [
-	<?php foreach ($estudios->result() as $query)
+	<?php
+	if($estudios != null)
 	{
-		echo '"'.$query->idEstudiosrealizados.'",';
-	} ?>
+		foreach ($estudios->result() as $query)
+		{
+			echo '
+			{
+				id: "'.$query->idEstudiosrealizados.'",
+				siglas: "'.$query->Siglas.'",
+				esen: "'.$query->Estudiosen.'",
+				institno: "'.$query->Institucionnoconsiderada.'",
+				estado: "'.$query->EstadoEstudio.'",
+				fini: "'.$query->Fechadeinicio.'",
+				ffin: "'.$query->Fechadefin.'",
+				fobt: "'.$query->Fechadeobtencion.'",
+				area: "'.$query->Area.'",
+				discip: "'.$query->Disciplina.'",
+				pais: "'.$query->Pais.'",
+				institucion: "'.$query->Institucion.'",
+				nivel: "'.$query->Nivelestudios.'",
+				pdf: "'.$query->PDF.'",
+			}
+			,';
+		}
+	}
+	?>
 
 ]
 </script>
@@ -48,21 +69,12 @@ var idsER = [
 			<table class="table table-hover" id="tablaEstudios">
 				<thead id="TablaCabeza">
 					<tr>
-						<!-- <th>idEstudio</th> -->
 						<th>Siglas</th>
 						<th>Estudios En</th>
-						<!-- <th>Institucionnoconsiderada</th>
-						<th>Fecha de Inicio</th>
-						<th>Fecha de Fin</th>
-						<th>Fecha de Obtención</th> -->
 						<th>Área</th>
 						<th>Disciplina</th>
-						<!-- <th>País</th> -->
 						<th>Institución</th>
 						<th>Nivel de Estudios</th>
-						<!-- <th>Id Profesor</th>
-						<th>PDF</th>
-						<th>Status</th> -->
 						<th></th>
 					</tr>
 				</thead>
@@ -71,7 +83,7 @@ var idsER = [
 					<?php
 					if($estudios == null)
 					{
-						echo '<tr><td colspan = "6"><center>Aún no se cuenta con estudios realizados</center></td></tr>';
+						echo '<tr id="nohay"><td colspan = "7" style="background-color: silver"><center>Aún no se cuenta con estudios realizados</center></td></tr>';
 					}
 					else
 					{
@@ -79,17 +91,10 @@ var idsER = [
 						foreach($estudios->result() as $query)
 						{
 							echo '<tr id="TablaLinea" data-valor="'.$x.'">';
-							//echo '<td>'.$query->idEstudiosrealizados.'</td>';
 							echo '<td>'.$query->Siglas.'</td>';
 							echo '<td>'.$query->Estudiosen.'</td>';
-							// echo '<td>'.$query->Institucionnoconsiderada.'</td>';
-							// echo '<td>'.$query->Fechadeinicio.'</td>';
-							// echo '<td>'.$query->Fechadefin.'</td>';
-							// echo '<td>'.$query->Fechadeobtencion.'</td>';
 							echo '<td>'.$query->Area.'</td>';
 							echo '<td>'.$query->Disciplina.'</td>';
-							// echo '<td>'.$query->Pais.'</td>';
-
 							echo '<td>';
 							if($query->Institucion == "Otra"){
 								echo $query->Institucionnoconsiderada;
@@ -98,11 +103,7 @@ var idsER = [
 							}
 							echo '</td>';
 							echo '<td>'.$query->Nivelestudios.'</td>';
-							// echo '<td>'.$query->Datosprofesores_idDatosprofesor.'</td>';
-							// echo '<td>'.$query->PDF.'</td>';
-							// echo '<td>'.$query->status.'</td>';
-							echo '<td id="detalles"><a href="#">Ver detalles</a></td>';
-
+							echo '<td id="detalles" class="detallesB"><a href="#">Ver detalles</a></td>';
 							echo '</tr>';
 							$x++;
 						}

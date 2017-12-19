@@ -7,8 +7,11 @@ $(document).ready(function(){
       }
       //cuando no la tiene la asigna al tr y la elimina de los demas
       else{
-        $(this).parent().addClass('highlight').siblings().removeClass('highlight');
-        $(".DivELetrasrojas").hide('slow');
+        if($(this).parent().attr('id') != 'nohay')
+        {
+          $(this).parent().addClass('highlight').siblings().removeClass('highlight');
+          $(".DivELetrasrojas").hide('slow');
+        }
       }
     });
     //remueve el highlight de todos los tr cuando se le pica a la etiqueta a
@@ -22,7 +25,7 @@ $(document).ready(function(){
       BootstrapDialog.show({
         size: BootstrapDialog.SIZE_WIDE,
         title: 'Agregar Estudio',
-        message: $(`<div class="clearfix"></div>`).load(base_url+'index.php/User/ERform/2'),
+        message: $(`<div class="clearfix"></div>`).load(base_url+'index.php/User/ERform/0/0'),
         buttons: [
         {
             label: 'Cancelar',
@@ -252,11 +255,11 @@ $(document).ready(function(){
                        type:"POST",
                        url:base_url+"index.php/User/EREliminar",
                        data:{
-                         'id' : idsER[$('.highlight').data('valor')]
+                         'id' : idsER[$('.highlight').data('valor')].id
                        },
                        success:function (data)
                        {
-                           alert('Datos borrados exitosamente');
+                           // alert('Datos borrados exitosamente');
                        },error:function(jqXHR, textStatus, errorThrown){
                            console.log('error:: '+ errorThrown);
                        }
@@ -264,14 +267,33 @@ $(document).ready(function(){
                });
 
                     $('.btnSi').prop('disabled', true);
-                      //location.reload();
-                      // PONLO CUANDO LE DES OK AL agregado correctamente
+                    location.reload();
+
                       dialog.close();
                       dialogItself.close();
                   }
               }
             ]
           });
+    }
+    function Detalles(idERD){
+
+      BootstrapDialog.show({
+        size: BootstrapDialog.SIZE_WIDE,
+        title: 'Agregar Estudio',
+        message: $(`<div class="clearfix"></div>`).load(base_url+'index.php/User/ERform/'+idERD+'/1'),
+        buttons: [
+        {
+            label: 'Aceptar',
+            cssClass: 'btn-primary',
+            id: 'btnModalCancelar',
+            action: function(dialogItself){
+                dialogItself.close();
+            }
+        }
+      ]
+    });
+
     }
     $('#AgregarB').on('click', function(event) {
        AgregarEstudio();
@@ -285,8 +307,8 @@ $(document).ready(function(){
       }
 
       });
-    $('#DatallesB').on('click', function(event) {
-
+    $('.detallesB').on('click', function(event) {
+       Detalles(idsER[$(this).parent().data('valor')].id);
       });
 
 

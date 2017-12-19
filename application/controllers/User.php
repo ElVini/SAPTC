@@ -167,18 +167,31 @@ class User extends CI_Controller
 		}
 
 		$idERUser = $this->session->userdata('login');
-		$data['estudios'] = $this->EstudiosRealizados_model->getEstudios(/*$idERUser*/2);
+		$data['estudios'] = $this->EstudiosRealizados_model->getEstudios($idERUser);
 		$data['titulo'] = 'SAPTC - Estudios Realizados';
 		$this->load->view('User/estudiosRealizados', $data);
 	}
-	public function ERform($id)
+	public function ERform($id,$disabled)
 	{
 		if($this->session->userdata('id') != 2)
 		{
 			redirect(base_url());
 		}
-		$data['datos'] = $this->EstudiosRealizados_model->getEstudio($id);
+		if($id > 0)
+		{
+			$data['datos'] = $this->EstudiosRealizados_model->getEstudio($id);
+			$data['datos'] = $data['datos']->result()[0];
+		}
+		else {
+			$data['datos'] = null;
+		}
 		$data['instituciones'] = $this->EstudiosRealizados_model->getInstituciones();
+		if($disabled == 1)
+		{
+			$data['disabled'] = 1;
+		}else {
+			$data['disabled'] = 0;
+		}
 		$this->load->view('forms/estudiosRealizados', $data);
 	}
 	public function ERAgregar()
@@ -189,7 +202,7 @@ class User extends CI_Controller
 		}
 		$datos = $this->input->post();
 
-		print_r($datos);
+		// print_r($datos);
 
 		$nombreDoc = $_FILES['PDFInputModal']['name'];
 	  $tamDoc = $_FILES['PDFInputModal']['size'];
@@ -197,15 +210,15 @@ class User extends CI_Controller
 	  $tmpDoc = $_FILES['PDFInputModal']['tmp_name'];
 	  $errorDoc = $_FILES['PDFInputModal']['error'];
 	  $extensionDoc = strtolower(substr($nombreDoc,strpos($nombreDoc,'.')+1));
+    //
+		// echo '<br>$nombreDoc: '.$nombreDoc;
+		// echo '<br>$tamDoc: '.$tamDoc;
+		// echo '<br>$tipoDoc: '.$tipoDoc;
+		// echo '<br>$tmpDoc: '.$tmpDoc;
+		// echo '<br>$errorDoc: '.$errorDoc;
+		// echo '<br>$extensionDoc: '.$extensionDoc;
 
-		echo '<br>$nombreDoc: '.$nombreDoc;
-		echo '<br>$tamDoc: '.$tamDoc;
-		echo '<br>$tipoDoc: '.$tipoDoc;
-		echo '<br>$tmpDoc: '.$tmpDoc;
-		echo '<br>$errorDoc: '.$errorDoc;
-		echo '<br>$extensionDoc: '.$extensionDoc;
-
-		$idProfesor = 2;//aqui pones lo del id del profesor
+		$idProfesor = $this->session->userdata('login');
 
 		if(isset($datos['estadoER']) && $datos['estadoER'] == 'Obtenido')
 		{
@@ -230,10 +243,6 @@ class User extends CI_Controller
 									isset($datos['pais'])
 							){
 										//Se inserta la institucion en la tabla instit
-
-										//ocupas el id del insertado
-										// if(!is_dir('assets/documentos/EstudiosRealizados/'.$v))
-										// 	mkdir('assets/documentos/EstudiosRealizados/'.$v, 0777, TRUE)
 
 										$instit = '';
 										$noinstit = '';
@@ -271,7 +280,6 @@ class User extends CI_Controller
 										{
 											//si no hubo error al insertar el estudio
 											//se sube el documento
-
 											//crear carpeta
 											if(!is_dir('assets/documentos/EstudiosRealizados/'.$idProfesor))
 											 	mkdir('assets/documentos/EstudiosRealizados/'.$idProfesor, 0777, TRUE);
@@ -281,13 +289,12 @@ class User extends CI_Controller
 											{
 												//si erro al subir, borro lo de la tabla
 												$this->EstudiosRealizados_model->eliminarEstudioRealizado($arreglo['lastID']);
-												echo '<br><br><b>SUCEDIO UN ERROR AL SUBIR EL DOC Y TUVIMOS QUE BORRAR DE LA TABLA</b>';
 											}
 											else
 											{
-												//update al pdf
+												//update al pdf para ponerle la ruta
 												$this->EstudiosRealizados_model->cambiarRuta($arreglo['lastID'],$ubicaDoc.$arreglo['lastID'].'.'.$extensionDoc);
-												echo '<br><br><b>SE SUBIO E INCERTO BIEN, VERY GOOD</b>';
+												redirect(base_url('index.php/User/estudiosRealizados'));
 											}
 										}
 							}
@@ -359,6 +366,8 @@ class User extends CI_Controller
 							);
 							$arreglo = $this->EstudiosRealizados_model->insertarEstudioRealizado($dats);
 							// print_r($arreglo['error']['message']);
+
+							redirect(base_url('index.php/User/estudiosRealizados'));
 				}
 				else
 					;//algun error, pq no un dato esta vacio
@@ -419,6 +428,8 @@ class User extends CI_Controller
 							);
 							$arreglo = $this->EstudiosRealizados_model->insertarEstudioRealizado($dats);
 							// print_r($arreglo['error']['message']);
+
+							redirect(base_url('index.php/User/estudiosRealizados'));
 				}
 				else
 					;//algun error, pq no un dato esta vacio
@@ -438,63 +449,20 @@ class User extends CI_Controller
 				isset($datos['id'])
 		){
 			$ruta = $this->EstudiosRealizados_model->getRuta($datos['id']);
-			echo $datos['id'];
 			unlink($ruta->result()[0]->PDF);
 			$error = $this->EstudiosRealizados_model->eliminarEstudioRealizado($datos['id']);
 			//print_r($error);
 		}
 	}
-	public function creaCarpeta()
+	public function descargarEstudio($id)
 	{
-		$v = 2;
-		if(!is_dir('assets/documentos/EstudiosRealizados/'.$v)){
-			if(mkdir('assets/documentos/EstudiosRealizados/'.$v, 0777, TRUE))
-				echo 'true';
-			else
-				echo 'false';//algun error al crearla xd
-			echo '<br>'.base_url('assets/documentos/EstudiosRealizados/2');
-		}else {
-			echo 'La direccion/carpeta ya existe brother';
-		}
-
-	}
-	public function borraArchivo()
-	{
-		if(!is_dir('assets/documentos/EstudiosRealizados/2/22'))
+		$ruta = $this->EstudiosRealizados_model->getRuta($id);
+		if($ruta!=null && $ruta->result()[0]->Datosprofesores_idDatosprofesor == $this->session->userdata('login'))
 		{
-			if(unlink('assets/documentos/EstudiosRealizados/2/22'))
-				echo 'se borro';
-			else
-				{echo 'no se borro';
-				redirect("https://youtube.com.mx");}
-				//queria ver si aunque da error te redirige
-		}else {
-			echo 'No existe ese archivo o se no se pudo borrar brother';
+			$ruta = $ruta->result()[0]->PDF;
+			$data['ruta'] = base_url().$ruta;
+			$this->load->view('User/estudiosRealizadosArchivo',$data);
 		}
-
-	}
-	public function testYid()
-	{
-		$dats = (object)array(
-			'Nivelestudios' => 'test',
-			'Siglas' => 'test',
-			'Estudiosen' => 'test',
-			'Area' => 'test',
-			'Disciplina' => 'test',
-			'Institucion' => 'test',
-			'Institucionnoconsiderada' => '',
-			'Fechadeinicio' => '11/11/1111',
-			'Fechadefin' => '11/11/1111',
-			'Fechadeobtencion' => '11/11/1111',
-			'Pais' => 'test',
-			'Datosprofesores_idDatosprofesor' => 2,
-			'PDF' => null,
-			'status' => 1
-		);
-		$error = $this->EstudiosRealizados_model->insertarEstudioRealizado($dats);
-		print_r($error);
-		if($error['message'] == '')
-			echo 'no hubo error';
 	}
 	//Fin de estudios realizados
 

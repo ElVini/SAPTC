@@ -41,7 +41,14 @@ class EstudiosRealizados_model extends CI_Model
 	public function getRuta($id)
 	{
 		$query = $this->db->query('SELECT * FROM estudiosrealizados WHERE idEstudiosrealizados = '.$id);;
-		return $query;
+		if($query->num_rows() > 0)
+		{
+			return $query;
+		}
+		else
+		{
+			return null;
+		}
 	}
 	public function setInstitucionER($Institucion)
 	{
