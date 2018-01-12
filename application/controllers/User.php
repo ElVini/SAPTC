@@ -14,18 +14,43 @@ class User extends CI_Controller
 		$this->load->model('premiosoDistinciones_model');
 		$this->load->model('CuerpoAcademico_model');
 		$this->load->model('Docencia_model');
+		$this->load->model('Inicio_model');
 		$this->load->library(array('session'));
+	}
+
+	/**
+	* Función que verificará que el usuario no halla sido dado de baja mientras su sesión
+	* estaba activa, si la cuenta del usuario es desactivada mientras está ingresado en
+	* el sistema, éste cerrará su sesión automaticamente y notificará sobre esto al usuario.
+	* Debe mandarse llamar por primera vez al inicio de cada nueva función que se declare,
+	* y validar que la sesión siga disponible o no.
+	* Retorna un valor true si el perfil ha sido desactivado.
+	* La función es privada debido a que sólo será utilizada dentro de este controlador
+	*/
+	private function acceso($id)
+	{
+		if($this->Inicio_model->verificarEstado($id) == 0)
+		{
+			$this->load->view('errors/error');
+			$this->session->sess_destroy();
+			redirect(base_url());
+			return true;
+		}
 	}
 //Inicio
 	public function index()
 	{
-		if($this->session->userdata('tipo') !='2')
+		if($this->acceso($this->session->userdata('login')));
+		else
 		{
-			redirect(base_url());
+			if($this->session->userdata('tipo') !='2')
+			{
+				redirect(base_url());
+			}
+			$data['titulo'] = 'SAPTC - Inicio';
+			$data['query'] = $this->Usuario_model->obtenerRecordatorios();
+			$this->load->view('User/inicio',$data);
 		}
-		$data['titulo'] = 'SAPTC - Inicio';
-		$data['query'] = $this->Usuario_model->obtenerRecordatorios();
-		$this->load->view('User/inicio',$data);
 	}
 	public function funcionRecordatorio()
 	{
@@ -36,38 +61,46 @@ class User extends CI_Controller
 		//ultimo parametro de la funcion define funcionalidad
 		// 0 - agregar/Modificar
 		// 1 - eliminar
-		if(isset($_POST['idrecordatorios']) && $_POST['idrecordatorios']==""){
-				$this->Usuario_model->funcionesRecordatorios(-1, $_POST['date'], $_POST['title'], $_POST['description'], 0);
-		}
-		else if(isset($_POST['idAborrar'])) {
-			$id = $_POST['idAborrar'];
-			$funcion = 1; //eliminar
-			$this->Usuario_model->funcionesRecordatorios($id, "" , "", "", $funcion);
-		}
-		else{
-			$id = $_POST['idrecordatorios'];
-			$this->Usuario_model->funcionesRecordatorios($id, $_POST['date'], $_POST['title'], $_POST['description'], 0);
-		}
+		if($this->acceso($this->session->userdata('login')));
+		else
+		{
+			if(isset($_POST['idrecordatorios']) && $_POST['idrecordatorios']==""){
+					$this->Usuario_model->funcionesRecordatorios(-1, $_POST['date'], $_POST['title'], $_POST['description'], 0);
+			}
+			else if(isset($_POST['idAborrar'])) {
+				$id = $_POST['idAborrar'];
+				$funcion = 1; //eliminar
+				$this->Usuario_model->funcionesRecordatorios($id, "" , "", "", $funcion);
+			}
+			else{
+				$id = $_POST['idrecordatorios'];
+				$this->Usuario_model->funcionesRecordatorios($id, $_POST['date'], $_POST['title'], $_POST['description'], 0);
+			}
 
-		redirect(base_url());
+			redirect(base_url());
+		}
 	}
 // Fin  de inicio
 //Tutorías
 	public function tutorias()
 	{
-		if($this->session->userdata('id') != 2)
-		{
-			redirect(base_url());
-		}
-		else if($this->session->userdata('id') == 2)
-		{
-			$data['tutorias'] = $this->Usuario_model->getTutorias($this->session->userdata('login'));
-			$data['titulo'] = 'SAPTC - Tutorías';
-			$this->load->view('User/tutorias', $data);
-		}
+		if($this->acceso($this->session->userdata('login')));
 		else
 		{
-			redirect(base_url());
+			if($this->session->userdata('id') != 2)
+			{
+				redirect(base_url());
+			}
+			else if($this->session->userdata('id') == 2)
+			{
+				$data['tutorias'] = $this->Usuario_model->getTutorias($this->session->userdata('login'));
+				$data['titulo'] = 'SAPTC - Tutorías';
+				$this->load->view('User/tutorias', $data);
+			}
+			else
+			{
+				redirect(base_url());
+			}
 		}
 	}
 
@@ -142,18 +175,22 @@ class User extends CI_Controller
 //Docencias
 	public function docencias()
 	{
-		if($this->session->userdata('id') != 2)
-		{
-			redirect(base_url());
-		}
-		else if($this->session->userdata('id') == 2)
-		{
-			$data['titulo'] = 'SAPTC - Docencias';
-			$this->load->view('User/docencais', $data);
-		}
+		if($this->acceso($this->session->userdata('login')));
 		else
 		{
-			redirect(base_url());
+			if($this->session->userdata('id') != 2)
+			{
+				redirect(base_url());
+			}
+			else if($this->session->userdata('id') == 2)
+			{
+				$data['titulo'] = 'SAPTC - Docencias';
+				$this->load->view('User/docencais', $data);
+			}
+			else
+			{
+				redirect(base_url());
+			}
 		}
 	}
 	//Fin de docencias
@@ -161,15 +198,19 @@ class User extends CI_Controller
 	//Estudios Realizados
 	public function estudiosRealizados()
 	{
-		if($this->session->userdata('id') != 2)
+		if($this->acceso($this->session->userdata('login')));
+		else
 		{
-			redirect(base_url());
-		}
+			if($this->session->userdata('id') != 2)
+			{
+				redirect(base_url());
+			}
 
-		$idERUser = $this->session->userdata('login');
-		$data['estudios'] = $this->EstudiosRealizados_model->getEstudios($idERUser);
-		$data['titulo'] = 'SAPTC - Estudios Realizados';
-		$this->load->view('User/estudiosRealizados', $data);
+			$idERUser = $this->session->userdata('login');
+			$data['estudios'] = $this->EstudiosRealizados_model->getEstudios($idERUser);
+			$data['titulo'] = 'SAPTC - Estudios Realizados';
+			$this->load->view('User/estudiosRealizados', $data);
+		}
 	}
 	public function ERform($id,$disabled)
 	{
@@ -309,12 +350,6 @@ class User extends CI_Controller
 		}
 		else {
 			// para cuando no sea OBTENIDO
-/////////////////////////////////////////////////////////////////////////////////////////////
-/////////////////////////////////////////////////////////////////////////////////////////////
-/////////////////////////////////////////////////////////////////////////////////////////////
-/////////////////////////////////////////////////////////////////////////////////////////////
-/////////////////////////////////////////////////////////////////////////////////////////////
-/////////////////////////////////////////////////////////////////////////////////////////////
 			if(isset($datos['estadoER']) && $datos['estadoER'] == 'Finalizado\Por obtener')
 			{
 				if(
@@ -373,12 +408,7 @@ class User extends CI_Controller
 					;//algun error, pq no un dato esta vacio
 
 			}
-/////////////////////////////////////////////////////////////////////////////////////////////
-/////////////////////////////////////////////////////////////////////////////////////////////
-/////////////////////////////////////////////////////////////////////////////////////////////
-/////////////////////////////////////////////////////////////////////////////////////////////
-/////////////////////////////////////////////////////////////////////////////////////////////
-/////////////////////////////////////////////////////////////////////////////////////////////
+
 			if(isset($datos['estadoER']) && $datos['estadoER'] == 'En Progreso')
 			{
 				if(
@@ -468,14 +498,18 @@ class User extends CI_Controller
 
 	//produccion academica - scott
 	public function produccion_academica(){
-		if($this->session->userdata('id') != 2)
+		if($this->acceso($this->session->userdata('login')));
+		else
 		{
-			redirect(base_url());
-		}
-		else{
-			$data['titulo'] = 'SAPTC - Producción Académica';
-			$data['query'] = $this->ProduccionAca_model->getData();
-			$this->load->view('User/produccion_academica',$data);
+			if($this->session->userdata('id') != 2)
+			{
+				redirect(base_url());
+			}
+			else{
+				$data['titulo'] = 'SAPTC - Producción Académica';
+				$data['query'] = $this->ProduccionAca_model->getData();
+				$this->load->view('User/produccion_academica',$data);
+			}
 		}
 	}
 
@@ -548,6 +582,7 @@ class User extends CI_Controller
 
 	public function perfil()
 	{
+		$this->acceso($this->session->userdata('login'));
 		if($this->session->userdata('id') != 2)
 		{
 			redirect(base_url());
@@ -607,19 +642,23 @@ class User extends CI_Controller
 	// Datos laborales
 	public function datosLaborales()
 	{
-		if($this->session->userdata('id') != 2)
-		{
-			redirect(base_url());
-		}
-		else if($this->session->userdata('id') == 2)
-		{
-			$data['titulo'] = 'SAPTC - Datos Laborales';
-			$data['datos'] = $this->datosLaborales_model->obtiene($this->session->userdata('login'));
-			$this->load->view('User/datosLaborales', $data);
-		}
+		if($this->acceso($this->session->userdata('login')));
 		else
 		{
-			redirect(base_url());
+			if($this->session->userdata('id') != 2)
+			{
+				redirect(base_url());
+			}
+			else if($this->session->userdata('id') == 2)
+			{
+				$data['titulo'] = 'SAPTC - Datos Laborales';
+				$data['datos'] = $this->datosLaborales_model->obtiene($this->session->userdata('login'));
+				$this->load->view('User/datosLaborales', $data);
+			}
+			else
+			{
+				redirect(base_url());
+			}
 		}
 	}
 	public function form_datoslaborales($id, $el)
@@ -694,20 +733,24 @@ class User extends CI_Controller
 	// Premios o distinciones
 	public function premiosoDisticiones()
 	{
-		if($this->session->userdata('id') != 2)
-		{
-			redirect(base_url());
-		}
-		else if($this->session->userdata('id') == 2)
-		{
-			$data['titulo'] = 'SAPTC - Premios o Distinciones';
-			$data['datos'] = $this->premiosoDistinciones_model->obtiene($this->session->userdata('login'));
-			$data["inst"]=$this->premiosoDistinciones_model->obtienei();
-			$this->load->view('User/premiosoDistinciones', $data);
-		}
+		if($this->acceso($this->session->userdata('login')));
 		else
 		{
-			redirect(base_url());
+			if($this->session->userdata('id') != 2)
+			{
+				redirect(base_url());
+			}
+			else if($this->session->userdata('id') == 2)
+			{
+				$data['titulo'] = 'SAPTC - Premios o Distinciones';
+				$data['datos'] = $this->premiosoDistinciones_model->obtiene($this->session->userdata('login'));
+				$data["inst"]=$this->premiosoDistinciones_model->obtienei();
+				$this->load->view('User/premiosoDistinciones', $data);
+			}
+			else
+			{
+				redirect(base_url());
+			}
 		}
 	}
 	public function formu_premios($id)
@@ -736,12 +779,12 @@ class User extends CI_Controller
 		{	$dec = $this->input->post('io');
 		}
 		$datos = (object)array(
-							'Nombre'=>$this->input->post('npd'),
-							'Fecha'=>$this->input->post('f'),
-							'Otrainstitucion'=>$this->input->post('oio'),
-							'Motivo'=>$this->input->post('m'),
-							'Datosprofesores_idDatosprofesor'=>$this->session->userdata('login'),
-							'Instituciones_idInstituciones'=>$dec);
+					'Nombre'=>$this->input->post('npd'),
+					'Fecha'=>$this->input->post('f'),
+					'Otrainstitucion'=>$this->input->post('oio'),
+					'Motivo'=>$this->input->post('m'),
+					'Datosprofesores_idDatosprofesor'=>$this->session->userdata('login'),
+					'Instituciones_idInstituciones'=>$dec);
 	$this->premiosoDistinciones_model->insert_data($datos);
 	}
 	public function agregaInstitucion()
@@ -784,18 +827,22 @@ class User extends CI_Controller
 
 	//Datos del cuerpo académico
 	public function cuerpoAcademico(){
-		if($this->session->userdata('id') != 2)
+		if($this->acceso($this->session->userdata('login')));
+		else
 		{
-			redirect(base_url());
-		}
-		else{
-			$data['titulo'] = 'SAPTC - Cuerpo Académico';
-			$data['cuerpoAc'] = $this->CuerpoAcademico_model->obtenerCuerpoAcademico();
-			if(is_object($data['cuerpoAc']) && (count(get_object_vars($data['cuerpoAc'])) > 0)){
-				$data['cuerpoAcLi'] = $this->CuerpoAcademico_model->obtenerLineaCA($data['cuerpoAc']);
+			if($this->session->userdata('id') != 2)
+			{
+				redirect(base_url());
 			}
+			else{
+				$data['titulo'] = 'SAPTC - Cuerpo Académico';
+				$data['cuerpoAc'] = $this->CuerpoAcademico_model->obtenerCuerpoAcademico();
+				if(is_object($data['cuerpoAc']) && (count(get_object_vars($data['cuerpoAc'])) > 0)){
+					$data['cuerpoAcLi'] = $this->CuerpoAcademico_model->obtenerLineaCA($data['cuerpoAc']);
+				}
 
-			$this->load->view('User/cuerpoAcademico',$data);
+				$this->load->view('User/cuerpoAcademico',$data);
+			}
 		}
 	}
 
@@ -857,14 +904,18 @@ class User extends CI_Controller
 
 //Docencia
 	public function docencia(){
-		if($this->session->userdata('id') != 2)
+		if($this->acceso($this->session->userdata('login')));
+		else
 		{
-			redirect(base_url());
-		}
-		else{
-			$data['titulo'] = 'SAPTC - Docencia';
-			$data['docencias'] = $this->Docencia_model->obtenerDocencias();
-			$this->load->view('User/docencia',$data);
+			if($this->session->userdata('id') != 2)
+			{
+				redirect(base_url());
+			}
+			else{
+				$data['titulo'] = 'SAPTC - Docencia';
+				$data['docencias'] = $this->Docencia_model->obtenerDocencias();
+				$this->load->view('User/docencia',$data);
+			}
 		}
 	}
 

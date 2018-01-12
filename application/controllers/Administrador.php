@@ -37,7 +37,9 @@ class Administrador extends CI_Controller {
 	//Para detalles de usuario en la vista de control de usuarios
 	public function User()
 	{
-		$id = $this->input->get('id');
+		$data['query'] = $this->Admin_Usuarios->getUsuario($this->input->get('id'));
+		$data['titulo'] = 'SAPTC | Detalles';
+		$this->load->view('Admin/detallesUsuario', $data);
 	}
 
 	//Para activar o desactivar un perfil
