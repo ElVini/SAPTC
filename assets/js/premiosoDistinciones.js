@@ -2,10 +2,7 @@
   function otraInstitucion()
   { if ($('#io').val() == 0 &&  $('#io').val() !="")
     { $('.otra').show();
-    }
-    else if ($('#io').val() != 0 )
-    { $('.otra').hide();
-      $('#oio').val('');
+      $('.primera').hide();
     }
   }
 $(document).ready(function(){

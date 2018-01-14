@@ -12,7 +12,7 @@ var x = 0;
 
 
 
-function guardar() {
+function guardar(event) {
 	event.preventDefault();
 	if(tipoTutoria.selectedIndex == 0 || nivel.selectedIndex == 0 || pEdu.selectedIndex == 0 || fechaInicio == null|| fechaFin == null || estado.selectedIndex == 0) {
 		BootstrapDialog.show({

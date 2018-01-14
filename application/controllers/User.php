@@ -14,18 +14,43 @@ class User extends CI_Controller
 		$this->load->model('premiosoDistinciones_model');
 		$this->load->model('CuerpoAcademico_model');
 		$this->load->model('Docencia_model');
+		$this->load->model('Inicio_model');
 		$this->load->library(array('session'));
+	}
+
+	/**
+	* Función que verificará que el usuario no halla sido dado de baja mientras su sesión
+	* estaba activa, si la cuenta del usuario es desactivada mientras está ingresado en
+	* el sistema, éste cerrará su sesión automaticamente y notificará sobre esto al usuario.
+	* Debe mandarse llamar por primera vez al inicio de cada nueva función que se declare,
+	* y validar que la sesión siga disponible o no.
+	* Retorna un valor true si el perfil ha sido desactivado.
+	* La función es privada debido a que sólo será utilizada dentro de este controlador
+	*/
+	private function acceso($id)
+	{
+		if($this->Inicio_model->verificarEstado($id) == 0)
+		{
+			$this->load->view('errors/error');
+			$this->session->sess_destroy();
+			redirect(base_url());
+			return true;
+		}
 	}
 //Inicio
 	public function index()
 	{
-		if($this->session->userdata('tipo') !='2')
+		if($this->acceso($this->session->userdata('login')));
+		else
 		{
-			redirect(base_url());
+			if($this->session->userdata('tipo') !='2')
+			{
+				redirect(base_url());
+			}
+			$data['titulo'] = 'SAPTC - Inicio';
+			$data['query'] = $this->Usuario_model->obtenerRecordatorios();
+			$this->load->view('User/inicio',$data);
 		}
-		$data['titulo'] = 'SAPTC - Inicio';
-		$data['query'] = $this->Usuario_model->obtenerRecordatorios();
-		$this->load->view('User/inicio',$data);
 	}
 	public function funcionRecordatorio()
 	{
@@ -36,38 +61,46 @@ class User extends CI_Controller
 		//ultimo parametro de la funcion define funcionalidad
 		// 0 - agregar/Modificar
 		// 1 - eliminar
-		if(isset($_POST['idrecordatorios']) && $_POST['idrecordatorios']==""){
-				$this->Usuario_model->funcionesRecordatorios(-1, $_POST['date'], $_POST['title'], $_POST['description'], 0);
-		}
-		else if(isset($_POST['idAborrar'])) {
-			$id = $_POST['idAborrar'];
-			$funcion = 1; //eliminar
-			$this->Usuario_model->funcionesRecordatorios($id, "" , "", "", $funcion);
-		}
-		else{
-			$id = $_POST['idrecordatorios'];
-			$this->Usuario_model->funcionesRecordatorios($id, $_POST['date'], $_POST['title'], $_POST['description'], 0);
-		}
+		if($this->acceso($this->session->userdata('login')));
+		else
+		{
+			if(isset($_POST['idrecordatorios']) && $_POST['idrecordatorios']==""){
+					$this->Usuario_model->funcionesRecordatorios(-1, $_POST['date'], $_POST['title'], $_POST['description'], 0);
+			}
+			else if(isset($_POST['idAborrar'])) {
+				$id = $_POST['idAborrar'];
+				$funcion = 1; //eliminar
+				$this->Usuario_model->funcionesRecordatorios($id, "" , "", "", $funcion);
+			}
+			else{
+				$id = $_POST['idrecordatorios'];
+				$this->Usuario_model->funcionesRecordatorios($id, $_POST['date'], $_POST['title'], $_POST['description'], 0);
+			}
 
-		redirect(base_url());
+			redirect(base_url());
+		}
 	}
 // Fin  de inicio
 //Tutorías
 	public function tutorias()
 	{
-		if($this->session->userdata('id') != 2)
-		{
-			redirect(base_url());
-		}
-		else if($this->session->userdata('id') == 2)
-		{
-			$data['tutorias'] = $this->Usuario_model->getTutorias($this->session->userdata('login'));
-			$data['titulo'] = 'SAPTC - Tutorías';
-			$this->load->view('User/tutorias', $data);
-		}
+		if($this->acceso($this->session->userdata('login')));
 		else
 		{
-			redirect(base_url());
+			if($this->session->userdata('id') != 2)
+			{
+				redirect(base_url());
+			}
+			else if($this->session->userdata('id') == 2)
+			{
+				$data['tutorias'] = $this->Usuario_model->getTutorias($this->session->userdata('login'));
+				$data['titulo'] = 'SAPTC - Tutorías';
+				$this->load->view('User/tutorias', $data);
+			}
+			else
+			{
+				redirect(base_url());
+			}
 		}
 	}
 
@@ -142,18 +175,22 @@ class User extends CI_Controller
 //Docencias
 	public function docencias()
 	{
-		if($this->session->userdata('id') != 2)
-		{
-			redirect(base_url());
-		}
-		else if($this->session->userdata('id') == 2)
-		{
-			$data['titulo'] = 'SAPTC - Docencias';
-			$this->load->view('User/docencais', $data);
-		}
+		if($this->acceso($this->session->userdata('login')));
 		else
 		{
-			redirect(base_url());
+			if($this->session->userdata('id') != 2)
+			{
+				redirect(base_url());
+			}
+			else if($this->session->userdata('id') == 2)
+			{
+				$data['titulo'] = 'SAPTC - Docencias';
+				$this->load->view('User/docencais', $data);
+			}
+			else
+			{
+				redirect(base_url());
+			}
 		}
 	}
 	//Fin de docencias
@@ -161,24 +198,41 @@ class User extends CI_Controller
 	//Estudios Realizados
 	public function estudiosRealizados()
 	{
-		if($this->session->userdata('id') != 2)
+		if($this->acceso($this->session->userdata('login')));
+		else
 		{
-			redirect(base_url());
-		}
+			if($this->session->userdata('id') != 2)
+			{
+				redirect(base_url());
+			}
 
-		$idERUser = $this->session->userdata('login');
-		$data['estudios'] = $this->EstudiosRealizados_model->getEstudios(/*$idERUser*/2);
-		$data['titulo'] = 'SAPTC - Estudios Realizados';
-		$this->load->view('User/estudiosRealizados', $data);
+			$idERUser = $this->session->userdata('login');
+			$data['estudios'] = $this->EstudiosRealizados_model->getEstudios($idERUser);
+			$data['titulo'] = 'SAPTC - Estudios Realizados';
+			$this->load->view('User/estudiosRealizados', $data);
+		}
 	}
-	public function ERform($id)
+	public function ERform($id,$disabled)
 	{
 		if($this->session->userdata('id') != 2)
 		{
 			redirect(base_url());
 		}
-		$data['datos'] = $this->EstudiosRealizados_model->getEstudio($id);
+		if($id > 0)
+		{
+			$data['datos'] = $this->EstudiosRealizados_model->getEstudio($id);
+			$data['datos'] = $data['datos']->result()[0];
+		}
+		else {
+			$data['datos'] = null;
+		}
 		$data['instituciones'] = $this->EstudiosRealizados_model->getInstituciones();
+		if($disabled == 1)
+		{
+			$data['disabled'] = 1;
+		}else {
+			$data['disabled'] = 0;
+		}
 		$this->load->view('forms/estudiosRealizados', $data);
 	}
 	public function ERAgregar()
@@ -189,66 +243,228 @@ class User extends CI_Controller
 		}
 		$datos = $this->input->post();
 
-		$idProfesor = 2;//aqui pones lo del id del profesor
+		// print_r($datos);
 
+		$nombreDoc = $_FILES['PDFInputModal']['name'];
+	  $tamDoc = $_FILES['PDFInputModal']['size'];
+	  $tipoDoc = $_FILES['PDFInputModal']['type'];
+	  $tmpDoc = $_FILES['PDFInputModal']['tmp_name'];
+	  $errorDoc = $_FILES['PDFInputModal']['error'];
+	  $extensionDoc = strtolower(substr($nombreDoc,strpos($nombreDoc,'.')+1));
+    //
+		// echo '<br>$nombreDoc: '.$nombreDoc;
+		// echo '<br>$tamDoc: '.$tamDoc;
+		// echo '<br>$tipoDoc: '.$tipoDoc;
+		// echo '<br>$tmpDoc: '.$tmpDoc;
+		// echo '<br>$errorDoc: '.$errorDoc;
+		// echo '<br>$extensionDoc: '.$extensionDoc;
 
-		if(
-				isset($datos['nivel']) &&
-				isset($datos['siglas']) &&
-				isset($datos['estudiosen']) &&
-				isset($datos['area']) &&
-				isset($datos['disciplina']) &&
-				isset($datos['otrainstit']) &&
-				isset($datos['BInstit']) &&
-				isset($datos['fechainicio']) &&
-				isset($datos['fechafin']) &&
-				isset($datos['fechaobt']) &&
-				isset($datos['pais'])
-		){
-			if($datos['BInstit'] == 1){
-					//Se inserta la institucion en la tabla instit
-					$dats = (object)array(
-						'Nivelestudios' => $datos['nivel'],
-						'Siglas' => $datos['siglas'],
-						'Estudiosen' => $datos['estudiosen'],
-						'Area' => $datos['area'],
-						'Disciplina' => $datos['disciplina'],
-						'Institucionnoconsiderada' => $datos['otrainstit'],
-						'Institucion' => 'Otra',
-						'Fechadeinicio' => $datos['fechainicio'],
-						'Fechadefin' => $datos['fechafin'],
-						'Fechadeobtencion' => $datos['fechaobt'],
-						'Pais' => $datos['pais'],
-						'Datosprofesores_idDatosprofesor' => $idProfesor,
-						'PDF' => null,
-						'status' => 1
-					);
-					$this->EstudiosRealizados_model->setInstitucionER($datos['otrainstit']);
-					$this->EstudiosRealizados_model->insertarEstudioRealizado($dats);
+		$idProfesor = $this->session->userdata('login');
+
+		if(isset($datos['estadoER']) && $datos['estadoER'] == 'Obtenido')
+		{
+				if(isset($nombreDoc))
+				{
+						if(
+							($extensionDoc == 'pdf' || $extensionDoc == 'png' || $extensionDoc == 'jpeg' || $extensionDoc == 'jpg')
+							&& ($tipoDoc == 'application/pdf' || $tipoDoc == 'image/jpeg' || $tipoDoc == 'image/png')
+						)
+						{
+							if(
+									isset($datos['nivel']) &&
+									isset($datos['siglas']) &&
+									isset($datos['estudiosen']) &&
+									isset($datos['area']) &&
+									isset($datos['disciplina']) &&
+									isset($datos['otrainstit']) &&
+									isset($datos['BInstit']) &&
+									isset($datos['fechainicio']) &&
+									isset($datos['fechafin']) &&
+									isset($datos['fechaobt']) &&
+									isset($datos['pais'])
+							){
+										//Se inserta la institucion en la tabla instit
+
+										$instit = '';
+										$noinstit = '';
+
+										if($datos['BInstit'] == 1)
+										{
+											$instit = 'Otra';
+											$noinstit = $datos['otrainstit'];
+											$this->EstudiosRealizados_model->setInstitucionER($datos['otrainstit']);
+										}
+										if($datos['BInstit'] == 0)
+										{
+											$instit = $datos['otrainstit'];
+											$noinstit = '';
+										}
+										$dats = (object)array(
+											'Nivelestudios' => $datos['nivel'],
+											'Siglas' => $datos['siglas'],
+											'Estudiosen' => $datos['estudiosen'],
+											'Area' => $datos['area'],
+											'Disciplina' => $datos['disciplina'],
+											'Institucionnoconsiderada' => $noinstit,
+											'Institucion' => $instit,
+											'EstadoEstudio' => $datos['estadoER'],
+											'Fechadeinicio' => $datos['fechainicio'],
+											'Fechadefin' => $datos['fechafin'],
+											'Fechadeobtencion' => $datos['fechaobt'],
+											'Pais' => $datos['pais'],
+											'Datosprofesores_idDatosprofesor' => $idProfesor,
+											'PDF' => null,
+											'status' => 1
+										);
+										$arreglo = $this->EstudiosRealizados_model->insertarEstudioRealizado($dats);
+										if($arreglo['error']['message'] == '')
+										{
+											//si no hubo error al insertar el estudio
+											//se sube el documento
+											//crear carpeta
+											if(!is_dir('assets/documentos/EstudiosRealizados/'.$idProfesor))
+											 	mkdir('assets/documentos/EstudiosRealizados/'.$idProfesor, 0777, TRUE);
+
+											$ubicaDoc = 'assets/documentos/EstudiosRealizados/'.$idProfesor.'/';
+											if(!move_uploaded_file($tmpDoc, $ubicaDoc.$arreglo['lastID'].'.'.$extensionDoc))
+											{
+												//si erro al subir, borro lo de la tabla
+												$this->EstudiosRealizados_model->eliminarEstudioRealizado($arreglo['lastID']);
+											}
+											else
+											{
+												//update al pdf para ponerle la ruta
+												$this->EstudiosRealizados_model->cambiarRuta($arreglo['lastID'],$ubicaDoc.$arreglo['lastID'].'.'.$extensionDoc);
+												redirect(base_url('index.php/User/estudiosRealizados'));
+											}
+										}
+							}
+							else
+								;//algun error, pq no un dato esta vacio-
+						}
+						else
+							;//mando algun archivo que no es aceptado
+				}
+				else
+					;//no mando archivo
+		}
+		else {
+			// para cuando no sea OBTENIDO
+			if(isset($datos['estadoER']) && $datos['estadoER'] == 'Finalizado\Por obtener')
+			{
+				if(
+						isset($datos['nivel']) &&
+						isset($datos['siglas']) &&
+						isset($datos['estudiosen']) &&
+						isset($datos['area']) &&
+						isset($datos['disciplina']) &&
+						isset($datos['otrainstit']) &&
+						isset($datos['BInstit']) &&
+						isset($datos['fechainicio']) &&
+						isset($datos['fechafin']) &&
+						isset($datos['pais'])
+				){
+
+							//Se inserta la institucion en la tabla instit
+							//si BInstit es 1
+
+							$instit = '';
+							$noinstit = '';
+
+							if($datos['BInstit'] == 1)
+							{
+								$instit = 'Otra';
+								$noinstit = $datos['otrainstit'];
+								$this->EstudiosRealizados_model->setInstitucionER($datos['otrainstit']);
+							}
+							if($datos['BInstit'] == 0)
+							{
+								$instit = $datos['otrainstit'];
+								$noinstit = '';
+							}
+
+							$dats = (object)array(
+								'Nivelestudios' => $datos['nivel'],
+								'Siglas' => $datos['siglas'],
+								'Estudiosen' => $datos['estudiosen'],
+								'Area' => $datos['area'],
+								'Disciplina' => $datos['disciplina'],
+								'Institucionnoconsiderada' => $noinstit,
+								'Institucion' => $instit,
+								'EstadoEstudio' => $datos['estadoER'],
+								'Fechadeinicio' => $datos['fechainicio'],
+								'Fechadefin' => $datos['fechafin'],
+								'Pais' => $datos['pais'],
+								'Datosprofesores_idDatosprofesor' => $idProfesor,
+								'PDF' => null,
+								'status' => 1
+							);
+							$arreglo = $this->EstudiosRealizados_model->insertarEstudioRealizado($dats);
+							// print_r($arreglo['error']['message']);
+
+							redirect(base_url('index.php/User/estudiosRealizados'));
+				}
+				else
+					;//algun error, pq no un dato esta vacio
+
 			}
-			if($datos['BInstit'] == 0){
-				//nomas metes los datos
-				//otra instit nomas es null
-				$dats = (object)array(
-					'Nivelestudios' => $datos['nivel'],
-					'Siglas' => $datos['siglas'],
-					'Estudiosen' => $datos['estudiosen'],
-					'Area' => $datos['area'],
-					'Disciplina' => $datos['disciplina'],
-					'Institucion' => $datos['otrainstit'],
-					'Institucionnoconsiderada' => '',
-					'Fechadeinicio' => $datos['fechainicio'],
-					'Fechadefin' => $datos['fechafin'],
-					'Fechadeobtencion' => $datos['fechaobt'],
-					'Pais' => $datos['pais'],
-					'Datosprofesores_idDatosprofesor' => $idProfesor,
-					'PDF' => null,
-					'status' => 1
-				);
-				$error = $this->EstudiosRealizados_model->insertarEstudioRealizado($dats);
-				//print_r($error);
-			}
 
+			if(isset($datos['estadoER']) && $datos['estadoER'] == 'En Progreso')
+			{
+				if(
+						isset($datos['nivel']) &&
+						isset($datos['siglas']) &&
+						isset($datos['estudiosen']) &&
+						isset($datos['area']) &&
+						isset($datos['disciplina']) &&
+						isset($datos['otrainstit']) &&
+						isset($datos['BInstit']) &&
+						isset($datos['fechainicio']) &&
+						isset($datos['pais'])
+				){
+
+							//Se inserta la institucion en la tabla instit
+							//si BInstit es 1
+
+							$instit = '';
+							$noinstit = '';
+
+							if($datos['BInstit'] == 1)
+							{
+								$instit = 'Otra';
+								$noinstit = $datos['otrainstit'];
+								$this->EstudiosRealizados_model->setInstitucionER($datos['otrainstit']);
+							}
+							if($datos['BInstit'] == 0)
+							{
+								$instit = $datos['otrainstit'];
+								$noinstit = '';
+							}
+
+							$dats = (object)array(
+								'Nivelestudios' => $datos['nivel'],
+								'Siglas' => $datos['siglas'],
+								'Estudiosen' => $datos['estudiosen'],
+								'Area' => $datos['area'],
+								'Disciplina' => $datos['disciplina'],
+								'Institucionnoconsiderada' => $noinstit,
+								'Institucion' => $instit,
+								'EstadoEstudio' => $datos['estadoER'],
+								'Fechadeinicio' => $datos['fechainicio'],
+								'Pais' => $datos['pais'],
+								'Datosprofesores_idDatosprofesor' => $idProfesor,
+								'PDF' => null,
+								'status' => 1
+							);
+							$arreglo = $this->EstudiosRealizados_model->insertarEstudioRealizado($dats);
+							// print_r($arreglo['error']['message']);
+
+							redirect(base_url('index.php/User/estudiosRealizados'));
+				}
+				else
+					;//algun error, pq no un dato esta vacio
+
+			}
 		}
 	}
 	public function EREliminar()
@@ -262,23 +478,38 @@ class User extends CI_Controller
 		if(
 				isset($datos['id'])
 		){
-
+			$ruta = $this->EstudiosRealizados_model->getRuta($datos['id']);
+			unlink($ruta->result()[0]->PDF);
 			$error = $this->EstudiosRealizados_model->eliminarEstudioRealizado($datos['id']);
 			//print_r($error);
+		}
+	}
+	public function descargarEstudio($id)
+	{
+		$ruta = $this->EstudiosRealizados_model->getRuta($id);
+		if($ruta!=null && $ruta->result()[0]->Datosprofesores_idDatosprofesor == $this->session->userdata('login'))
+		{
+			$ruta = $ruta->result()[0]->PDF;
+			$data['ruta'] = base_url().$ruta;
+			$this->load->view('User/estudiosRealizadosArchivo',$data);
 		}
 	}
 	//Fin de estudios realizados
 
 	//produccion academica - scott
 	public function produccion_academica(){
-		if($this->session->userdata('id') != 2)
+		if($this->acceso($this->session->userdata('login')));
+		else
 		{
-			redirect(base_url());
-		}
-		else{
-			$data['titulo'] = 'SAPTC - Producción Académica';
-			$data['query'] = $this->ProduccionAca_model->getData();
-			$this->load->view('User/produccion_academica',$data);
+			if($this->session->userdata('id') != 2)
+			{
+				redirect(base_url());
+			}
+			else{
+				$data['titulo'] = 'SAPTC - Producción Académica';
+				$data['query'] = $this->ProduccionAca_model->getData();
+				$this->load->view('User/produccion_academica',$data);
+			}
 		}
 	}
 
@@ -351,6 +582,7 @@ class User extends CI_Controller
 
 	public function perfil()
 	{
+		$this->acceso($this->session->userdata('login'));
 		if($this->session->userdata('id') != 2)
 		{
 			redirect(base_url());
@@ -410,19 +642,23 @@ class User extends CI_Controller
 	// Datos laborales
 	public function datosLaborales()
 	{
-		if($this->session->userdata('id') != 2)
-		{
-			redirect(base_url());
-		}
-		else if($this->session->userdata('id') == 2)
-		{
-			$data['titulo'] = 'SAPTC - Datos Laborales';
-			$data['datos'] = $this->datosLaborales_model->obtiene($this->session->userdata('login'));
-			$this->load->view('User/datosLaborales', $data);
-		}
+		if($this->acceso($this->session->userdata('login')));
 		else
 		{
-			redirect(base_url());
+			if($this->session->userdata('id') != 2)
+			{
+				redirect(base_url());
+			}
+			else if($this->session->userdata('id') == 2)
+			{
+				$data['titulo'] = 'SAPTC - Datos Laborales';
+				$data['datos'] = $this->datosLaborales_model->obtiene($this->session->userdata('login'));
+				$this->load->view('User/datosLaborales', $data);
+			}
+			else
+			{
+				redirect(base_url());
+			}
 		}
 	}
 	public function form_datoslaborales($id, $el)
@@ -497,20 +733,24 @@ class User extends CI_Controller
 	// Premios o distinciones
 	public function premiosoDisticiones()
 	{
-		if($this->session->userdata('id') != 2)
-		{
-			redirect(base_url());
-		}
-		else if($this->session->userdata('id') == 2)
-		{
-			$data['titulo'] = 'SAPTC - Premios o Distinciones';
-			$data['datos'] = $this->premiosoDistinciones_model->obtiene($this->session->userdata('login'));
-			$data["inst"]=$this->premiosoDistinciones_model->obtienei();
-			$this->load->view('User/premiosoDistinciones', $data);
-		}
+		if($this->acceso($this->session->userdata('login')));
 		else
 		{
-			redirect(base_url());
+			if($this->session->userdata('id') != 2)
+			{
+				redirect(base_url());
+			}
+			else if($this->session->userdata('id') == 2)
+			{
+				$data['titulo'] = 'SAPTC - Premios o Distinciones';
+				$data['datos'] = $this->premiosoDistinciones_model->obtiene($this->session->userdata('login'));
+				$data["inst"]=$this->premiosoDistinciones_model->obtienei();
+				$this->load->view('User/premiosoDistinciones', $data);
+			}
+			else
+			{
+				redirect(base_url());
+			}
 		}
 	}
 	public function formu_premios($id)
@@ -539,12 +779,12 @@ class User extends CI_Controller
 		{	$dec = $this->input->post('io');
 		}
 		$datos = (object)array(
-							'Nombre'=>$this->input->post('npd'),
-							'Fecha'=>$this->input->post('f'),
-							'Otrainstitucion'=>$this->input->post('oio'),
-							'Motivo'=>$this->input->post('m'),
-							'Datosprofesores_idDatosprofesor'=>$this->session->userdata('login'),
-							'Instituciones_idInstituciones'=>$dec);
+					'Nombre'=>$this->input->post('npd'),
+					'Fecha'=>$this->input->post('f'),
+					'Otrainstitucion'=>$this->input->post('oio'),
+					'Motivo'=>$this->input->post('m'),
+					'Datosprofesores_idDatosprofesor'=>$this->session->userdata('login'),
+					'Instituciones_idInstituciones'=>$dec);
 	$this->premiosoDistinciones_model->insert_data($datos);
 	}
 	public function agregaInstitucion()
@@ -587,18 +827,22 @@ class User extends CI_Controller
 
 	//Datos del cuerpo académico
 	public function cuerpoAcademico(){
-		if($this->session->userdata('id') != 2)
+		if($this->acceso($this->session->userdata('login')));
+		else
 		{
-			redirect(base_url());
-		}
-		else{
-			$data['titulo'] = 'SAPTC - Cuerpo Académico';
-			$data['cuerpoAc'] = $this->CuerpoAcademico_model->obtenerCuerpoAcademico();
-			if(is_object($data['cuerpoAc']) && (count(get_object_vars($data['cuerpoAc'])) > 0)){
-				$data['cuerpoAcLi'] = $this->CuerpoAcademico_model->obtenerLineaCA($data['cuerpoAc']);
+			if($this->session->userdata('id') != 2)
+			{
+				redirect(base_url());
 			}
+			else{
+				$data['titulo'] = 'SAPTC - Cuerpo Académico';
+				$data['cuerpoAc'] = $this->CuerpoAcademico_model->obtenerCuerpoAcademico();
+				if(is_object($data['cuerpoAc']) && (count(get_object_vars($data['cuerpoAc'])) > 0)){
+					$data['cuerpoAcLi'] = $this->CuerpoAcademico_model->obtenerLineaCA($data['cuerpoAc']);
+				}
 
-			$this->load->view('User/cuerpoAcademico',$data);
+				$this->load->view('User/cuerpoAcademico',$data);
+			}
 		}
 	}
 
@@ -660,14 +904,18 @@ class User extends CI_Controller
 
 //Docencia
 	public function docencia(){
-		if($this->session->userdata('id') != 2)
+		if($this->acceso($this->session->userdata('login')));
+		else
 		{
-			redirect(base_url());
-		}
-		else{
-			$data['titulo'] = 'SAPTC - Docencia';
-			$data['docencias'] = $this->Docencia_model->obtenerDocencias();
-			$this->load->view('User/docencia',$data);
+			if($this->session->userdata('id') != 2)
+			{
+				redirect(base_url());
+			}
+			else{
+				$data['titulo'] = 'SAPTC - Docencia';
+				$data['docencias'] = $this->Docencia_model->obtenerDocencias();
+				$this->load->view('User/docencia',$data);
+			}
 		}
 	}
 
@@ -728,6 +976,80 @@ class User extends CI_Controller
 	}
 
 //Fin de docencia
+	//Linea de Generación
+	public function linea_generacion(){
+		if($this->session->userdata('id') != 2)
+		{
+			redirect(base_url());
+		}
+		else{
+			$data['titulo'] = 'SAPTC - Línea de Generación';
+			$data['query'] = $this->LineaGeneracion_model->ObtenerLineas();
+			$this->load->view('User/linea_generacion',$data);
+		}
+	}
+
+	public function buscarLinea($descripcion){
+		if($this->session->userdata('id') != 2)
+		{
+			redirect(base_url());
+		}
+		else{
+			$data['titulo'] = 'SAPTC - Línea de Generación';
+			$data['busqueda'] = $this->LineaGeneracion_model->BuscarLineas($descripcion);
+			$this->load->view('User/linea_busqueda',$data);
+		}
+	}
+
+	public function agregarLinea(){
+		if($this->session->userdata('id') != 2)
+		{
+			redirect(base_url());
+		}
+		else{
+			$data = $this->input->post();
+			$info = (object)array(
+	                'idLineageneracion'     =>      '',
+	                'Nombre'        		=>      $data['nombre'],
+	                'Actividades'   		=>      $data['actividades'],
+	                'HorasSemana'           =>      $data['horas'],
+	                'Datosprofesores_idDatosprofesor'  =>  $this->session->userdata('login')
+	        );
+			$this->LineaGeneracion_model->agregarLinea($info);
+		}
+	}
+
+	public function eliminarLinea(){
+		if($this->session->userdata('id') != 2)
+		{
+			redirect(base_url());
+		}
+		else{
+			$data = $this->input->post();
+			$info = (object)array(
+	                'idLineageneracion'     =>      $data['id']
+	        );
+			$this->LineaGeneracion_model->eliminarlinea($info);
+			//redirect(base_url()."index.php/User/linea_generacion");
+		}
+	}
+
+	public function modificarLinea(){
+		if($this->session->userdata('id') != 2)
+		{
+			redirect(base_url());
+		}
+		else{
+			$data = $this->input->post();
+			$info = (object)array(
+	                'idLineageneracion'     =>      $data['id'],
+	                'Nombre'        		=>      $data['nombre'],
+	                'Actividades'   		=>      $data['actividades'],
+	                'HorasSemana'           =>      $data['horas']
+	        );
+			$this->LineaGeneracion_model->modificarlinea($info);
+		}
+	}
 }
 
 ?>

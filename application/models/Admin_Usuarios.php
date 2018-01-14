@@ -33,6 +33,16 @@ class Admin_Usuarios extends CI_Model
 
         }
     }
+
+    //Para obtener los detalles de un usuario por su id
+    public function getUsuario($id)
+    {
+        $query = $this->db->query('SELECT * FROM datosprofesores WHERE idDatosprofesor='.$id);
+        if($query->num_rows() > 0)
+            return $query;
+        else
+            return null;
+    }
 }
 
 ?>

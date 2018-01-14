@@ -61,7 +61,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
   	                            <div class="form-group">
                                   <label for="usu" class="">Usuario</label>
                                   <!--pattern="[a-zA-Z0-9_]+([.][a-zA-Z0-9_]+)*@[a-zA-Z0-9_]+([.][a-zA-Z0-9_]+)*[.][a-zA-Z]{1,5}"!-->
-  	                                <input class="form-control" id="usu" placeholder="Usuario" name="usu" type="email" autofocus>
+  	                                <input class="form-control" id="usu" placeholder="Usuario" name="usu" type="text" autofocus>
   	                            </div>
   	                            <div class="form-group">
                                   <label for="usu" class="">Contraseña</label>
