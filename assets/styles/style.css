@@ -24,10 +24,6 @@ nav {
     margin-top: 20px;
 }
 
-.boton {
-    margin-left: 20px;
-}
-
 .boton:hover {
     cursor: pointer;
 }

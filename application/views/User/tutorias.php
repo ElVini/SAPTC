@@ -1,22 +1,28 @@
 <?php $this->load->view('Helpers/User/header'); ?>
 
-
+<link rel="stylesheet" href="<?php echo base_url('assets/styles/estudiosRealizadosUsuario.css'); ?>">
 <link rel="stylesheet" href="<?php echo base_url('assets/styles/style.css'); ?>">
-<div class="container">
-	<div class="page-header">
-		<h1>Tutorías</h1>
+<div class="row">
+	<div class="container col-sm-10 col-sm-offset-1 col-md-10 container col-xm-12 col-md-8 col-md-offset-2">
+		<section class="TituloPag">
+			<h1><b>Tutorías</b></h1>
+		</section>
 	</div>
 </div>
+
+<div class="row"><p></p></div>
+<div class="row"><p></p></div>
+<div class="row"><p></p></div>
 <div class="container">
 	<input id="url" hidden type="text" value="<?php echo base_url(); ?>">
 	<div class="row tabla">
 		<table class="table table-hover table-responsive">
-			<tr>
+			<thead id="TablaCabeza">
 				<th>Tutorías</th>
 				<th>Nivel</th>
 				<th>Fecha de inicio</th>
 				<th>Fecha de término</th>
-			</tr>
+			</thead>
 			<tbody id="tabla">
 				<?php
 					if($tutorias == null)
@@ -46,9 +52,9 @@
 </div>
 <div class="container" id="botones">
 	<div class="row left form-group">
-		<button class="btn btn-danger boton" id="btnDel">Eliminar</button>
-		<button class="btn btn-primary boton" id="btnMod" onclick="modificar()">Modificar</button>
-		<button class="btn btn-primary boton" data-toggle="modal" data-target="#formModal">Agregar</button>
+		<button class="btn btn-danger" id="btnDel">Eliminar</button>
+		<button class="btn btn-primary" id="btnMod" onclick="modificar()">Modificar</button>
+		<button class="btn btn-primary" data-toggle="modal" data-target="#formModal">Agregar</button>
 	</div>
 	<h1 id="msjError"></h1>
 </div>
@@ -84,12 +90,12 @@
 								<option value="Ing. en nanotecnología">Ing. en nanotecnología</option>
 								<option value="Ing. en mecatrónica">Ing. en mecatrónica</option>
 								<option value="Ing. en biomédica">Ing. en biomédica</option>
-								<option value="Ing. en bioteconología">Ing. en biotecnología</option>
+								<option value="Ing. en biotecnología">Ing. en biotecnología</option>
 								<option value="Ing. en energía">Ing. en energía</option>
-								<option value="Ing. en teconología ambiental">Ing. en tecnología ambiental</option>
+								<option value="Ing. en tecnología ambiental">Ing. en tecnología ambiental</option>
 								<option value="Ing. en animación y efectos visuales">Ing. en animación y efectos visuales</option>
 								<option value="Ing. en logística y transporte">Ing. en logísitca y transporte</option>
-								<option value="Lic. en terapia fisica">Lic. en Terapía física</option>
+								<option value="Lic. en terapia física">Lic. en terapia física</option>
 								<option value="Lic. en administración y gestión de PyMes">Lic. en administración y gestión de PyMes</option>
 								<option value="Maestría en enseñanza de las ciencas">Maestría en enseñanza de las ciencias</option>
 								<option value="Maestría en ciencias aplicadas">Maestría en ciencias aplicadas</option>
