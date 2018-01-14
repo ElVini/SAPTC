@@ -46,52 +46,90 @@
         <label>Horas semanales: </label>
         <input type="number" name="hos" min="1" value="1" id="hos" class="form-control">
     </div>
-    <div class="col-md-10">
-        <label>Nombre de la Dependencia: </label>
-        <select class="form-control" name="np" id="np" onclick="otraInstitucion()">
-          <option value="">Seleccione una</option>
-          <?php if (isset($dependencias)) {
-            foreach ($dependencias->result() as $dependencia) {
-              echo '<option value="'.$dependencia->idInstituciones.'">'.$dependencia->Nombre.'</option>';
-            }
-          } ?>
-          <option value="-1">Otra...</option>
-        </select>
+    <div class="col-md-10"  id="divSelectInstit">
+      <label for="selectInstit">Dependencia: </label>
+      <select class="form-control" id="selectInstit">
+      </select>
     </div>
-    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 otro">
-        <label for="od" >Otra Dependencia: </label>
-        <input type="text" name="od" id="od" class="form-control">
-    </div>
+    <div class="col-md-10" id="divOtraInstit">
+      <label for="otraInstit">Escriba otra institucion: </label>
+      <div class="input-group">
+        <input type="text" class="form-control" placeholder="Ingrese una institucion" name="otrainstit" id="otraInstit">
+        <span class="input-group-btn">
+          <button class="btn btn-danger" type="button" id="cancelarOtraInstit">X</button>
+        </span>
+      </div>
   </div>
 </form>
 
 <script type="text/javascript">
-$('.otro').hide();
 $("#idd").val(id);
-function otraInstitucion(){
-  if($('#np').val() == -1){
-    $('.otro').show();
-  }
-  else if($('#np').val() != -1){
-    $('.otro').hide();
-    $('#od').val('');
-  }
-}
+$(document).ready(function(){
+  //Instituciones
+  $('#divOtraInstit').hide();
 
-if($("#idd").val()!=""){
-  $("#nombre").val(nombre);
-  $("#pre").val(programae);
-  $("#fei").val(fechai);
-  $("#noa").val(numa);
-  $("#dus").val(durs);
-  $("#ham").val(horam);
-  $("#hos").val(horas);
-  $("#np").val(nombredep);
-}
+  // datos cargados de la BD
+  var instituciones = [
+    <?php
+    foreach ($dependencias->result() as $inst) {
+      echo '"'.$inst->Nombre.'",';
+    }
+     ?>
+  ];
+
+  var institucionesid = [
+    <?php
+    foreach ($dependencias->result() as $id) {
+      echo '"'.$id->idInstituciones.'",';
+    }
+     ?>
+  ];
+
+  // poniendo los datos en el select
+  $('#selectInstit').append('<option hidden="true">'+'Elija'+'</option>');
+  for(var i=0;i<instituciones.length;i++){
+    $('#selectInstit').append('<option value = "'+institucionesid[i]+'">'+instituciones[i]+'</option>');
+  }
+  $('#selectInstit').append('<option>'+'Otra'+'</option>');
+
+  $('#selectInstit').on('change',function(){
+    if( $('#selectInstit').val() == "Otra" ){
+      $('#otraInstit').val("");
+      $('#divSelectInstit').hide();
+      $('#divOtraInstit').show();
+    }
+    else{
+      $('#otraInstit').val($('#selectInstit').val());
+    }
+  });
+
+  $('#cancelarOtraInstit').on('click',function(){
+    $('#otraInstit').val("");
+    $('#selectInstit').val("Elija");
+    $('#divOtraInstit').hide();
+    $('#divSelectInstit').show();
+  });
+  //fin de instituciones
+
+  if($("#idd").val()!=""){
+    $("#nombre").val(nombre);
+    $("#pre").val(programae);
+    $("#fei").val(fechai);
+    $("#noa").val(numa);
+    $("#dus").val(durs);
+    $("#ham").val(horam);
+    $("#hos").val(horas);
+    console.log(nombredep);
+    $("#selectInstit").val(nombredep);
+  }
+});
+
+
+
 
 $("#btnAcepD").click(function(){
   if( $("#nombre").val() == "" ||  $("#pre").val() == "" ||  $("#fei").val() == "" ||  $("#noa").val() == "" || $("#dus").val() == "" ||
-      $("#ham").val() == "" || $("#hos").val() == "" || ($("#np").val() == "" || ($("#np").val() == -1 && $("#od").val() == "" ))){
+      $("#ham").val() == "" || $("#hos").val() == "" || $("#otraInstit").val() == ""){
         BootstrapDialog.alert({
               title: '¡Atención!',
               message: 'No ha completado todos los campos.',

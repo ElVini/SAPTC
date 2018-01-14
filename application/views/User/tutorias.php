@@ -2,6 +2,10 @@
 
 <link rel="stylesheet" href="<?php echo base_url('assets/styles/estudiosRealizadosUsuario.css'); ?>">
 <link rel="stylesheet" href="<?php echo base_url('assets/styles/style.css'); ?>">
+<div class="row"><p></p></div>
+<div class="row"><p></p></div>
+<div class="row"><p></p></div>
+<div class="row"><p></p></div>
 <div class="row">
 	<div class="container col-sm-10 col-sm-offset-1 col-md-10 container col-xm-12 col-md-8 col-md-offset-2">
 		<section class="TituloPag">

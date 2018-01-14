@@ -14,6 +14,7 @@ class User extends CI_Controller
 		$this->load->model('premiosoDistinciones_model');
 		$this->load->model('CuerpoAcademico_model');
 		$this->load->model('Docencia_model');
+		$this->load->model('LineaGeneracion_model');
 		$this->load->model('Inicio_model');
 		$this->load->library(array('session'));
 	}
@@ -938,9 +939,8 @@ class User extends CI_Controller
 		$dus = $_POST['dus'];
 		$ham = $_POST['ham'];
 		$hos = $_POST['hos'];
-		$np = $_POST['np'];
-		$od = $_POST['od'];
-		$this->Docencia_model->agreDocencica($nombre, $pre, $fei, $noa, $dus, $ham, $hos, $np, $od);
+		$np = $_POST['otrainstit'];
+		$this->Docencia_model->agreDocencica($nombre, $pre, $fei, $noa, $dus, $ham, $hos, $np);
 		redirect(base_url('index.php/User/docencia'));
 	}
 
@@ -953,7 +953,7 @@ class User extends CI_Controller
 		$dus = $_POST['dus'];
 		$ham = $_POST['ham'];
 		$hos = $_POST['hos'];
-		$np = $_POST['np'];
+		$np = $_POST['otrainstit'];
 		$this->Docencia_model->modDocencica($id,$nombre, $pre, $fei, $noa, $dus, $ham, $hos, $np);
 		redirect(base_url('index.php/User/docencia'));
 	}

@@ -18,12 +18,12 @@ class Docencia_model extends CI_Model {
     return $this->db->get('instituciones');
   }
 
-	public function agreDocencica($nombre, $pre, $fei, $noa, $dus, $ham, $hos, $np, $od){
-		if($np==-1){
-			$this->db->set('Nombre', $od);
+	public function agreDocencica($nombre, $pre, $fei, $noa, $dus, $ham, $hos, $np){
+		if(!is_numeric($np)){
+			$this->db->set('Nombre', $np);
 			$this->db->insert('instituciones');
 			if($this->db->affected_rows()>0){
-				$this->db->where('Nombre', $od);
+				$this->db->where('Nombre', $np);
 				$query =  $this->db->get('instituciones');
 				foreach ($query->result() as $q) {
 					$idDep = $q->idInstituciones;
@@ -46,6 +46,18 @@ class Docencia_model extends CI_Model {
 	}
 
 	public function modDocencica($id,$nombre, $pre, $fei, $noa, $dus, $ham, $hos, $np){
+		if(!is_numeric($np)){
+			$this->db->set('Nombre', $np);
+			$this->db->insert('instituciones');
+			if($this->db->affected_rows()>0){
+				$this->db->where('Nombre', $np);
+				$query =  $this->db->get('instituciones');
+				foreach ($query->result() as $q) {
+					$idDep = $q->idInstituciones;
+				}
+			}
+			$np = $idDep;
+		}
 		$data = array(
                'Nombre' => $nombre,
                'Duracionsem' => $dus,
