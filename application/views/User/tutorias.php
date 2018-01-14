@@ -142,7 +142,7 @@
 			</div>
 			<div class="modal-footer">
 				<button type="button" onclick="cancelar(event);" class="btn btn-danger">Cancelar</button>
-				<button type="button" class="btn btn-primary" onclick="guardar();">Guardar</button>
+				<button type="button" class="btn btn-primary" onclick="guardar(event);">Guardar</button>
 			</div>
 		</div>
 
