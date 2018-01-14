@@ -56,7 +56,7 @@
               <ul class="dropdown-menu" role="menu">
                 <li><a href="<?php?>">Proyectos</a> </li>
                 <li class="divider"></li>
-                <li><a href="#" >LGAC</a> </li>
+                <li><a href="<?php echo base_url('index.php/User/linea_generacion')?>" >LGAC</a> </li>
                 <li class="divider" ></li>
                 <li><a href="<?php echo base_url('index.php/User/produccion_academica')?>" >Producción Académica</a> </li>
 

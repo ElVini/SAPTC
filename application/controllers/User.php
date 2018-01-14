@@ -976,6 +976,80 @@ class User extends CI_Controller
 	}
 
 //Fin de docencia
+	//Linea de Generación
+	public function linea_generacion(){
+		if($this->session->userdata('id') != 2)
+		{
+			redirect(base_url());
+		}
+		else{
+			$data['titulo'] = 'SAPTC - Línea de Generación';
+			$data['query'] = $this->LineaGeneracion_model->ObtenerLineas();
+			$this->load->view('User/linea_generacion',$data);
+		}
+	}
+
+	public function buscarLinea($descripcion){
+		if($this->session->userdata('id') != 2)
+		{
+			redirect(base_url());
+		}
+		else{
+			$data['titulo'] = 'SAPTC - Línea de Generación';
+			$data['busqueda'] = $this->LineaGeneracion_model->BuscarLineas($descripcion);
+			$this->load->view('User/linea_busqueda',$data);
+		}
+	}
+
+	public function agregarLinea(){
+		if($this->session->userdata('id') != 2)
+		{
+			redirect(base_url());
+		}
+		else{
+			$data = $this->input->post();
+			$info = (object)array(
+	                'idLineageneracion'     =>      '',
+	                'Nombre'        		=>      $data['nombre'],
+	                'Actividades'   		=>      $data['actividades'],
+	                'HorasSemana'           =>      $data['horas'],
+	                'Datosprofesores_idDatosprofesor'  =>  $this->session->userdata('login')
+	        );
+			$this->LineaGeneracion_model->agregarLinea($info);
+		}
+	}
+
+	public function eliminarLinea(){
+		if($this->session->userdata('id') != 2)
+		{
+			redirect(base_url());
+		}
+		else{
+			$data = $this->input->post();
+			$info = (object)array(
+	                'idLineageneracion'     =>      $data['id']
+	        );
+			$this->LineaGeneracion_model->eliminarlinea($info);
+			//redirect(base_url()."index.php/User/linea_generacion");
+		}
+	}
+
+	public function modificarLinea(){
+		if($this->session->userdata('id') != 2)
+		{
+			redirect(base_url());
+		}
+		else{
+			$data = $this->input->post();
+			$info = (object)array(
+	                'idLineageneracion'     =>      $data['id'],
+	                'Nombre'        		=>      $data['nombre'],
+	                'Actividades'   		=>      $data['actividades'],
+	                'HorasSemana'           =>      $data['horas']
+	        );
+			$this->LineaGeneracion_model->modificarlinea($info);
+		}
+	}
 }
 
 ?>
