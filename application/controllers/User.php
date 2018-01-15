@@ -498,10 +498,7 @@ class User extends CI_Controller
 	//Fin de estudios realizados
 
 	//produccion academica - scott
-	public function produccion_academica(){
-		if($this->acceso($this->session->userdata('login')));
-		else
-		{
+		public function produccion_academica(){
 			if($this->session->userdata('id') != 2)
 			{
 				redirect(base_url());
@@ -509,60 +506,119 @@ class User extends CI_Controller
 			else{
 				$data['titulo'] = 'SAPTC - Producción Académica';
 				$data['query'] = $this->ProduccionAca_model->getData();
+				$data['lineasInd'] = $this->ProduccionAca_model->getLineas();
 				$this->load->view('User/produccion_academica',$data);
 			}
 		}
-	}
 
-	public function produccion_form(){
-		if($this->session->userdata('id') != 2)
-		{
-			redirect(base_url());
-		}
-		else
-		{
-			$data['query'] = $this->ProduccionAca_model->getLineasGeneracion();
-			if(isset($_POST['id'])){
-				$data['id'] = $_POST['id'];
+		public function produccion_form(){
+			if($this->session->userdata('id') != 2)
+			{
+				redirect(base_url());
 			}
-			$this->load->view('forms/produccion_academica',$data);
+			else
+			{
+				$data['miembro'] = $this->ProduccionAca_model->getCA();
+				$data['query'] = $this->ProduccionAca_model->getLineasGeneracion();
+				if(isset($data['miembro'])) {
+					$data['MiembrosCA'] = $this->ProduccionAca_model->getMiembros($data['miembro']);
+					$data['lineaCA'] = $this->ProduccionAca_model->getLineasGeneracionCA($data['miembro']);
+				}
+				if(isset($_POST['id'])){
+					$data['id'] = $_POST['id'];
+				}
+				$this->load->view('forms/produccion_academica',$data);
+			}
 		}
-	}
-	public function mostrarDetalles(){
-		$data['query'] = $this->ProduccionAca_model->getLineasGeneracion();
-		$this->load->view('Detalles/produccion_detalles',$data);
-	}
-	public function addProduccion(){
-		if($this->session->userdata('id') != 2)
-		{
-			redirect(base_url());
+		public function mostrarDetalles(){
+			$data['miembro'] = $this->ProduccionAca_model->getCA();
+			$data['lineas'] = $this->ProduccionAca_model->getLineasInd($_GET['lineas']);
+			if(isset($data['miembro'])) {
+				$data['MiembrosCA'] = $this->ProduccionAca_model->getMiembrosProduccion($_GET['miembros']);
+				$data['lineaCA'] = $this->ProduccionAca_model->getLineasGeneracionCA($data['miembro']);
+			}
+			//$_POST['lineas'];
+			//$_POST['miembros'];
+			$this->load->view('Detalles/produccion_detalles',$data);
 		}
-		//tome un valor random para saber si se enviaron todos los elementos es decir, que se quiere modificar o añadir por lo cual requiere todos
-		//los elementos
-		else if(isset($_POST['Titulo'])){
+		public function addProduccion(){
+			if($this->session->userdata('id') != 2)
+			{
+				redirect(base_url());
+			}
+			//tome un valor random para saber si se enviaron todos los elementos es decir, que se quiere modificar o añadir por lo cual requiere todos
+			//los elementos
+			else if(isset($_POST['Titulo'])){
+				//Por si se selecciono otra en el select de tipo de produccion
+				if($_POST['tipoproduccion'] == "Otra"){
+					$tipoProduccion = $_POST['OtraProduccion'];
+				}
+				else{
+					$tipoProduccion = $_POST['tipoproduccion'];
+				}
+				$data = array(
+				'idProduccionacademica' => isset($_POST['id'])? $_POST['id']: null,
+				'Titulo' => isset($_POST['Titulo'])? $_POST['Titulo']: "",
+				'Ano'=> $_POST['Ano'],
+				'Tipoproduccion' => $tipoProduccion,
+				'ParaCA' => $_POST['Para'],
+				'Datosprofesores_idDatosprofesor' => $this->session->userdata('login')
+				);
+
+				$lgac = explode( ',', $_POST['LgacInd']);
+				if($data['ParaCA']==1){
+					$data['Lineageneracion_idLineageneracion'] = $_POST['idLgac'];
+					$data['MiembrosCA'] = $_POST['Miembros'];
+				}
+				else{
+					$data['Lineageneracion_idLineageneracion'] = 'NULL';
+					$data['MiembrosCA'] = '';
+				}
+				$this->ProduccionAca_model->agregModProduccion($data,$lgac);
+			}
+			else
+			{
+				$id = $_POST['id'];
+				$this->ProduccionAca_model->eliminarProduccion($id);
+			}
+		}
+		public function getCitas(){
+			$idProd =$_GET['id'];
+			$data['citas']=$this->ProduccionAca_model->getCitas($idProd,0);
+			$data['idProd'] = $idProd;
+			$this->load->view('forms/citas',$data);
+		}
+		public function form_citas(){
+			$data['id_prod'] =$_GET['id'];
+			$this->load->view('forms/citas_form',$data);
+		}
+		public function addCita(){
 			$data = array(
-			'idProduccionacademica' => isset($_POST['id'])? $_POST['id']: null,
-			'Titulo' => $_POST['Titulo'],
-			'Ano'=> $_POST['Ano'],
-			'Numcitada' => $_POST['Citas'],
-			'Tipoproduccion' => $_POST['tipoproduccion'],
-			'Numlineasind' => $_POST['Ind'],
-			'MiembrosCA' => $_POST['Miembros'],
-			'NumlineasCA' => $_POST['CA'],
-			//'HorasSemanales' => $_POST['Horas'],
-			'ParaCA' => $_POST['Para'],
-			'Lineageneracion_idLineageneracion' => 1,//$_POST['idAModificar']);
-			'Datosprofesores_idDatosprofesor' => $this->session->userdata('login')
-			);
-			$this->ProduccionAca_model->agregarProduccion($data);
+			'Nombrepublicacion' => $_POST['Titulo'],
+			'Ano' => $_POST['ano_cita'],
+			'Infadicional' => $_POST['infAdic'],
+			'Datosprofesores_idDatosprofesor' => $this->session->userdata('login'));
+
+			if($_POST['tipoproduccion'] == "Otra"){
+				$data['Tipoproduccion'] = $_POST['otraProduccion_cita'];
+			}
+			else{
+				$data['Tipoproduccion'] = $_POST['tipoproduccion'];
+			}
+			var_dump($_POST);
+			if($_POST['id_cita']!=-1){
+				$idCita = $_POST['id_cita'];
+				$this->ProduccionAca_model->editCita($data,$_GET['id'],$idCita);
+			}
+			else{
+				$this->ProduccionAca_model->addCita($data,$_GET['id']);
+			}
 		}
-		else
-		{
-			$id = $_POST['id'];
-			$this->ProduccionAca_model->agregarProduccion($id);
+		public function deleteCita(){
+			$this->ProduccionAca_model->deleteCita($_POST['id'],$_POST['idProd']);
 		}
-	}
-	//Fin de producción académica
+		//Fin de producción académica
+	
 
 //Datos profesor
 	//Para modificar datos de profesores
