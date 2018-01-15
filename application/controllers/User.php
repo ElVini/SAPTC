@@ -83,7 +83,7 @@ class User extends CI_Controller
 		}
 	}
 
-	//VISTA PUBLICA 
+	//VISTA PUBLICA
 	public function publico(){
 
 		$result = $this->Publico_model->getProfesores();
@@ -1064,6 +1064,7 @@ class User extends CI_Controller
 
 			}
 		}*/
+		redirect(base_url('index.php/User/estudiosRealizados'));
 	}
 	public function EREliminar()
 	{

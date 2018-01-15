@@ -206,7 +206,7 @@ $(document).ready(function(){
                   {
                     var file_extension = document.getElementById('PDFInputModal').value.split('.').pop();
                   }
-                  alert(file_extension);
+                  //alert(file_extension);
                   if(($('#estadoER').val() == 'Obtenido' && ((typeof $('#ELEGIR').val() == 'undefined' || $('#ELEGIR').val() == "No") || ((typeof $('#ELEGIR').val() == 'undefined'
                   || $('#ELEGIR').val() == "Sí")&&(file_extension=='pdf'||file_extension=='png'||file_extension=='jpg'||file_extension=='jpeg'))))
                    || $('#estadoER').val() == 'Finalizado\\Por obtener' || $('#estadoER').val() == 'En Progreso')

@@ -44,7 +44,7 @@
                 <li class="divider"></li>
                 <li><a href="<?php echo base_url('index.php/User/docencia'); ?>" >Docencias</a> </li>
                 <li class="divider" ></li>
-                <li><a href="#" >Dirección individualizada</a> </li>
+                <!-- <li><a href="#" >Dirección individualizada</a> </li> -->
 
               </ul>
             </li>
@@ -54,7 +54,7 @@
                 <span class="glyphicon glyphicon-list-alt"></span> Actividades particulares <span class="caret"></span>
               </a>
               <ul class="dropdown-menu" role="menu">
-                <li><a href="<?php?>">Proyectos</a> </li>
+                <!-- <li><a href="">Proyectos</a> </li> -->
                 <li class="divider"></li>
                 <li><a href="<?php echo base_url('index.php/User/linea_generacion')?>" >LGAC</a> </li>
                 <li class="divider" ></li>
@@ -77,7 +77,7 @@
                    <li class="divider" ></li>
                    <li><a href="<?php echo base_url('index.php/User/cuerpoAcademico'); ?>" >Datos del Cuerpo Académico</a> </li>
                    <li class="divider" ></li>
-                   <li><a href="#" >Participación en Programas Educativos</a> </li>
+                   <!-- <li><a href="#" >Participación en Programas Educativos</a> </li> -->
 <!--Me faltaba ese, pero como no se lo agregué a las pantallas que le envié a Angulo, pos se queda comentado por mientras   -->
                   <!-- <li class="divider" ></li>
                   <li><a href="#" >Gestión Académica - Vinculación</a> </li> -->
