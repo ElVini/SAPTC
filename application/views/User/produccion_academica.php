@@ -34,36 +34,59 @@
                             <td hidden><b>idProd</b></td>
                             <td><b>Titulo</b></td>
                             <td><b>Año</b></td>
-                            <td><b>Citas</b></td>
+                            <td hidden><b>Citas</b></td>
                             <td><b>Tipo de producción</b></td>
                             <td><b>Para<br>CA</b></td>
-                            <!--<td><b>Miembros<br>CA</b></td> -->
+                            <td><b>Miembros<br>CA</b></td>
+                            <td><b>LGACs<br>Ind</b></td>
+                            <td hidden><b>LAGCs<br>CA</b></td>
 							<td></td>
-                            <!-- <td><b>LGACs<br>Ind</b></td> -->
-                            <!-- <td><b>LAGCs<br>CA</b></td> -->
                           </tr>
                         </thead>
 
                 <tbody>
                   <?php
-                    $inputId = 0;
+				  	$numLineas=0;
+					//esta parte es para imprimir los datos de la lineas individuales como hidden
+					//se obtiene el numero total y el id de las mismas
+					$id=[];
+					foreach ($lineasInd as $lineas) {
+						$numLineas=0;
+						$id=[];
+						foreach ($lineas as $linea) {
+							$numLineas++;
+							$id[] = $linea->id_lineageneracion;
+						}
+						$numLineasArray[]=$numLineas;
+						$idsLineas[]= $id;
+					}
+					$counter=0;
                     foreach ($query->result() as $produccion) {
-					  $miembros = $produccion->MiembrosCA != "" ? $produccion->MiembrosCA: "-";
+					  if($produccion->MiembrosCA != ""){
+						  $array = explode(',', $produccion->MiembrosCA);
+						  $miembros = count($array);
+					  }
+					  else{
+						  $miembros = "-";
+					  }
 					  $paraCA = $produccion->ParaCA == 1 ? "Sí": "No";
+					  $numLineas = $numLineasArray[$counter]!=""?$numLineasArray[$counter]:"-";
                       echo '<tr id="TablaLinea">
 	                      <td hidden>'.$produccion->idProduccionacademica.'</td>
 	                      <td>'.$produccion->Titulo.'</td>
 	                      <td>'.$produccion->Ano.'</td>
-	                      <td>'.$produccion->Numcitada.'</td>
+	                      <td hidden></td>
 	                      <td>'.$produccion->Tipoproduccion.'</td>
 	                      <td>'.$paraCA.'</td>
-	                      <td hidden>'.$miembros.'</td>
-	                      <td hidden>'.$produccion->Numlineasind.'</td>
-	                      <td hidden>'.$produccion->NumlineasCA.'</td>
-	                      <td hidden>'.$produccion->HorasSemanales.'</td>
+						  <td>'.$miembros.'</td>
+						  <td hidden>'.$produccion->MiembrosCA.'</td>
+						  <td>'.$numLineas.'</td>
+	                      <td hidden>'.implode(",",$idsLineas[$counter]).'</td>
+	                      <td hidden></td>
+	                      <td hidden></td>
 						  <td id="detalles"><a href="#">Ver detalles</a></td>
                      	</tr>';
-                      $inputId++;
+                      $counter++;
 				  	}
                   ?>
 
@@ -71,6 +94,7 @@
               </table>
             </div>
             <div id="BotonesTabla">
+			  <span id="divCitas"><button type="button" id="btnCitas" class="btn" name="citas">Resumen de citas</button></span>
               <button type="button" id="EliminarB" class="btn btn-danger">Eliminar</button>
               <button type="button" id="Modificar" class="btn btn-primary">Modificar</button>
               <button type="button" id="Agregar" class="btn btn-success">Agregar</button>
