@@ -17,7 +17,7 @@ class Login extends CI_Controller {
 		switch($this->session->userdata('id'))
 		{
 			case '':
-				$data['titulo'] = 'SAPTC - Iniciar sesión';
+				$data['titulo'] = 'SAPTC - Inicio de sesión ';
 				$data['token'] = $this->token();
 				$data['correo_e'] = $this->session->flashdata('correo_e');
 				$data['error'] = $this->session->flashdata('error');

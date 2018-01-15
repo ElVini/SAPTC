@@ -29,7 +29,7 @@ if (isset($user))
   <div class="row">
     <div class="form-group col-xs-12 col-sm-6 col-md-6 col-lg-6">
       <label for="nom">Nombramiento:</label>
-      <input class="form-control" type="text" name="nom" id="nom">
+      <input class="form-control" type="text" name="nom" id="nom" maxlength="45">
     </div>
     <div class="form-group col-xs-12 col-sm-6 col-md-6 col-lg-6">
       <label for="tipo_nom">Tipo de nombramiento:</label>
@@ -54,7 +54,7 @@ if (isset($user))
   <div class="row">
     <div class="form-group col-xs-12 col-sm-6 col-md-6 col-lg-6">
       <label for="dependencia">Dependencia de Educación Superior de abscripción:</label>
-      <input class="form-control" type="text" name="dependencia" id="dependencia" >
+      <input class="form-control" type="text" name="dependencia" id="dependencia" maxlength="50" >
     </div>
     <div class="form-group col-xs-12 col-sm-6 col-md-6 col-lg-6">
       <label for="unidad">Unidad Academica de abscripción: &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;</label>
