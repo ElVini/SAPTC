@@ -272,13 +272,7 @@ class User extends CI_Controller
 	  $tmpDoc = $_FILES['PDFInputModal']['tmp_name'];
 	  $errorDoc = $_FILES['PDFInputModal']['error'];
 	  $extensionDoc = strtolower(substr($nombreDoc,strpos($nombreDoc,'.')+1));
-    //
-		// echo '<br>$nombreDoc: '.$nombreDoc;
-		// echo '<br>$tamDoc: '.$tamDoc;
-		// echo '<br>$tipoDoc: '.$tipoDoc;
-		// echo '<br>$tmpDoc: '.$tmpDoc;
-		// echo '<br>$errorDoc: '.$errorDoc;
-		// echo '<br>$extensionDoc: '.$extensionDoc;
+
 
 		$idProfesor = $this->session->userdata('login');
 
@@ -361,13 +355,13 @@ class User extends CI_Controller
 										}
 							}
 							else
-								;//algun error, pq no un dato esta vacio-
+								redirect(base_url('index.php/User/estudiosRealizados?E=1'));//algun error, pq no un dato esta vacio-
 						}
 						else
-							;//mando algun archivo que no es aceptado
+							redirect(base_url('index.php/User/estudiosRealizados?E=1'));//mando algun archivo que no es aceptado
 				}
 				else
-					;//no mando archivo
+					redirect(base_url('index.php/User/estudiosRealizados?E=1'));//no mando archivo
 		}
 		else {
 			// para cuando no sea OBTENIDO
@@ -426,7 +420,7 @@ class User extends CI_Controller
 							redirect(base_url('index.php/User/estudiosRealizados'));
 				}
 				else
-					;//algun error, pq no un dato esta vacio
+					redirect(base_url('index.php/User/estudiosRealizados?E=1'));//algun error, pq no un dato esta vacio
 
 			}
 
@@ -483,7 +477,7 @@ class User extends CI_Controller
 							redirect(base_url('index.php/User/estudiosRealizados'));
 				}
 				else
-					;//algun error, pq no un dato esta vacio
+					redirect(base_url('index.php/User/estudiosRealizados?E=1'));//algun error, pq no un dato esta vacio
 
 			}
 		}
@@ -571,7 +565,7 @@ class User extends CI_Controller
 					}
 					$error = $this->EstudiosRealizados_model->modificarEstudioRealizado($dats,$datos['id']);
 					print_r($error);
-
+					redirect(base_url('index.php/User/estudiosRealizados'));
 				}
 
 
@@ -627,16 +621,18 @@ class User extends CI_Controller
 
 				if($ruta != null && $ruta->result()[0]->Datosprofesores_idDatosprofesor == $this->session->userdata('login'))
 				{
-					echo 'se actualizan los datos';
+
 					if($ruta->result()[0]->PDF != '')
 					{
 						unlink($ruta->result()[0]->PDF);
 					}
 					$error = $this->EstudiosRealizados_model->modificarEstudioRealizado($dats,$datos['id']);
 					print_r($error);
+					redirect(base_url('index.php/User/estudiosRealizados'));
 				}
 
 			}
+
 		}
 		if(isset($datos['estadoER']) && $datos['estadoER'] == 'Obtenido')
 		{
@@ -840,230 +836,17 @@ class User extends CI_Controller
 								if(move_uploaded_file($tmpDoc, $ubicaDoc.$datos['id'].'.'.$extensionDoc))
 								{
 									$this->EstudiosRealizados_model->cambiarRuta($datos['id'],$ubicaDoc.$datos['id'].'.'.$extensionDoc);
+									redirect(base_url('index.php/User/estudiosRealizados'));
 								}
 							}
 						}
 					}
 				}
 			}
+
 		}
-/*
-		if(isset($datos['estadoER']) && $datos['estadoER'] == 'Obtenido')
-		{
-				if(isset($nombreDoc))
-				{
-						if(
-							($extensionDoc == 'pdf' || $extensionDoc == 'png' || $extensionDoc == 'jpeg' || $extensionDoc == 'jpg')
-							&& ($tipoDoc == 'application/pdf' || $tipoDoc == 'image/jpeg' || $tipoDoc == 'image/png')
-						)
-						{
-							if(
-									isset($datos['nivel']) &&
-									isset($datos['siglas']) &&
-									isset($datos['estudiosen']) &&
-									isset($datos['area']) &&
-									isset($datos['disciplina']) &&
-									isset($datos['otrainstit']) &&
-									isset($datos['BInstit']) &&
-									isset($datos['fechainicio']) &&
-									isset($datos['fechafin']) &&
-									isset($datos['fechaobt']) &&
-									isset($datos['pais'])
-							){
-										//Se inserta la institucion en la tabla instit
+		redirect(base_url('index.php/User/estudiosRealizados?E=1'));
 
-										$instit = '';
-										$noinstit = '';
-
-										if($datos['BInstit'] == 1)
-										{
-											$instit = 'Otra';
-											$noinstit = $datos['otrainstit'];
-											$this->EstudiosRealizados_model->setInstitucionER($datos['otrainstit']);
-										}
-										if($datos['BInstit'] == 0)
-										{
-											$instit = $datos['otrainstit'];
-											$noinstit = '';
-										}
-										$dats = (object)array(
-											'Nivelestudios' => $datos['nivel'],
-											'Siglas' => $datos['siglas'],
-											'Estudiosen' => $datos['estudiosen'],
-											'Area' => $datos['area'],
-											'Disciplina' => $datos['disciplina'],
-											'Institucionnoconsiderada' => $noinstit,
-											'Institucion' => $instit,
-											'EstadoEstudio' => $datos['estadoER'],
-											'Fechadeinicio' => $datos['fechainicio'],
-											'Fechadefin' => $datos['fechafin'],
-											'Fechadeobtencion' => $datos['fechaobt'],
-											'Pais' => $datos['pais'],
-											'Datosprofesores_idDatosprofesor' => $idProfesor,
-											'PDF' => null,
-											'status' => 1
-										);
-										$arreglo = $this->EstudiosRealizados_model->insertarEstudioRealizado($dats);
-										if($arreglo['error']['message'] == '')
-										{
-											//si no hubo error al insertar el estudio
-											//se sube el documento
-											//crear carpeta
-											if(!is_dir('assets/documentos/EstudiosRealizados/'.$idProfesor))
-											 	mkdir('assets/documentos/EstudiosRealizados/'.$idProfesor, 0777, TRUE);
-
-											$ubicaDoc = 'assets/documentos/EstudiosRealizados/'.$idProfesor.'/';
-											if(!move_uploaded_file($tmpDoc, $ubicaDoc.$arreglo['lastID'].'.'.$extensionDoc))
-											{
-												//si erro al subir, borro lo de la tabla
-												$this->EstudiosRealizados_model->eliminarEstudioRealizado($arreglo['lastID']);
-											}
-											else
-											{
-												//update al pdf para ponerle la ruta
-												$this->EstudiosRealizados_model->cambiarRuta($arreglo['lastID'],$ubicaDoc.$arreglo['lastID'].'.'.$extensionDoc);
-												redirect(base_url('index.php/User/estudiosRealizados'));
-											}
-										}
-							}
-							else
-								;//algun error, pq no un dato esta vacio-
-						}
-						else
-							;//mando algun archivo que no es aceptado
-				}
-				else
-					;//no mando archivo
-		}
-		else {
-			// para cuando no sea OBTENIDO
-/////////////////////////////////////////////////////////////////////////////////////////////
-/////////////////////////////////////////////////////////////////////////////////////////////
-/////////////////////////////////////////////////////////////////////////////////////////////
-/////////////////////////////////////////////////////////////////////////////////////////////
-/////////////////////////////////////////////////////////////////////////////////////////////
-/////////////////////////////////////////////////////////////////////////////////////////////
-			if(isset($datos['estadoER']) && $datos['estadoER'] == 'Finalizado\Por obtener')
-			{
-				if(
-						isset($datos['nivel']) &&
-						isset($datos['siglas']) &&
-						isset($datos['estudiosen']) &&
-						isset($datos['area']) &&
-						isset($datos['disciplina']) &&
-						isset($datos['otrainstit']) &&
-						isset($datos['BInstit']) &&
-						isset($datos['fechainicio']) &&
-						isset($datos['fechafin']) &&
-						isset($datos['pais'])
-				){
-
-							//Se inserta la institucion en la tabla instit
-							//si BInstit es 1
-
-							$instit = '';
-							$noinstit = '';
-
-							if($datos['BInstit'] == 1)
-							{
-								$instit = 'Otra';
-								$noinstit = $datos['otrainstit'];
-								$this->EstudiosRealizados_model->setInstitucionER($datos['otrainstit']);
-							}
-							if($datos['BInstit'] == 0)
-							{
-								$instit = $datos['otrainstit'];
-								$noinstit = '';
-							}
-
-							$dats = (object)array(
-								'Nivelestudios' => $datos['nivel'],
-								'Siglas' => $datos['siglas'],
-								'Estudiosen' => $datos['estudiosen'],
-								'Area' => $datos['area'],
-								'Disciplina' => $datos['disciplina'],
-								'Institucionnoconsiderada' => $noinstit,
-								'Institucion' => $instit,
-								'EstadoEstudio' => $datos['estadoER'],
-								'Fechadeinicio' => $datos['fechainicio'],
-								'Fechadefin' => $datos['fechafin'],
-								'Pais' => $datos['pais'],
-								'Datosprofesores_idDatosprofesor' => $idProfesor,
-								'PDF' => null,
-								'status' => 1
-							);
-							$arreglo = $this->EstudiosRealizados_model->insertarEstudioRealizado($dats);
-							// print_r($arreglo['error']['message']);
-
-							redirect(base_url('index.php/User/estudiosRealizados'));
-				}
-				else
-					;//algun error, pq no un dato esta vacio
-
-			}
-/////////////////////////////////////////////////////////////////////////////////////////////
-/////////////////////////////////////////////////////////////////////////////////////////////
-/////////////////////////////////////////////////////////////////////////////////////////////
-/////////////////////////////////////////////////////////////////////////////////////////////
-/////////////////////////////////////////////////////////////////////////////////////////////
-/////////////////////////////////////////////////////////////////////////////////////////////
-			if(isset($datos['estadoER']) && $datos['estadoER'] == 'En Progreso')
-			{
-				if(
-						isset($datos['nivel']) &&
-						isset($datos['siglas']) &&
-						isset($datos['estudiosen']) &&
-						isset($datos['area']) &&
-						isset($datos['disciplina']) &&
-						isset($datos['otrainstit']) &&
-						isset($datos['BInstit']) &&
-						isset($datos['fechainicio']) &&
-						isset($datos['pais'])
-				){
-
-							//Se inserta la institucion en la tabla instit
-							//si BInstit es 1
-
-							$instit = '';
-							$noinstit = '';
-
-							if($datos['BInstit'] == 1)
-							{
-								$instit = 'Otra';
-								$noinstit = $datos['otrainstit'];
-								$this->EstudiosRealizados_model->setInstitucionER($datos['otrainstit']);
-							}
-							if($datos['BInstit'] == 0)
-							{
-								$instit = $datos['otrainstit'];
-								$noinstit = '';
-							}
-
-							$dats = (object)array(
-								'Nivelestudios' => $datos['nivel'],
-								'Siglas' => $datos['siglas'],
-								'Estudiosen' => $datos['estudiosen'],
-								'Area' => $datos['area'],
-								'Disciplina' => $datos['disciplina'],
-								'Institucionnoconsiderada' => $noinstit,
-								'Institucion' => $instit,
-								'EstadoEstudio' => $datos['estadoER'],
-								'Fechadeinicio' => $datos['fechainicio'],
-								'Pais' => $datos['pais'],
-								'Datosprofesores_idDatosprofesor' => $idProfesor,
-								'PDF' => null,
-								'status' => 1
-							);
-							$arreglo = $this->EstudiosRealizados_model->insertarEstudioRealizado($dats);
-							// print_r($arreglo['error']['message']);
-
-							redirect(base_url('index.php/User/estudiosRealizados'));
-				}
-				else
-					;//algun error, pq no un dato esta vacio
-
-			}
-		}*/
 		redirect(base_url('index.php/User/estudiosRealizados'));
 	}
 	public function EREliminar()

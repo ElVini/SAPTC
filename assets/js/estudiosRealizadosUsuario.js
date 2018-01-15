@@ -32,7 +32,6 @@ $(document).ready(function(){
             cssClass: 'btn-danger',
             id: 'btnModalCancelar',
             action: function(dialogItself){
-              //alert($('#NivelEst').val());
                 dialogItself.close();
             }
         },
@@ -119,7 +118,12 @@ $(document).ready(function(){
                    $('#pais').val() == ""
                  )
                    {
-                          alert('Por favor llene todos los campos');
+                     BootstrapDialog.alert({
+                          type: BootstrapDialog.TYPE_DANGER,
+                          title: '¡Atención!',
+                          message: 'Por favor llene todos los campos'
+                       });
+
                    }else
                       if(
                         !CaracteresValidosER($('#NivelEst').val()) ||
@@ -134,15 +138,30 @@ $(document).ready(function(){
                         !CaracteresValidosER($('#pais').val())
                       )
                          {
-                            alert('Por favor solo ingrese caracteres validos');
+                           BootstrapDialog.alert({
+                                type: BootstrapDialog.TYPE_DANGER,
+                                title: '¡Atención!',
+                                message: 'Por favor solo ingrese caracteres validos'
+                             });
+
                          }else {
                            if(document.getElementById("PDFInputModal").files.length < 1)
                            {
-                             alert('Por favor suba un archivo');
+                             BootstrapDialog.alert({
+                                  type: BootstrapDialog.TYPE_DANGER,
+                                  title: '¡Atención!',
+                                  message: 'Por favor suba un archivo'
+                               });
+
                            }else {
                              if(file_extension!='pdf'&&file_extension!='png'&&file_extension!='jpg'&&file_extension!='jpeg')
                              {
-                               alert('Ingrese un archivo con una de las extensiones permitidas');
+                               BootstrapDialog.alert({
+                                    type: BootstrapDialog.TYPE_DANGER,
+                                    title: '¡Atención!',
+                                    message: 'Ingrese un archivo con una de las extensiones permitidas'
+                                 });
+
                              }
                            }
                          }
@@ -206,7 +225,7 @@ $(document).ready(function(){
                   {
                     var file_extension = document.getElementById('PDFInputModal').value.split('.').pop();
                   }
-                  //alert(file_extension);
+
                   if(($('#estadoER').val() == 'Obtenido' && ((typeof $('#ELEGIR').val() == 'undefined' || $('#ELEGIR').val() == "No") || ((typeof $('#ELEGIR').val() == 'undefined'
                   || $('#ELEGIR').val() == "Sí")&&(file_extension=='pdf'||file_extension=='png'||file_extension=='jpg'||file_extension=='jpeg'))))
                    || $('#estadoER').val() == 'Finalizado\\Por obtener' || $('#estadoER').val() == 'En Progreso')
@@ -262,7 +281,11 @@ $(document).ready(function(){
                    document.getElementById('PDFInputModal').files.length < 1
                  )
                    {
-                          alert('Por favor llene todos los campos');
+                     BootstrapDialog.alert({
+                          type: BootstrapDialog.TYPE_DANGER,
+                          title: '¡Atención!',
+                          message: 'Favor de llenar todos los campos'
+                       });
                    }else
                       if(
                         !CaracteresValidosER($('#NivelEst').val()) ||
@@ -277,16 +300,29 @@ $(document).ready(function(){
                         !CaracteresValidosER($('#pais').val())
                       )
                          {
-                            alert('Por favor solo ingrese caracteres validos');
+                           BootstrapDialog.alert({
+                                type: BootstrapDialog.TYPE_DANGER,
+                                title: '¡Atención!',
+                                message: 'Por favor solo ingrese caracteres validos'
+      										 		});
                          }else {
                            if($('#ELEGIR').val() == "Sí" && document.getElementById("PDFInputModal").files.length < 1)
                            {
-                             alert('Por favor suba un archivo');
+                             BootstrapDialog.alert({
+                                  type: BootstrapDialog.TYPE_DANGER,
+                                  title: '¡Atención!',
+                                  message: 'Por favor suba un archivo'
+        										 		});
                            }else {
 
                              if(file_extension!='pdf'&&file_extension!='png'&&file_extension!='jpg'&&file_extension!='jpeg')
                              {
-                               alert('Ingrese un archivo con una de las extensiones permitidas (PDF, PNG o JPEG)');
+                               BootstrapDialog.alert({
+                                    type: BootstrapDialog.TYPE_DANGER,
+                                    title: '¡Atención!',
+                                    message: 'Ingrese un archivo con una de las extensiones permitidas (PDF, PNG o JPEG)'
+          										 		});
+
                              }
                            }
                          }
@@ -322,7 +358,6 @@ $(document).ready(function(){
                        },
                        success:function (data)
                        {
-                           // alert('Datos borrados exitosamente');
                        },error:function(jqXHR, textStatus, errorThrown){
                            console.log('error:: '+ errorThrown);
                        }
