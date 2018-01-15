@@ -51,12 +51,13 @@
 </div>
 
   <!-- Aqui empiezan a mostrarse los datos personales -->
+  <div class="container-fluid">
     <div class="row">
         <div class="col-sm-12 col-md-12 col-lg-12">
               <h1>Datos personales</h1>
         </div>
     </div>
-    <div class="container">
+    <div class="container-fluid">
       <div>
 
       <hr>
@@ -139,6 +140,8 @@
         </form>
 
       </div>
+</div>
+
 </div>
 
 
