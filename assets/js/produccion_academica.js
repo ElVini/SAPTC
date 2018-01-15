@@ -1,12 +1,13 @@
-var id= null;
+var id= -1;
 $(document).ready(function(){
 	var base_url = $('#base_url').val();
 	$('#Agregar').click(function(){
+		$('tr').removeClass('highlight');
 		$('#ajax').append("<div id='formu'></div>");
 		$.ajax({
 			url: "produccion_form",
 			success: function (data) {
-				cargarDialogo($("#formu").html(data), -1);
+				cargarDialogo();
 			  }
 			});
 	});
@@ -28,19 +29,33 @@ $(document).ready(function(){
 		}
 		else
 		{
+		  id=-1;
 		  $(".DivELetrasrojas").show('slow');
 		}
 	});
 
 	$('#EliminarB').click(function(){
-		var id = $(".highlight ").children('td:nth-child(1)').first().html();
+		id = $(".highlight ").children('td:nth-child(1)').first().html();
 		if(id!= undefined)
 		{
-			$('#delete_form').append('<form id="form"method="post" action="'+base_url+'index.php/User/addProduccion"><input type="hidden"name="id" value="'+id+'"></form>');
-			$('#form').submit();
+			BootstrapDialog.confirm({
+				title: "Advertencia",
+				type: BootstrapDialog.TYPE_DANGER,
+				message: "¿Seguro que desea eliminar el registro actual?",
+				btnCancelLabel: 'Cancelar',
+				btnOKLabel: 'Eliminar',
+				closable: true,
+				callback: function(result){
+					if(result){
+						$('#delete_form').append('<form id="form"method="post" action="'+base_url+'index.php/User/addProduccion"><input type="hidden"name="id" value="'+id+'"></form>');
+						$('#form').submit();
+					}
+				}
+			});
 		}
 		else{
 			$(".DivELetrasrojas").show('slow');
+			id=-1;
 		}
 	});
 
@@ -54,7 +69,7 @@ $(document).ready(function(){
 		//cuando no la tiene la asigna al tr y la elimina de los demas
 		else{
 			$(this).parent().addClass('highlight').siblings().removeClass('highlight');
-			id = null;
+			id = -1;
 			$(".DivELetrasrojas").hide('slow');
 		}
 	});
@@ -65,14 +80,40 @@ $(document).ready(function(){
 		id = null;
 		detallesDialogo();
 	});
+
+	$('#btnCitas').click(function(){
+		$('#ajax').append("<div id='formu'></div>");
+		id = $(".highlight ").children('td:nth-child(1)').first().html();
+		if(id!= undefined)
+		{
+			BootstrapDialog.show({
+			  size: BootstrapDialog.SIZE_MEDIUM,
+			  closable: true,
+			  title: 'Citas',
+			  type: BootstrapDialog.TYPE_PRIMARY,
+			  message: $('#formu').load(base_url+'index.php/User/getCitas?id='+id),
+			  buttons: [{
+				label: 'Ok',
+				id: 'cancel',
+				action: function(dialogRef){
+						id=-1;
+						dialogRef.close();
+				  }
+			  }]
+			});
+		}
+		else{
+			$(".DivELetrasrojas").show('slow');
+			id=-1;
+		}
+	})
 });
-//segundo parametro define la funcion
-//-1 agregar
-//si recibe id es para modificar
+
+
 function cargarDialogo(){
 
 	BootstrapDialog.show({
-	  size: BootstrapDialog.SIZE_WIDE,
+	  size: BootstrapDialog.SIZE_NORMAL,
 	  closable: true,
 	  title: 'Nueva producción acádemica',
 	  type: BootstrapDialog.TYPE_PRIMARY,
@@ -82,6 +123,7 @@ function cargarDialogo(){
 		cssClass: 'btn-danger',
 		id: 'cancel',
 		action: function(dialogRef){
+				id=-1;
 				dialogRef.close();
 		  }
 		},{
@@ -115,45 +157,60 @@ function send(){
 	  }
 }
 
-
+//esta función verifica que los valores no se envien vacios
 function notNullValues(){
 	var object = {
 		titulopro : document.getElementById('Titulo').value,
 		anopro : document.getElementById('Ano').value,
-		citaspro : document.getElementById('Citas').value,
+		// citaspro : document.getElementById('Citas').value,
 		tipopro : document.getElementById('tipoproduccion').value,
-		indpro : document.getElementById('Ind').value,
-		capro :document.getElementById('CA').value,
-		//horaspro :document.getElementById('Horas').value,
+		indpro : $('#lgacInd').val(),
+		// capro :document.getElementById('CA').value,
 		parapro :document.getElementById('para').value
 	}
 
-	if(object.parapro == 1)
-	{
-		object.miembrospro = document.getElementById('Miembros').value;
+	$('#lgacIndPost').val(object.indpro.join());
+	//condición en caso de que sea parte de cuerpo academico
+	if(object.parapro==1){
+		var miembros = $('#Miembros').val();
+		$('#MiembrosPost').val(miembros.join());
+		object.miembros = miembros;
+		document.getElementById('lgacAC').value;
+		object.lgacAC = document.getElementById('lgacAC').value;
 	}
+
+	//condicion en caso de que en tipo de producción seleecione "Otra"
+	if(object.tipopro=="Otra"){
+		object.otroTipoPro = document.getElementById('OtraProduccion').value;
+	}
+	//checa todos los elementos del objeto
 	for (var key in object) {
 		if (object.hasOwnProperty(key)) {
 			if(object[key] == "")
+			{
 				return false;
+			}
 		}
 	}
 	return true;
 }
 
 function detallesDialogo(){
+	 var lgacInd = $(".detalles ").children('td:nth-child(10)').first().html();
+	  var miembros = $(".detalles ").children('td:nth-child(8)').first().html();
 	$('#ajax').append("<div id='formu'></div>");
 	BootstrapDialog.show({
 	  size: BootstrapDialog.SIZE_MEDIUM,
 	  closable: true,
 	  title: 'Detalles',
 	  type: BootstrapDialog.TYPE_PRIMARY,
-	  message: $('#formu').load(base_url+'index.php/User/mostrarDetalles'),
+	  message: $('#formu').load(base_url+'index.php/User/mostrarDetalles?lineas='+lgacInd+'&miembros='+miembros),
 	  buttons: [{
 		label: 'OK',
 		id: 'cancel',
 		action: function(dialogRef){
 				dialogRef.close();
+				id=-1;
 		  }
 		}]
 	});

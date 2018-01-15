@@ -1,38 +1,64 @@
 <?php $this->load->view('Helpers/User/header'); ?>
 
 <link rel="stylesheet" href="<?php echo base_url('assets/styles/avisos.css'); ?>">
-<link rel="stylesheet" href="<?php echo base_url('assets/styles/zabuto_calendar.css'); ?>">
+<link rel="stylesheet" type="text/css" href="<?php echo base_url('assets/styles/imagenes.css'); ?>">
 <link rel="stylesheet" type="text/css" href="<?php echo base_url('assets/styles/bootstrap-dialog.min.css'); ?>">
 <script src="<?php echo base_url('assets/js/jquery-3.2.1.min.js'); ?>"></script>
 <script src="<?php echo base_url('assets/js/zabuto_calendar.js'); ?>"></script>
 <script src="<?php echo base_url('assets/js/avisos.js'); ?>"></script>
 <script src="https://use.fontawesome.com/eb49eee3f9.js"></script>
 
-
+  <!-- espacio para el nombre y la foto de perfil -->
 
 <div class="row" style="background-color:#EEEEEE;">
     <center><div class="col-md-12">
-        <img src="<?php echo base_url($img); ?>" height="100px" width="100px" style="border-radius: 100%;" title="<?php echo $nombre. ' ' .$apellidop. ' '. $apellidom  ?>" alt="<?php echo "Imagen de ".$nombre ?>">
+      <div class="view overlay hm-blue-light">
+        <a data-toggle="modal" data-target="#myModal">  <img src="<?php echo base_url($img); ?>" height="100px" class="img-fluid" width="100px" id="foto" style="border-radius: 100%;" title="Cambiar foto de perfil" alt="<?php echo "Imagen de ".$nombre ?>"> </a>
+
+      </div>
     </div>
+
     <div class="col-md-12">
         <h2><?php echo $nombre. ' ' .$apellidop. ' '. $apellidom  ?></h2>
     </div></center>
-    <form action="<?php echo base_url('index.php/User/Imagen'); ?>" method="post" enctype="multipart/form-data">
-        <input type="file" name="foto" accept=".jpg">
-        <input type="submit" class="btn btn-primary" value="Enviar">
-    </form>
 </div>
 
+  <!-- Modal para cambiar la foto de perfil -->
+  <div class="modal fade" id="myModal" role="dialog">
+    <form action="<?php echo base_url('index.php/User/Imagen'); ?>" method="post" enctype="multipart/form-data">
+    <div class="modal-dialog">
 
+      <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-header" style="background-color:#337AB7; color:white;">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title">Cambiar foto</h4>
+        </div>
+        <div class="modal-body">
+          <h4>Seleccione la fotografía:</h4> <br>
+          <input type="file" name="foto" accept=".jpg">
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-danger" data-dismiss="modal">Cancelar</button>
+          <input type="submit" class="btn btn-primary" value="Enviar">
+        </div>
+      </div>
+
+    </div>
+    </form>
+  </div>
+
+</div>
+
+  <!-- Aqui empiezan a mostrarse los datos personales -->
+  <div class="container-fluid">
     <div class="row">
         <div class="col-sm-12 col-md-12 col-lg-12">
-              <center><h1>Datos personales</h1>
-            <button type="button" data-toggle="collapse" id="botonDatos" data-target="#infDesp" class="btn btn-primary" name="button">Mostrar datos</button></center>
+              <h1>Datos personales</h1>
         </div>
     </div>
-    <div class="container">
-    <div class="collapse" id="infDesp">
-      <div class="container">
+    <div class="container-fluid">
+      <div>
 
       <hr>
         <form id="formDatos" action="<?php echo base_url('index.php/User/datos_profesor'); ?>" method="post">
@@ -114,78 +140,10 @@
         </form>
 
       </div>
-    </div>
 </div>
 
-      <!--**************************Aqui va el calendario vergas ********************-->
-      <div class="container col-xs-12 col-sm-12 col-md-12">
-      	<div id="my-calendar" class="col-xs-12 col-sm-12 col-md-7 col-lg-7">
-      	</div>
-      	<div id="tabla-buttons" class="col-xs-12 col-sm-12 col-md-5 col-lg-5">
-      	    <div id="div-tabla" class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-      	        <table id="tabla" class="table table-hover">
-      	            <thead>
-      	                <tr>
-      	                    <th colspan="3" id ="notif">Recordatorios</th>
-      	                </tr>
-      	                <tr>
-      	                    <th>Fecha</th>
-      	                    <th>Título</th>
-      	                    <th>Detalles</th>
-      	                </tr>
-      	            </thead>
-      				<tbody class="">
-                    <?php
-                      echo
-                      '<script type="application/javascript">
-                      var eventData= [];
-                      var scrollCounter=0;
-                      </script>';
-      				foreach ($query as $usuario) {
-      				 	$inputId = $usuario->idRecordatorios;
-      	                $fecha = date_format(date_create($usuario->Dia),"d / m / Y");
-      	                echo '<tr>
-      	                      <td hidden id="id">'.$usuario->idRecordatorios.'</td>
-      	                      <td hidden id="date">'.$usuario->Dia.'</td>
-      	                        <td>'.$fecha.'</td>
-      	                          <td id="title">'.$usuario->Titulo.'</td>
-      	                            <td id ="details">'.$usuario->Descripcion.'</td>
-      	                      </tr>';
-      	                echo  '<script type="application/javascript">
-      	                        eventData.push({date:"'.$usuario->Dia.'",badge:true,title:"'.$usuario->Titulo.'"});
-      	                        if(scrollCounter > 2)
-      	                        {
-      	                          $("#div-tabla").addClass("scroll");
-      	                        }
-      	                        scrollCounter++;
-      	                        </script>';
-                      }
-                      echo
-                      '<script type="application/javascript">
-                        $("#my-calendar").zabuto_calendar({
-                            language:"es",
-                            cell_border: true,
-                            today: true,
-                            weekstartson: 0,
-                            data: eventData,
-                          });
-                      </script>';
-                    ?>
-                  </tbody>
-      	        </table>
+</div>
 
-      	      </div>
-      	      <div id="buttons">
-      	        <button id="delete" class="btn btn-danger">Eliminar</button>
-      	        <button id="edit" class="btn btn-primary">Modificar</button>
-      	        <button id="add" class="btn btn-success">Agregar</button>
-      	      </div>
-      	      <div id="divParaError" class="DivELetrasrojas">
-      	        <p></p>
-      	      </div>
-      	      <form id="formu"hidden></form>
-      	    </div>
-      	  </div>
 
 <script type="text/javascript" src="<?php echo base_url('assets/js/perfil.js'); ?>"></script>
 <?php $this->load->view('User/Helpers/footer') ?>

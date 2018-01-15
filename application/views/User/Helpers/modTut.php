@@ -18,19 +18,19 @@
             <label for="programa">Programa educativo:</label>
             <select id="programab" name="programa" class="form-control">
                 <option value="0">Seleccionar. . .</option>
-                <option <?php if($programa === 'Ing. en informática')  echo 'selected="selected"'; ?>value="Ing. en informática">Ing. en informática</option>
-                <option <?php if($programa === 'Ing. en nanotecnología')  echo 'selected="selected"'; ?> value="Ing. en nanotecnología">Ing. en nanotecnología</option>
-                <option <?php if($programa === 'Ing. en mecatrónica')  echo 'selected="selected"'; ?> value="Ing. en mecatrónica">Ing. en mecatrónica</option>
-                <option <?php if($programa === 'Ing. en biomédica')  echo 'selected="selected"'; ?> value="Ing. en biomédica">Ing. en biomédica</option>
-                <option <?php if($programa === 'Ing. en biotecnología')  echo 'selected="selected"'; ?> value="Ing. en bioteconología">Ing. en biotecnología</option>
-                <option <?php if($programa === 'Ing. en energía')  echo 'selected="selected"'; ?> value="Ing. en energía">Ing. en energía</option>
-                <option <?php if($programa === 'Ing. en tecnología ambiental')  echo 'selected="selected"'; ?> value="Ing. en teconología ambiental">Ing. en tecnología ambiental</option>
-                <option <?php if($programa === 'Ing. en animación y efectos visuales')  echo 'selected="selected"'; ?> value="Ing. en animación y efectos visuales">Ing. en animación y efectos visuales</option>
-                <option <?php if($programa === 'Ing. en logística y transporte')  echo 'selected="selected"'; ?> value="Ing. en logística y transporte">Ing. en logísitca y transporte</option>
-                <option <?php if($programa === 'Lic. en Terapia física')  echo 'selected="selected"'; ?> value="Lic. en terapia fisica">Lic. en Terapía física</option>
-                <option <?php if($programa === 'Lic. en administración y festión de PyMes')  echo 'selected="selected"'; ?> value="Lic. en administración y gestión de PyMes">Lic. en administración y gestión de PyMes</option>
-                <option <?php if($programa === 'Maestría en enseñanza de las ciencias')  echo 'selected="selected"'; ?> value="Maestría en enseñanza de las ciencias">Maestría en enseñanza de las ciencias</option>
-                <option <?php if($programa === 'Maestría en ciencias aplicadas')  echo 'selected="selected"'; ?> value="Maestría en ciencias aplicadas">Maestría en ciencias aplicadas</option>
+                <option <?php if($programa === 'Ing. en informática')  echo 'selected="selected" '; ?>value="Ing. en informática">Ing. en informática</option>
+                <option <?php if($programa === 'Ing. en nanotecnología')  echo 'selected="selected" '; ?> value="Ing. en nanotecnología">Ing. en nanotecnología</option>
+                <option <?php if($programa === 'Ing. en mecatrónica')  echo 'selected="selected" '; ?> value="Ing. en mecatrónica">Ing. en mecatrónica</option>
+                <option <?php if($programa === 'Ing. en biomédica')  echo 'selected="selected" '; ?> value="Ing. en biomédica">Ing. en biomédica</option>
+                <option <?php if($programa === 'Ing. en biotecnología')  echo 'selected="selected" '; ?> value="Ing. en biotecnología">Ing. en biotecnología</option>
+                <option <?php if($programa === 'Ing. en energía')  echo 'selected="selected" '; ?> value="Ing. en energía">Ing. en energía</option>
+                <option <?php if($programa === 'Ing. en tecnología ambiental')  echo 'selected="selected" '; ?> value="Ing. en tecnología ambiental">Ing. en tecnología ambiental</option>
+                <option <?php if($programa === 'Ing. en animación y efectos visuales')  echo 'selected="selected" '; ?> value="Ing. en animación y efectos visuales">Ing. en animación y efectos visuales</option>
+                <option <?php if($programa === 'Ing. en logística y transporte')  echo 'selected="selected" '; ?> value="Ing. en logística y transporte">Ing. en logísitca y transporte</option>
+                <option <?php if($programa === 'Lic. en terapia física')  echo 'selected="selected" '; ?> value="Lic. en terapia física">Lic. en terapia física</option>
+                <option <?php if($programa === 'Lic. en administración y gestión de PyMes')  echo 'selected="selected" '; ?> value="Lic. en administración y gestión de PyMes">Lic. en administración y gestión de PyMes</option>
+                <option <?php if($programa === 'Maestría en enseñanza de las ciencias')  echo 'selected="selected" '; ?> value="Maestría en enseñanza de las ciencias">Maestría en enseñanza de las ciencias</option>
+                <option <?php if($programa === 'Maestría en ciencias aplicadas')  echo 'selected="selected" '; ?> value="Maestría en ciencias aplicadas">Maestría en ciencias aplicadas</option>
             </select>
         </div>
 

@@ -1,6 +1,8 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 ?>
+
+<?php $this->load->view('Helpers/User/header');?>
     <meta charset="UTF-8">
     <title><?=$titulo ?></title>
     <link rel="stylesheet" href="<?php echo base_url('assets/styles/bootstrap-dialog.min.css'); ?>">
@@ -9,7 +11,6 @@ defined('BASEPATH') OR exit('No direct script access allowed');
     <script src="<?php echo base_url('assets/js/bootstrap-dialog.min.js'); ?>"></script>
     <link rel="stylesheet" href="<?php echo base_url('assets/styles/estudiosRealizadosUsuario.css'); ?>">
 
-<?php $this->load->view('Helpers/User/header');?>
 
 <div class="row"><p></p></div>
 <div class="row"><p></p></div>
