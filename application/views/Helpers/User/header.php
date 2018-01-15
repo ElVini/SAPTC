@@ -43,7 +43,7 @@
                 <li><a href="<?php echo base_url('index.php/User/tutorias'); ?>">Tutorias</a> </li>
                 <li class="divider"></li>
                 <li><a href="<?php echo base_url('index.php/User/docencia'); ?>" >Docencias</a> </li>
-                <li class="divider" ></li>
+                <!-- <li class="divider" ></li> -->
                 <!-- <li><a href="#" >Dirección individualizada</a> </li> -->
 
               </ul>
@@ -55,7 +55,7 @@
               </a>
               <ul class="dropdown-menu" role="menu">
                 <!-- <li><a href="">Proyectos</a> </li> -->
-                <li class="divider"></li>
+                <!-- <li class="divider"></li> -->
                 <li><a href="<?php echo base_url('index.php/User/linea_generacion')?>" >LGAC</a> </li>
                 <li class="divider" ></li>
                 <li><a href="<?php echo base_url('index.php/User/produccion_academica')?>" >Producción Académica</a> </li>
@@ -76,7 +76,7 @@
                    <li><a href="<?php echo base_url('index.php/User/premiosoDisticiones'); ?>" >Premios o Distinciones</a> </li>
                    <li class="divider" ></li>
                    <li><a href="<?php echo base_url('index.php/User/cuerpoAcademico'); ?>" >Datos del Cuerpo Académico</a> </li>
-                   <li class="divider" ></li>
+                   <!-- <li class="divider" ></li> -->
                    <!-- <li><a href="#" >Participación en Programas Educativos</a> </li> -->
 <!--Me faltaba ese, pero como no se lo agregué a las pantallas que le envié a Angulo, pos se queda comentado por mientras   -->
                   <!-- <li class="divider" ></li>
