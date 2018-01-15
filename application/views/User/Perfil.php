@@ -2,6 +2,7 @@
 
 <link rel="stylesheet" href="<?php echo base_url('assets/styles/avisos.css'); ?>">
 <link rel="stylesheet" href="<?php echo base_url('assets/styles/zabuto_calendar.css'); ?>">
+<link rel="stylesheet" type="text/css" href="<?php echo base_url('assets/styles/imagenes.css'); ?>">
 <link rel="stylesheet" type="text/css" href="<?php echo base_url('assets/styles/bootstrap-dialog.min.css'); ?>">
 <script src="<?php echo base_url('assets/js/jquery-3.2.1.min.js'); ?>"></script>
 <script src="<?php echo base_url('assets/js/zabuto_calendar.js'); ?>"></script>
@@ -12,15 +13,39 @@
 
 <div class="row" style="background-color:#EEEEEE;">
     <center><div class="col-md-12">
-        <img src="<?php echo base_url($img); ?>" height="100px" width="100px" style="border-radius: 100%;" title="<?php echo $nombre. ' ' .$apellidop. ' '. $apellidom  ?>" alt="<?php echo "Imagen de ".$nombre ?>">
+      <a data-toggle="modal" data-target="#myModal">  <img src="<?php echo base_url($img); ?>" height="100px" width="100px" id="foto" style="border-radius: 100%;" title="Cambiar foto de perfil" alt="<?php echo "Imagen de ".$nombre ?>"> </a>
     </div>
+
     <div class="col-md-12">
         <h2><?php echo $nombre. ' ' .$apellidop. ' '. $apellidom  ?></h2>
     </div></center>
+</div>
+
+  <!-- Modal -->
+  <div class="modal fade" id="myModal" role="dialog">
     <form action="<?php echo base_url('index.php/User/Imagen'); ?>" method="post" enctype="multipart/form-data">
-        <input type="file" name="foto" accept=".jpg">
-        <input type="submit" class="btn btn-primary" value="Enviar">
+    <div class="modal-dialog">
+
+      <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-header" style="background-color:#337AB7; color:white;">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title">Cambiar foto</h4>
+        </div>
+        <div class="modal-body">
+          <h4>Seleccione la fotografía:</h4> <br>
+          <input type="file" name="foto" accept=".jpg">
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-danger" data-dismiss="modal">Cancelar</button>
+          <input type="submit" class="btn btn-primary" value="Enviar">
+        </div>
+      </div>
+
+    </div>
     </form>
+  </div>
+
 </div>
 
 
@@ -189,3 +214,12 @@
 
 <script type="text/javascript" src="<?php echo base_url('assets/js/perfil.js'); ?>"></script>
 <?php $this->load->view('User/Helpers/footer') ?>
+
+<script type="text/javascript">
+
+  function moDatos(){
+
+  }
+
+
+</script>
