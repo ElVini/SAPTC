@@ -5,7 +5,7 @@
 <div class="row">
   <div class="col-md-12">
 
-    <form id="formER" action="ERAgregar" method="post" enctype="multipart/form-data">
+    <form id="formER" action="<?php if($datos == null){echo 'ERAgregar';} else {echo 'ERModificar';} ?>" method="post" enctype="multipart/form-data">
 
       <label>Nivel de Estudios</label>
       <input <?php if($disabled == 1){echo 'disabled="disabled"';} if($datos != null){echo ' value="'.$datos->Nivelestudios.'"';} ?> type="text" name="nivel" id="NivelEst" class="form-control">
@@ -57,23 +57,48 @@
         <label>Obtenido el</label>
         <input <?php if($disabled == 1){echo 'disabled="disabled"';} if($datos != null){echo ' value="'.$datos->Fechadeobtencion.'"';} ?> type="date" name="fechaobt" id="FechaObt" class="form-control">
 
-        <?php if($disabled != 1) echo '
+        <?php
+        if($datos == null && $disabled != 1) echo '
         <label>Documento (PDF, PNG o JPEG)</label>
         <input id="PDFInputModal" name="PDFInputModal" type="file" accept=".pdf,.png,.jpg,.jpeg">
         ';
-        ?>
-        <?php
+
+        if($datos != null && $datos->PDF == "" && $disabled != 1) echo '
+        <label>Documento (PDF, PNG o JPEG)</label>
+        <input id="PDFInputModal" name="PDFInputModal" type="file" accept=".pdf,.png,.jpg,.jpeg">
+        ';
+
         $dir = "";
-        if($datos != null)
+        if($datos != null && $datos->PDF != "")
         {
           $dir = $datos->PDF;
-          echo '<a href="'.base_url().'index.php/User/descargarEstudio/'.$datos->idEstudiosrealizados.'" target="_blank">Abrir archivo</a>';
+          echo '
+          <br><a href="'.base_url().'index.php/User/descargarEstudio/'.$datos->idEstudiosrealizados.'" target="_blank">Abrir archivo</a><br><br>';
         }
+
+        if($datos != null && $datos->PDF != ""  && $disabled != 1) echo '
+        <label>¿Desea sustituir el documento?</label>
+        <select id="ELEGIR" class="form-control" name="sustituir">
+          <option>No</option>
+          <option>Sí</option>
+        </select>
+        <div id="sustit"></div>
+        ';
+
+
         ?>
 
       </div>
 
-      <input type="hidden" name="BInstit" id="BInstit">
+      <input type="hidden" id="BInstit" name="BInstit" value="">
+      
+      <?php
+      if ($datos != null && $disabled !=1)
+      {
+        echo '<input id="idER" type="hidden" name="id" value="'.$datos->idEstudiosrealizados.'">';
+      }
+       ?>
+
 
     </form>
   </div>
@@ -81,6 +106,7 @@
 
 <script type="text/javascript">
 $(document).ready(function() {
+
   $('#divOtraInstit').hide();
 
   // datos cargados de la BD
@@ -117,15 +143,8 @@ $(document).ready(function() {
     $('#divSelectInstit').show();
   });
 
-  // $('#FechaIniciado').hide();
   $('#FechaFinalizado').hide();
   $('#FechaObtenido').hide();
-
-  // <select class="form-control" id="estadoER">
-  //   <option>En Progreso</option>
-  //   <option>Finalizado\Por obtener</option>
-  //   <option>Obtenido</option>
-  // </select>
 
   $('#estadoER').on('change',function(){
     if( $('#estadoER').val() == "En Progreso" ){
@@ -159,6 +178,7 @@ $(document).ready(function() {
         $instit=$datos->Institucion;
       }
       echo ' $("#selectInstit").val("'.$instit.'");';
+      echo ' $("#otraInstit").val("'.$instit.'");';
 
       if($datos->EstadoEstudio == 'En Progreso')
       {
@@ -189,5 +209,30 @@ $(document).ready(function() {
      $('#FechaFinalizado').show();
      $('#FechaObtenido').show();
    }
+
+    var inputGrupo = document.createElement("div");
+    var label = document.createElement("label");
+    label.innerHTML = "Sustituir documento (PDF, PNG o JPEG)"
+    var br2 = document.createElement("br");
+    var input = document.createElement("input");
+    input.setAttribute("type","file");
+    input.setAttribute("id","PDFInputModal");
+    input.setAttribute("name","PDFInputModal");
+    input.setAttribute("accept",".pdf,.png,.jpg,.jpeg");
+    inputGrupo.appendChild(label);
+    inputGrupo.appendChild(br2);
+    inputGrupo.appendChild(input);
+    $('#ELEGIR').on('change',function(){
+      if($('#ELEGIR').val() == "Sí")
+      {
+        document.getElementById('sustit').appendChild(inputGrupo);
+      }
+      if($('#ELEGIR').val() == "No")
+      {
+        document.getElementById('PDFInputModal').value = "";
+        document.getElementById('sustit').removeChild(document.getElementById('sustit').childNodes[0]);
+      }
+    });
+
 });
 </script>

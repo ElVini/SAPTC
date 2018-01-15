@@ -437,6 +437,583 @@ class User extends CI_Controller
 			}
 		}
 	}
+	public function ERModificar()
+	{
+		if($this->session->userdata('id') != 2)
+		{
+			redirect(base_url());
+		}
+		$datos = $this->input->post();
+
+		print_r($datos);
+
+		$nombreDoc = $_FILES['PDFInputModal']['name'];
+	  $tamDoc = $_FILES['PDFInputModal']['size'];
+	  $tipoDoc = $_FILES['PDFInputModal']['type'];
+	  $tmpDoc = $_FILES['PDFInputModal']['tmp_name'];
+	  $errorDoc = $_FILES['PDFInputModal']['error'];
+	  $extensionDoc = strtolower(substr($nombreDoc,strpos($nombreDoc,'.')+1));
+
+		echo '<br>$nombreDoc: '.$nombreDoc;
+		echo '<br>$tamDoc: '.$tamDoc;
+		echo '<br>$tipoDoc: '.$tipoDoc;
+		echo '<br>$tmpDoc: '.$tmpDoc;
+		echo '<br>$errorDoc: '.$errorDoc;
+		echo '<br>$extensionDoc: '.$extensionDoc;
+
+		$idProfesor = $this->session->userdata('login');
+
+		if(isset($datos['estadoER']) && $datos['estadoER'] == 'En Progreso')
+		{
+
+			if(
+					isset($datos['nivel']) &&
+					isset($datos['siglas']) &&
+					isset($datos['estudiosen']) &&
+					isset($datos['area']) &&
+					isset($datos['disciplina']) &&
+					isset($datos['otrainstit']) &&
+					isset($datos['BInstit']) &&
+					isset($datos['fechainicio']) &&
+					isset($datos['pais']) &&
+					isset($datos['id'])
+			)
+			{
+				$instit = '';
+				$noinstit = '';
+
+				if($datos['BInstit'] == 1)
+				{
+					$instit = 'Otra';
+					$noinstit = $datos['otrainstit'];
+					$this->EstudiosRealizados_model->setInstitucionER($datos['otrainstit']);
+				}
+				if($datos['BInstit'] == 0)
+				{
+					$instit = $datos['otrainstit'];
+					$noinstit = '';
+				}
+				$dats = (object)array(
+					'Nivelestudios' => $datos['nivel'],
+					'Siglas' => $datos['siglas'],
+					'Estudiosen' => $datos['estudiosen'],
+					'Area' => $datos['area'],
+					'Disciplina' => $datos['disciplina'],
+					'Institucionnoconsiderada' => $noinstit,
+					'Institucion' => $instit,
+					'EstadoEstudio' => $datos['estadoER'],
+					'Fechadeinicio' => $datos['fechainicio'],
+					'Fechadefin' => '',
+					'Fechadeobtencion' => '',
+					'Pais' => $datos['pais'],
+					'PDF' => null
+				);
+				$ruta = $this->EstudiosRealizados_model->getRuta($datos['id']);
+				echo $ruta->result()[0]->Datosprofesores_idDatosprofesor;
+				echo $this->session->userdata('login');
+				if($ruta != null && $ruta->result()[0]->Datosprofesores_idDatosprofesor == $this->session->userdata('login'))
+				{
+					echo 'se actualizan los datos';
+					if($ruta->result()[0]->PDF != '')
+					{
+						unlink($ruta->result()[0]->PDF);
+					}
+					$error = $this->EstudiosRealizados_model->modificarEstudioRealizado($dats,$datos['id']);
+					print_r($error);
+
+				}
+
+
+			}
+		}
+		if(isset($datos['estadoER']) && $datos['estadoER'] == 'Finalizado\Por obtener')
+		{
+
+			if(
+					isset($datos['nivel']) &&
+					isset($datos['siglas']) &&
+					isset($datos['estudiosen']) &&
+					isset($datos['area']) &&
+					isset($datos['disciplina']) &&
+					isset($datos['otrainstit']) &&
+					isset($datos['BInstit']) &&
+					isset($datos['fechainicio']) &&
+					isset($datos['fechafin']) &&
+					isset($datos['pais']) &&
+					isset($datos['id'])
+			)
+			{
+				$instit = '';
+				$noinstit = '';
+
+				if($datos['BInstit'] == 1)
+				{
+					$instit = 'Otra';
+					$noinstit = $datos['otrainstit'];
+					$this->EstudiosRealizados_model->setInstitucionER($datos['otrainstit']);
+				}
+				if($datos['BInstit'] == 0)
+				{
+					$instit = $datos['otrainstit'];
+					$noinstit = '';
+				}
+				$dats = (object)array(
+					'Nivelestudios' => $datos['nivel'],
+					'Siglas' => $datos['siglas'],
+					'Estudiosen' => $datos['estudiosen'],
+					'Area' => $datos['area'],
+					'Disciplina' => $datos['disciplina'],
+					'Institucionnoconsiderada' => $noinstit,
+					'Institucion' => $instit,
+					'EstadoEstudio' => $datos['estadoER'],
+					'Fechadeinicio' => $datos['fechainicio'],
+					'Fechadefin' => $datos['fechafin'],
+					'Fechadeobtencion' => '',
+					'Pais' => $datos['pais'],
+					'PDF' => null
+				);
+				$ruta = $this->EstudiosRealizados_model->getRuta($datos['id']);
+
+				if($ruta != null && $ruta->result()[0]->Datosprofesores_idDatosprofesor == $this->session->userdata('login'))
+				{
+					echo 'se actualizan los datos';
+					if($ruta->result()[0]->PDF != '')
+					{
+						unlink($ruta->result()[0]->PDF);
+					}
+					$error = $this->EstudiosRealizados_model->modificarEstudioRealizado($dats,$datos['id']);
+					print_r($error);
+				}
+
+			}
+		}
+		if(isset($datos['estadoER']) && $datos['estadoER'] == 'Obtenido')
+		{
+
+			if(!isset($datos['sustituir']))
+			{
+				if(isset($nombreDoc))
+				{
+					if(
+						($extensionDoc == 'pdf' || $extensionDoc == 'png' || $extensionDoc == 'jpeg' || $extensionDoc == 'jpg')
+						&& ($tipoDoc == 'application/pdf' || $tipoDoc == 'image/jpeg' || $tipoDoc == 'image/png')
+					)
+					{
+						if(
+								isset($datos['nivel']) &&
+								isset($datos['siglas']) &&
+								isset($datos['estudiosen']) &&
+								isset($datos['area']) &&
+								isset($datos['disciplina']) &&
+								isset($datos['otrainstit']) &&
+								isset($datos['BInstit']) &&
+								isset($datos['fechainicio']) &&
+								isset($datos['fechafin']) &&
+								isset($datos['fechaobt']) &&
+								isset($datos['pais']) &&
+								isset($datos['id'])
+						)
+						{
+							$instit = '';
+							$noinstit = '';
+
+							if($datos['BInstit'] == 1)
+							{
+								$instit = 'Otra';
+								$noinstit = $datos['otrainstit'];
+								$this->EstudiosRealizados_model->setInstitucionER($datos['otrainstit']);
+							}
+							if($datos['BInstit'] == 0)
+							{
+								$instit = $datos['otrainstit'];
+								$noinstit = '';
+							}
+							$dats = (object)array(
+								'Nivelestudios' => $datos['nivel'],
+								'Siglas' => $datos['siglas'],
+								'Estudiosen' => $datos['estudiosen'],
+								'Area' => $datos['area'],
+								'Disciplina' => $datos['disciplina'],
+								'Institucionnoconsiderada' => $noinstit,
+								'Institucion' => $instit,
+								'EstadoEstudio' => $datos['estadoER'],
+								'Fechadeinicio' => $datos['fechainicio'],
+								'Fechadefin' => $datos['fechafin'],
+								'Fechadeobtencion' => $datos['fechaobt'],
+								'Pais' => $datos['pais'],
+								'Datosprofesores_idDatosprofesor' => $idProfesor,
+								'PDF' => null,
+								'status' => 1
+							);
+							$arreglo = $this->EstudiosRealizados_model->modificarEstudioRealizado($dats,$datos['id']);
+							if($arreglo['error']['message'] == '')
+							{
+								//crear carpeta
+								if(!is_dir('assets/documentos/EstudiosRealizados/'.$idProfesor))
+									mkdir('assets/documentos/EstudiosRealizados/'.$idProfesor, 0777, TRUE);
+
+								$ubicaDoc = 'assets/documentos/EstudiosRealizados/'.$idProfesor.'/';
+								if(move_uploaded_file($tmpDoc, $ubicaDoc.$datos['id'].'.'.$extensionDoc))
+								{
+									$this->EstudiosRealizados_model->cambiarRuta($datos['id'],$ubicaDoc.$datos['id'].'.'.$extensionDoc);
+								}
+							}
+
+
+						}
+					}
+				}
+			}
+
+			if(isset($datos['sustituir']) && $datos['sustituir'] == "No")
+			{
+				if(!isset($nombreDoc))
+				{
+					if(
+							isset($datos['nivel']) &&
+							isset($datos['siglas']) &&
+							isset($datos['estudiosen']) &&
+							isset($datos['area']) &&
+							isset($datos['disciplina']) &&
+							isset($datos['otrainstit']) &&
+							isset($datos['BInstit']) &&
+							isset($datos['fechainicio']) &&
+							isset($datos['fechafin']) &&
+							isset($datos['fechaobt']) &&
+							isset($datos['pais']) &&
+							isset($datos['id'])
+					)
+					{
+						$instit = '';
+						$noinstit = '';
+
+						if($datos['BInstit'] == 1)
+						{
+							$instit = 'Otra';
+							$noinstit = $datos['otrainstit'];
+							$this->EstudiosRealizados_model->setInstitucionER($datos['otrainstit']);
+						}
+						if($datos['BInstit'] == 0)
+						{
+							$instit = $datos['otrainstit'];
+							$noinstit = '';
+						}
+						$dats = (object)array(
+							'Nivelestudios' => $datos['nivel'],
+							'Siglas' => $datos['siglas'],
+							'Estudiosen' => $datos['estudiosen'],
+							'Area' => $datos['area'],
+							'Disciplina' => $datos['disciplina'],
+							'Institucionnoconsiderada' => $noinstit,
+							'Institucion' => $instit,
+							'EstadoEstudio' => $datos['estadoER'],
+							'Fechadeinicio' => $datos['fechainicio'],
+							'Fechadefin' => $datos['fechafin'],
+							'Fechadeobtencion' => $datos['fechaobt'],
+							'Pais' => $datos['pais'],
+							'Datosprofesores_idDatosprofesor' => $idProfesor,
+							'status' => 1
+						);
+						$arreglo = $this->EstudiosRealizados_model->modificarEstudioRealizado($dats,$datos['id']);
+					}
+				}
+			}
+
+			if(isset($datos['sustituir']) && $datos['sustituir'] == "Sí")
+			{
+				if(isset($nombreDoc))
+				{
+					if(
+						($extensionDoc == 'pdf' || $extensionDoc == 'png' || $extensionDoc == 'jpeg' || $extensionDoc == 'jpg')
+						&& ($tipoDoc == 'application/pdf' || $tipoDoc == 'image/jpeg' || $tipoDoc == 'image/png')
+					)
+					{
+						if(
+								isset($datos['nivel']) &&
+								isset($datos['siglas']) &&
+								isset($datos['estudiosen']) &&
+								isset($datos['area']) &&
+								isset($datos['disciplina']) &&
+								isset($datos['otrainstit']) &&
+								isset($datos['BInstit']) &&
+								isset($datos['fechainicio']) &&
+								isset($datos['fechafin']) &&
+								isset($datos['fechaobt']) &&
+								isset($datos['pais']) &&
+								isset($datos['id'])
+						)
+						{
+							$instit = '';
+							$noinstit = '';
+
+							if($datos['BInstit'] == 1)
+							{
+								$instit = 'Otra';
+								$noinstit = $datos['otrainstit'];
+								$this->EstudiosRealizados_model->setInstitucionER($datos['otrainstit']);
+							}
+							if($datos['BInstit'] == 0)
+							{
+								$instit = $datos['otrainstit'];
+								$noinstit = '';
+							}
+							$dats = (object)array(
+								'Nivelestudios' => $datos['nivel'],
+								'Siglas' => $datos['siglas'],
+								'Estudiosen' => $datos['estudiosen'],
+								'Area' => $datos['area'],
+								'Disciplina' => $datos['disciplina'],
+								'Institucionnoconsiderada' => $noinstit,
+								'Institucion' => $instit,
+								'EstadoEstudio' => $datos['estadoER'],
+								'Fechadeinicio' => $datos['fechainicio'],
+								'Fechadefin' => $datos['fechafin'],
+								'Fechadeobtencion' => $datos['fechaobt'],
+								'Pais' => $datos['pais'],
+								'Datosprofesores_idDatosprofesor' => $idProfesor,
+								'status' => 1
+							);
+
+							$ruta = $this->EstudiosRealizados_model->getRuta($datos['id']);
+
+							if($ruta != null && $ruta->result()[0]->Datosprofesores_idDatosprofesor == $this->session->userdata('login'))
+							{
+								echo 'se actualizan los datos';
+								if($ruta->result()[0]->PDF != '')
+								{
+									unlink($ruta->result()[0]->PDF);
+								}
+								$error = $this->EstudiosRealizados_model->modificarEstudioRealizado($dats,$datos['id']);
+								print_r($error);
+								$ubicaDoc = 'assets/documentos/EstudiosRealizados/'.$idProfesor.'/';
+								if(move_uploaded_file($tmpDoc, $ubicaDoc.$datos['id'].'.'.$extensionDoc))
+								{
+									$this->EstudiosRealizados_model->cambiarRuta($datos['id'],$ubicaDoc.$datos['id'].'.'.$extensionDoc);
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+/*
+		if(isset($datos['estadoER']) && $datos['estadoER'] == 'Obtenido')
+		{
+				if(isset($nombreDoc))
+				{
+						if(
+							($extensionDoc == 'pdf' || $extensionDoc == 'png' || $extensionDoc == 'jpeg' || $extensionDoc == 'jpg')
+							&& ($tipoDoc == 'application/pdf' || $tipoDoc == 'image/jpeg' || $tipoDoc == 'image/png')
+						)
+						{
+							if(
+									isset($datos['nivel']) &&
+									isset($datos['siglas']) &&
+									isset($datos['estudiosen']) &&
+									isset($datos['area']) &&
+									isset($datos['disciplina']) &&
+									isset($datos['otrainstit']) &&
+									isset($datos['BInstit']) &&
+									isset($datos['fechainicio']) &&
+									isset($datos['fechafin']) &&
+									isset($datos['fechaobt']) &&
+									isset($datos['pais'])
+							){
+										//Se inserta la institucion en la tabla instit
+
+										$instit = '';
+										$noinstit = '';
+
+										if($datos['BInstit'] == 1)
+										{
+											$instit = 'Otra';
+											$noinstit = $datos['otrainstit'];
+											$this->EstudiosRealizados_model->setInstitucionER($datos['otrainstit']);
+										}
+										if($datos['BInstit'] == 0)
+										{
+											$instit = $datos['otrainstit'];
+											$noinstit = '';
+										}
+										$dats = (object)array(
+											'Nivelestudios' => $datos['nivel'],
+											'Siglas' => $datos['siglas'],
+											'Estudiosen' => $datos['estudiosen'],
+											'Area' => $datos['area'],
+											'Disciplina' => $datos['disciplina'],
+											'Institucionnoconsiderada' => $noinstit,
+											'Institucion' => $instit,
+											'EstadoEstudio' => $datos['estadoER'],
+											'Fechadeinicio' => $datos['fechainicio'],
+											'Fechadefin' => $datos['fechafin'],
+											'Fechadeobtencion' => $datos['fechaobt'],
+											'Pais' => $datos['pais'],
+											'Datosprofesores_idDatosprofesor' => $idProfesor,
+											'PDF' => null,
+											'status' => 1
+										);
+										$arreglo = $this->EstudiosRealizados_model->insertarEstudioRealizado($dats);
+										if($arreglo['error']['message'] == '')
+										{
+											//si no hubo error al insertar el estudio
+											//se sube el documento
+											//crear carpeta
+											if(!is_dir('assets/documentos/EstudiosRealizados/'.$idProfesor))
+											 	mkdir('assets/documentos/EstudiosRealizados/'.$idProfesor, 0777, TRUE);
+
+											$ubicaDoc = 'assets/documentos/EstudiosRealizados/'.$idProfesor.'/';
+											if(!move_uploaded_file($tmpDoc, $ubicaDoc.$arreglo['lastID'].'.'.$extensionDoc))
+											{
+												//si erro al subir, borro lo de la tabla
+												$this->EstudiosRealizados_model->eliminarEstudioRealizado($arreglo['lastID']);
+											}
+											else
+											{
+												//update al pdf para ponerle la ruta
+												$this->EstudiosRealizados_model->cambiarRuta($arreglo['lastID'],$ubicaDoc.$arreglo['lastID'].'.'.$extensionDoc);
+												redirect(base_url('index.php/User/estudiosRealizados'));
+											}
+										}
+							}
+							else
+								;//algun error, pq no un dato esta vacio-
+						}
+						else
+							;//mando algun archivo que no es aceptado
+				}
+				else
+					;//no mando archivo
+		}
+		else {
+			// para cuando no sea OBTENIDO
+/////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////
+			if(isset($datos['estadoER']) && $datos['estadoER'] == 'Finalizado\Por obtener')
+			{
+				if(
+						isset($datos['nivel']) &&
+						isset($datos['siglas']) &&
+						isset($datos['estudiosen']) &&
+						isset($datos['area']) &&
+						isset($datos['disciplina']) &&
+						isset($datos['otrainstit']) &&
+						isset($datos['BInstit']) &&
+						isset($datos['fechainicio']) &&
+						isset($datos['fechafin']) &&
+						isset($datos['pais'])
+				){
+
+							//Se inserta la institucion en la tabla instit
+							//si BInstit es 1
+
+							$instit = '';
+							$noinstit = '';
+
+							if($datos['BInstit'] == 1)
+							{
+								$instit = 'Otra';
+								$noinstit = $datos['otrainstit'];
+								$this->EstudiosRealizados_model->setInstitucionER($datos['otrainstit']);
+							}
+							if($datos['BInstit'] == 0)
+							{
+								$instit = $datos['otrainstit'];
+								$noinstit = '';
+							}
+
+							$dats = (object)array(
+								'Nivelestudios' => $datos['nivel'],
+								'Siglas' => $datos['siglas'],
+								'Estudiosen' => $datos['estudiosen'],
+								'Area' => $datos['area'],
+								'Disciplina' => $datos['disciplina'],
+								'Institucionnoconsiderada' => $noinstit,
+								'Institucion' => $instit,
+								'EstadoEstudio' => $datos['estadoER'],
+								'Fechadeinicio' => $datos['fechainicio'],
+								'Fechadefin' => $datos['fechafin'],
+								'Pais' => $datos['pais'],
+								'Datosprofesores_idDatosprofesor' => $idProfesor,
+								'PDF' => null,
+								'status' => 1
+							);
+							$arreglo = $this->EstudiosRealizados_model->insertarEstudioRealizado($dats);
+							// print_r($arreglo['error']['message']);
+
+							redirect(base_url('index.php/User/estudiosRealizados'));
+				}
+				else
+					;//algun error, pq no un dato esta vacio
+
+			}
+/////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////
+			if(isset($datos['estadoER']) && $datos['estadoER'] == 'En Progreso')
+			{
+				if(
+						isset($datos['nivel']) &&
+						isset($datos['siglas']) &&
+						isset($datos['estudiosen']) &&
+						isset($datos['area']) &&
+						isset($datos['disciplina']) &&
+						isset($datos['otrainstit']) &&
+						isset($datos['BInstit']) &&
+						isset($datos['fechainicio']) &&
+						isset($datos['pais'])
+				){
+
+							//Se inserta la institucion en la tabla instit
+							//si BInstit es 1
+
+							$instit = '';
+							$noinstit = '';
+
+							if($datos['BInstit'] == 1)
+							{
+								$instit = 'Otra';
+								$noinstit = $datos['otrainstit'];
+								$this->EstudiosRealizados_model->setInstitucionER($datos['otrainstit']);
+							}
+							if($datos['BInstit'] == 0)
+							{
+								$instit = $datos['otrainstit'];
+								$noinstit = '';
+							}
+
+							$dats = (object)array(
+								'Nivelestudios' => $datos['nivel'],
+								'Siglas' => $datos['siglas'],
+								'Estudiosen' => $datos['estudiosen'],
+								'Area' => $datos['area'],
+								'Disciplina' => $datos['disciplina'],
+								'Institucionnoconsiderada' => $noinstit,
+								'Institucion' => $instit,
+								'EstadoEstudio' => $datos['estadoER'],
+								'Fechadeinicio' => $datos['fechainicio'],
+								'Pais' => $datos['pais'],
+								'Datosprofesores_idDatosprofesor' => $idProfesor,
+								'PDF' => null,
+								'status' => 1
+							);
+							$arreglo = $this->EstudiosRealizados_model->insertarEstudioRealizado($dats);
+							// print_r($arreglo['error']['message']);
+
+							redirect(base_url('index.php/User/estudiosRealizados'));
+				}
+				else
+					;//algun error, pq no un dato esta vacio
+
+			}
+		}*/
+	}
 	public function EREliminar()
 	{
 		if($this->session->userdata('id') != 2)

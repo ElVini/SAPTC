@@ -153,35 +153,18 @@ $(document).ready(function(){
 
       });
     }
-    function ModificarEstudio(){
+    function ModificarEstudio(idERD){
       BootstrapDialog.show({
-
+        size: BootstrapDialog.SIZE_WIDE,
         title: 'Modificar Estudio',
-        message: $(`
-          <form>
-            <div class="row"><div class="form-group col-md-12">
-              <label for="TiposInputModal">Seleccione un tipo</label>
-              <select class="form-control" name="TiposInputModal" id="TiposInputModal"></select>
-              <label for="TituloInputModal">Titulo:</label>
-              <input value="`+tituloAce+`" type="text" name="ModalTitulo" id="TituloInputModal" class="form-control">
-              <label for="AutorInputModal">Autor:</label>
-              <input value="`+autorAce+`" type="text" name="ModalAutor" id="AutorInputModal" class="form-control">
-              <label for="EditorialInputModal">Editorial:</label>
-              <input value="`+editorialAce+`" type="text" name="ModalEditorial" id="EditorialInputModal" class="form-control">
-              <label for="AnoInputModal">Año:</label>
-              <input maxlength="4" min="2012" type="number"  value="`+anoAce+`"type="text"name="ModalAno"id="AnoInputModal"class="form-control">
-              <input hidden value="`+idAcervo+`"name="ModalId" id="IdInputModal" type="text">
-            </div>
-          </div>
-          </form>
-          `),
+        message: $(`<div class="clearfix"></div>`).load(base_url+'index.php/User/ERform/'+idERD+'/0'),
         buttons: [
         {
             label: 'Cancelar',
             cssClass: 'btn-danger',
             id: 'btnModalCancelar',
             action: function(dialogItself){
-
+                //le da a cancelar
                 dialogItself.close();
             }
         },
@@ -190,11 +173,48 @@ $(document).ready(function(){
             cssClass: 'btn-primary',
             action: function(dialogItself){
 
-              if(true
+              if($('#estadoER').val() == 'En Progreso'){
+                $('#FechaFinalizado').val('');
+                $('#FechaObtenido').val('');
+              }
+              if($('#estadoER').val() == 'Finalizado'){
+                $('#FechaObtenido').val('');
+              }
+
+              if($('#NivelEst').val() != "" && CaracteresValidosER($('#NivelEst').val()) &&
+                 $('#siglas').val() != "" && CaracteresValidosER($('#siglas').val()) &&
+                 $('#EstdiosEn').val() != "" && CaracteresValidosER($('#EstdiosEn').val()) &&
+                 $('#Area').val() != "" && CaracteresValidosER($('#Area').val()) &&
+                 $('#Discip').val() != "" && CaracteresValidosER($('#Discip').val()) &&
+                 $('#otraInstit').val() != "" && CaracteresValidosER($('#otraInstit').val()) &&
+                 // $('#FechaIni').val() != "" && CaracteresValidosER($('#FechaIni').val()) &&
+                 // $('#FechaFin').val() != "" && CaracteresValidosER($('#FechaFin').val()) &&
+                 // $('#FechaObt').val() != "" && CaracteresValidosER($('#FechaObt').val()) &&
+                 $('#pais').val() != "" && CaracteresValidosER($('#pais').val()) &&
+                 (
+                 ($('#estadoER').val() == 'En Progreso' && $('#FechaIni').val() != "") ||
+                 ($('#estadoER').val() == 'Finalizado\\Por obtener' && $('#FechaIni').val() != "" && $('#FechaFin').val() != "") ||
+                 ($('#estadoER').val() == 'Obtenido' && $('#FechaIni').val() != "" && $('#FechaFin').val() != "" && $('#FechaObt').val() != "" && (typeof $('#ELEGIR').val() == 'undefined'
+                 || $('#ELEGIR').val() == "No")) ||
+                 ($('#estadoER').val() == 'Obtenido' && $('#FechaIni').val() != "" && $('#FechaFin').val() != "" && $('#FechaObt').val() != "" && (typeof $('#ELEGIR').val() == 'undefined'
+                 || $('#ELEGIR').val() == "Sí")
+                  && document.getElementById('PDFInputModal').value != 0)
+                )
                 ){
+
+                  if(document.getElementById('PDFInputModal') != null && document.getElementById('PDFInputModal').files.length > 0)
+                  {
+                    var file_extension = document.getElementById('PDFInputModal').value.split('.').pop();
+                  }
+                  alert(file_extension);
+                  if(($('#estadoER').val() == 'Obtenido' && ((typeof $('#ELEGIR').val() == 'undefined' || $('#ELEGIR').val() == "No") || ((typeof $('#ELEGIR').val() == 'undefined'
+                  || $('#ELEGIR').val() == "Sí")&&(file_extension=='pdf'||file_extension=='png'||file_extension=='jpg'||file_extension=='jpeg'))))
+                   || $('#estadoER').val() == 'Finalizado\\Por obtener' || $('#estadoER').val() == 'En Progreso')
+                  {
+                  //////////////
                    BootstrapDialog.show({
                            title: '¿Seguro?',
-                           message: '¿Esta seguro que desea efectuar este cambio?',
+                           message: '¿Esta seguro que desea modificar este estudio?',
                            buttons: [
                            {
                                label: 'Cancelar',
@@ -209,23 +229,66 @@ $(document).ready(function(){
                                cssClass: 'btn-primary btnSi',
                                action: function(dialog){
 
-                                 //$('.btnSi').prop('disabled', true);
-                                 cargarTabla();
+                                 var BInstit = ($('#selectInstit').val() == "Otra")?1:0;
+                                 $('#BInstit').val(BInstit);
+                                 //se agrega si es 1
+
+                                 $('.btnSi').prop('disabled', true);
+                                 $('#formER').submit();
+                                   //location.reload();
                                    dialog.close();
                                    dialogItself.close();
                                }
                            }
                          ]
                        });
+                       /////////////////////
+                     }
+
+
                }else{
 
-                 if(false)
+                 if(
+                   $('#NivelEst').val() == "" ||
+                   $('#siglas').val() == "" ||
+                   $('#EstdiosEn').val() == "" ||
+                   $('#Area').val() == "" ||
+                   $('#Discip').val() == "" ||
+                   $('#otraInstit').val() == "" ||
+                   $('#FechaIni').val() == "" ||
+                   $('#FechaFin').val() == "" ||
+                   $('#FechaObt').val() == "" ||
+                   $('#pais').val() == "" ||
+                   document.getElementById('PDFInputModal').files.length < 1
+                 )
                    {
                           alert('Por favor llene todos los campos');
                    }else
-                      if(false)
+                      if(
+                        !CaracteresValidosER($('#NivelEst').val()) ||
+                        !CaracteresValidosER($('#siglas').val()) ||
+                        !CaracteresValidosER($('#EstdiosEn').val()) ||
+                        !CaracteresValidosER($('#Area').val()) ||
+                        !CaracteresValidosER($('#Discip').val()) ||
+                        !CaracteresValidosER($('#otraInstit').val()) ||
+                        !CaracteresValidosER($('#FechaIni').val()) ||
+                        !CaracteresValidosER($('#FechaFin').val()) ||
+                        !CaracteresValidosER($('#FechaObt').val()) ||
+                        !CaracteresValidosER($('#pais').val())
+                      )
                          {
                             alert('Por favor solo ingrese caracteres validos');
+                         }else {
+                           if($('#ELEGIR').val() == "Sí" && document.getElementById("PDFInputModal").files.length < 1)
+                           {
+                             alert('Por favor suba un archivo');
+                           }else {
+
+                             if(file_extension!='pdf'&&file_extension!='png'&&file_extension!='jpg'&&file_extension!='jpeg')
+                             {
+                               alert('Ingrese un archivo con una de las extensiones permitidas (PDF, PNG o JPEG)');
+                             }
+                           }
                          }
                }
             }
@@ -280,7 +343,7 @@ $(document).ready(function(){
 
       BootstrapDialog.show({
         size: BootstrapDialog.SIZE_WIDE,
-        title: 'Agregar Estudio',
+        title: 'Ver Detalles',
         message: $(`<div class="clearfix"></div>`).load(base_url+'index.php/User/ERform/'+idERD+'/1'),
         buttons: [
         {
@@ -299,10 +362,14 @@ $(document).ready(function(){
        AgregarEstudio();
       });
     $('#ModificarB').on('click', function(event) {
-
+      if($('.highlight').children().length > 0)//si hay algo seleccionado
+      {
+        ModificarEstudio(idsER[$('.highlight').data('valor')].id);
+      }
       });
     $('#EliminarB').on('click', function(event) {
-      if($('.highlight').children().length > 0){
+      if($('.highlight').children().length > 0)//si hay algo seleccionado
+      {
         EliminarEstudio();
       }
 

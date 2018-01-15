@@ -71,6 +71,16 @@ class EstudiosRealizados_model extends CI_Model
 		);
 		return $dat;
 	}
+	public function modificarEstudioRealizado($data,$id)
+	{
+		$this->db->where('idEstudiosrealizados', $id);
+	 	$this->db->update('estudiosrealizados', $data);
+		// return $this->db->insert_id();
+		$dat = array(
+			'error' => $this->db->error()
+		);
+		return $dat;
+	}
 	function cambiarRuta($id,$ruta)
 	{
 
