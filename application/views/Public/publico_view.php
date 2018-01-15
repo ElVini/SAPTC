@@ -24,7 +24,7 @@
 
 
         <div class="row busqueda">
-          <div class="col-md-8"></div>
+          <div class="col-md-8 "></div>
 
           <div class="col-md-4">
               <div class="input-group">
@@ -36,6 +36,8 @@
         <br><br>
     </div>
      <div id="listaProfesores" class="row">
+       <div class="col-md-12 col-lg-12">
+
       <table class="table table-responsive">
           <thead class="thead-inverse">
             <tr>
@@ -67,6 +69,8 @@
             ?>
           </tbody>
        </table>
+
+      </div>
     </div>
 
   </body>

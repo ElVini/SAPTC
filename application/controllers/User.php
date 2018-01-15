@@ -82,8 +82,8 @@ class User extends CI_Controller
 			redirect(base_url());
 		}
 	}
-	
-	//VISTA PUBLICA VERGAS
+
+	//VISTA PUBLICA 
 	public function publico(){
 
 		$result = $this->Publico_model->getProfesores();

@@ -41,6 +41,7 @@ class ProduccionAca_model extends CI_Model
 		$this->db->where('id_cuerpoacademico',$id_ca->id_cuerpoacademico);
 		$this->db->where('id_profesor !=',$this->session->userdata('login'));
 		$query = $this->db->get('cuerpoacademico_miembros');
+    $array=[];
 
 		foreach ($query->result() as $idProfesor) {
 			$this->db->where('idDatosprofesor',$idProfesor->id_profesor);
