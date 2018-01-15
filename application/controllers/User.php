@@ -16,6 +16,7 @@ class User extends CI_Controller
 		$this->load->model('Docencia_model');
 		$this->load->model('LineaGeneracion_model');
 		$this->load->model('Inicio_model');
+		$this->load->model('Publico_model');
 		$this->load->library(array('session'));
 	}
 
@@ -79,6 +80,25 @@ class User extends CI_Controller
 			}
 
 			redirect(base_url());
+		}
+	}
+	
+	//VISTA PUBLICA VERGAS
+	public function publico(){
+
+		$result = $this->Publico_model->getProfesores();
+		$data = array('consulta'=>$result);
+		$this->load->view('Public/publico_view',$data);
+	}
+
+	public function	mostrar(){
+		if($this->input->is_ajax_request()) {
+			$buscar = $this->input->post("buscar");
+			$datos = $this->Publico_model->mostrar($buscar);
+			echo json_encode($datos);
+		}
+		else{
+			show_404();
 		}
 	}
 // Fin  de inicio
@@ -618,7 +638,7 @@ class User extends CI_Controller
 			$this->ProduccionAca_model->deleteCita($_POST['id'],$_POST['idProd']);
 		}
 		//Fin de producción académica
-	
+
 
 //Datos profesor
 	//Para modificar datos de profesores
