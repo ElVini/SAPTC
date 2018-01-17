@@ -29,6 +29,7 @@
                 var eventData= [];
                 var scrollCounter=0;
                 </script>';
+				$count=0;
 				foreach ($query as $usuario) {
 				 	$inputId = $usuario->idRecordatorios;
 	                $fecha = date_format(date_create($usuario->Dia),"d / m / Y");
@@ -39,6 +40,7 @@
 	                          <td id="title">'.$usuario->Titulo.'</td>
 	                            <td id ="details">'.$usuario->Descripcion.'</td>
 	                      </tr>';
+
 	                echo  '<script type="application/javascript">
 	                        eventData.push({date:"'.$usuario->Dia.'",badge:true,title:"'.$usuario->Titulo.'",body:"'.$usuario->Descripcion.'"});
 	                        if(scrollCounter > 2)
@@ -48,6 +50,9 @@
 	                        scrollCounter++;
 	                        </script>';
                 }
+				if($count ==0){
+					echo '<tr><td hidden id="noRegistro"><td align="right"colspan="2">No hay recordatorios<td></td></tr>';
+				}
                 echo
                 '<script type="application/javascript">
                   $("#my-calendar").zabuto_calendar({

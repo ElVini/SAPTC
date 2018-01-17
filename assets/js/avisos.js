@@ -101,23 +101,34 @@ $(document).ready(function()
   var btnElim = document.getElementById('delete');
   btnElim.addEventListener('click', function(event) {
   event.preventDefault();
-  var seleccionado = $(".highlight ").children('td').first().html();
-  console.log(seleccionado);
+  var seleccionado = $(".highlight ").children('td:not(#noRegistro):nth-child(1)').first().html();
   if(seleccionado != undefined){
-    if(confirm('El elemento seleccionado será elminado. Esta acción no se puede deshacer, ¿Desea continuar?') == true) {
-     var formulario = document.getElementById('formu');
-     formulario.setAttribute('action', 'index.php/User/funcionRecordatorio');
-     formulario.setAttribute('method', 'post');
-     var idAborrar = document.createElement('input');
-     idAborrar.setAttribute('type', 'text');
-     idAborrar.setAttribute('name', 'idAborrar');
-     idAborrar.setAttribute('value', seleccionado);
-     formulario.appendChild(idAborrar);
-     formulario.submit();
-   }
+	  BootstrapDialog.confirm({
+		  title: "Advertencia",
+		  type: BootstrapDialog.TYPE_DANGER,
+		  message: "¿Seguro que desea eliminar el registro actual?",
+		  btnCancelLabel: 'Cancelar',
+		  btnOKLabel: 'Eliminar',
+		  closable: true,
+		  callback: function(result){
+			  if(result){
+				  var formulario = document.getElementById('formu');
+				  formulario.setAttribute('action', 'index.php/User/funcionRecordatorio');
+				  formulario.setAttribute('method', 'post');
+				  var idAborrar = document.createElement('input');
+				  idAborrar.setAttribute('type', 'text');
+				  idAborrar.setAttribute('name', 'idAborrar');
+				  idAborrar.setAttribute('value', seleccionado);
+				  formulario.appendChild(idAborrar);
+				  formulario.submit();
+			  }
+		  }
+	  });
  }
- else{
-   $(".DivELetrasrojas").show('slow');
+ else
+ {
+   $(".DivELetrasrojas").show();
+   $(".DivELetrasrojas p").text('Por favor seleccione una fila');
  }
 });
 /*--------------------------EDIT BUTTON-----------------------*/
@@ -125,7 +136,7 @@ $(document).ready(function()
   btnEdit.addEventListener('click', function(event) {
   event.preventDefault();
   bandera=true;
-  var id = $(".highlight ").children('td:nth-child(1)').first().html();
+  var id = $(".highlight ").children('td:not(#noRegistro):nth-child(1)').first().html();
   if(id != undefined){
 	var fecha = $(".highlight").children('td:nth-child(2)').first().html();
 	var titulo =  $(".highlight").children('td:nth-child(4)').first().html();
@@ -135,6 +146,7 @@ $(document).ready(function()
   }
   else
   {
+	$(".DivELetrasrojas").show();
     $(".DivELetrasrojas p").text('Por favor seleccione una fila');
   }
   });
