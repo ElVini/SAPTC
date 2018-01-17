@@ -88,6 +88,9 @@
                      	</tr>';
                       $counter++;
 				  	}
+					if($counter==0){
+						echo '<tr><td id="noRegistro"hidden></td><td colspan = "7" align="center">No tiene registros</td></tr>';
+					}
                   ?>
 
                 </tbody>

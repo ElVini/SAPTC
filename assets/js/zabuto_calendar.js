@@ -174,9 +174,13 @@ $.fn.zabuto_calendar = function (options) {
                 $prevMonthNav.append($prevMonthNavIcon);
                 if (typeof($calendarElement.data('actionNavFunction')) === 'function') {
                     $prevMonthNav.click($calendarElement.data('actionNavFunction'));
+					$('[data-toggle="popover"]').popover();
+					$("[data-toggle=tooltip]").tooltip();
                 }
                 $prevMonthNav.click(function (e) {
                     drawTable($calendarElement, $tableObj, prevYear, prevMonth);
+					$('[data-toggle="popover"]').popover();
+					$("[data-toggle=tooltip]").tooltip();
                 });
             }
 
@@ -199,9 +203,13 @@ $.fn.zabuto_calendar = function (options) {
                 $nextMonthNav.append($nextMonthNavIcon);
                 if (typeof($calendarElement.data('actionNavFunction')) === 'function') {
                     $nextMonthNav.click($calendarElement.data('actionNavFunction'));
+					$('[data-toggle="popover"]').popover();
+					$("[data-toggle=tooltip]").tooltip();
                 }
                 $nextMonthNav.click(function (e) {
                     drawTable($calendarElement, $tableObj, nextYear, nextMonth);
+					$('[data-toggle="popover"]').popover();
+					$("[data-toggle=tooltip]").tooltip();
                 });
             }
 
@@ -276,7 +284,7 @@ $.fn.zabuto_calendar = function (options) {
                         var dateId = $calendarElement.attr('id') + '_' + dateAsString(year, month, currDayOfMonth);
                         var dayId = dateId + '_day';
 
-                        var $dayElement = $('<div id="' + dayId + '" class="day" >' + currDayOfMonth + '</div>');
+                        var $dayElement = $('<div id="' + dayId + '" class="day">' + currDayOfMonth + '</div>');
                         $dayElement.data('day', currDayOfMonth);
 
                         if ($calendarElement.data('showToday') === true) {
@@ -426,7 +434,9 @@ $.fn.zabuto_calendar = function (options) {
                     if (typeof(value.badge) !== 'undefined' && value.badge !== false) {
                         var badgeClass = (value.badge === true) ? '' : ' badge-' + value.badge;
                         var dayLabel = $dayElement.data('day');
-                        $dayElement.html('<span class="badge badge-event' + badgeClass + '">' + dayLabel + '</span>');
+						var titulo = value.title;
+						var detalles = value.body;
+                        $dayElement.html('<span class="badge badge-event' + badgeClass + '"data-trigger="hover" data-toggle="popover" data-content="'+detalles+'" title="'+titulo+'">' + dayLabel + '</span>');
                     }
 
                     if (typeof(value.body) !== 'undefined') {
@@ -448,6 +458,7 @@ $.fn.zabuto_calendar = function (options) {
                             });
                         }
                     }
+
                 });
             }
         }
@@ -605,7 +616,7 @@ $.fn.zabuto_calendar_language = function (lang) {
                 dow_labels: ["أثنين", "ثلاثاء", "اربعاء", "خميس", "جمعه", "سبت", "أحد"]
             };
             break;
-            
+
         case 'es':
             return {
                 month_labels: ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"],

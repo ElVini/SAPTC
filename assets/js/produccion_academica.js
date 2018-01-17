@@ -13,7 +13,7 @@ $(document).ready(function(){
 	});
 
 	$('#Modificar').click(function(){
-		id = $(".highlight ").children('td:nth-child(1)').first().html();
+		id = $(".highlight ").children('td:not(#noRegistro):nth-child(1)').first().html();
 		if(id != undefined)
 		{
 			$('#ajax').append("<div id='formu'></div>");
@@ -35,7 +35,7 @@ $(document).ready(function(){
 	});
 
 	$('#EliminarB').click(function(){
-		id = $(".highlight ").children('td:nth-child(1)').first().html();
+		id = $(".highlight ").children('td:not(#noRegistro):nth-child(1)').first().html();
 		if(id!= undefined)
 		{
 			BootstrapDialog.confirm({
@@ -83,7 +83,7 @@ $(document).ready(function(){
 
 	$('#btnCitas').click(function(){
 		$('#ajax').append("<div id='formu'></div>");
-		id = $(".highlight ").children('td:nth-child(1)').first().html();
+		id = $(".highlight ").children('td:not(#noRegistro):nth-child(1)').first().html();
 		if(id!= undefined)
 		{
 			BootstrapDialog.show({

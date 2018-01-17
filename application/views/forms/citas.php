@@ -13,7 +13,9 @@
 		  </tr>
 		</thead>
 		<tbody id="tablebody">
-			<?php foreach ($citas as $cita){
+			<?php
+			$count =0;
+			foreach ($citas as $cita){
 				echo '<tr>
 						<td hidden>'.$cita->idCita.'</td>
 						<td>'.$cita->Nombrepublicacion.'</td>
@@ -21,7 +23,11 @@
 						<td>'.$cita->Ano.'</td>
 						<td>'.$cita->Infadicional.'</td>
 					 </tr>';
-			} ?>
+			}
+			if($count == 0){
+				echo '<tr><td id="noRegistroCita" hidden></td><td colspan="4"align="center">No tiene registros</td></tr>';
+			}
+			?>
 		</tbody>
 	</table>
 	<div id="aux">
@@ -83,7 +89,8 @@
 
 	$('#edit').click(function(){
 		$('#aux').append("<div id='aux2'></div>");
-		citas_id=$(".highlight ").children('#Tablacitas td:nth-child(1)').first().html();
+		citas_id=$(".highlight ").children('#Tablacitas td:not(#noRegistroCita):nth-child(1)').first().html();
+
 		if(citas_id!= undefined)
 		{
 			var id_prod=$('#id_cita').val();
@@ -118,7 +125,7 @@
 	});
 
 	$('#delete').click(function(){
-		citas_id=$(".highlight ").children('#Tablacitas td:nth-child(1)').first().html();
+		citas_id=$(".highlight ").children('#Tablacitas td:not(#noRegistroCita):nth-child(1)').first().html();
 		if(citas_id!= undefined)
 		{
 		BootstrapDialog.confirm({
@@ -136,7 +143,6 @@
 							<input type="hidden"name="idProd" value="`+$('#id_cita').val()+`">
 						</form>`);
 					var form = $('#formDelete');
-					alert(JSON.stringify(form));
 					$.ajax({
 						url: form.attr('action'),
 						type: 'POST',

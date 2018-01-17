@@ -82,6 +82,7 @@ div.zabuto_calendar ul.legend li.event {
 }
 div.zabuto_calendar .table tr td.event:hover{
     background-color: #fff0c3;
+	color: black;
 }
 /*
 div.zabuto_calendar .table tr td{
@@ -109,6 +110,7 @@ div.zabuto_calendar div.legend span.badge-today {
 div.zabuto_calendar .badge-event,
 div.zabuto_calendar div.legend span.badge-event {
     background-color: #ff9b08;
+	cursor: pointer;
     color: #ffffff;
     text-shadow: none;
 }

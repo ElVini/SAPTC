@@ -9,7 +9,8 @@ $(document).ready(function()
   $('#add').click(function(){
 	desplegarDialogo('','','');
   });
-
+  $('[data-toggle="popover"]').popover();
+  $("[data-toggle=tooltip]").tooltip();
   function desplegarDialogo(fecha,titulo,descripcion){
 	  BootstrapDialog.show({
 		  size: BootstrapDialog.SIZE_NORMAL,
@@ -82,9 +83,18 @@ $(document).ready(function()
       $("#divPrueba").hide("slow");
       $("#formulario")[0].reset();
   });
-  $('#tabla').on('click', 'tbody tr', function(event) {
-    $(this).addClass('highlight').siblings().removeClass('highlight');
-    $(".DivELetrasrojas").hide('slow');
+
+
+  $('#tabla').on('click', 'tbody tr td', function(event) {
+	  if($(this).parent().attr('class') == 'highlight'){
+		  $(this).parent().removeClass('highlight');
+	  }
+	  //cuando no la tiene la asigna al tr y la elimina de los demas
+	  else{
+		  $(this).parent().addClass('highlight').siblings().removeClass('highlight');
+		  id = -1;
+		  $(".DivELetrasrojas").hide('slow');
+	  }
   });
 
   /*--------------------------DELETE BUTTON (NO JQUERY HERE)-----------------------*/

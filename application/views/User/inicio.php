@@ -40,7 +40,7 @@
 	                            <td id ="details">'.$usuario->Descripcion.'</td>
 	                      </tr>';
 	                echo  '<script type="application/javascript">
-	                        eventData.push({date:"'.$usuario->Dia.'",badge:true,title:"'.$usuario->Titulo.'"});
+	                        eventData.push({date:"'.$usuario->Dia.'",badge:true,title:"'.$usuario->Titulo.'",body:"'.$usuario->Descripcion.'"});
 	                        if(scrollCounter > 2)
 	                        {
 	                          $("#div-tabla").addClass("scroll");
