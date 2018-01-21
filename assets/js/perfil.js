@@ -10,7 +10,6 @@ function modificar(event) {
             action: function(dialogItself) {
                 dialogItself.close();
                 $("#btnMod").remove();
-                $("#rfc").removeAttr('disabled');
                 $("#ecivil").removeAttr('disabled');
                 $("#telt").removeAttr('disabled');
                 $("#telc").removeAttr('disabled');
@@ -24,7 +23,7 @@ function modificar(event) {
 
 function guardar(event) {
     event.preventDefault();
-    if($("#rfc").val() == '' || $("#ecivil").val() == '0' || $("#telt").val() == '' || $("#telc").val() == '' || $("#telp").val() == '') {
+    if($("#ecivil").val() == '0' || $("#telt").val() == '' || $("#telc").val() == '' || $("#telp").val() == '') {
         BootstrapDialog.show( {
             title: 'Error',
             type: BootstrapDialog.TYPE_WARNING,
