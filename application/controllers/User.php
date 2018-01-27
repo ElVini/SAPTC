@@ -7,16 +7,17 @@ class User extends CI_Controller
 	{
 		parent::__construct();
 		$this->load->model('Usuario_model');
-		$this->load->model('datosLaborales_model');
+		$this->load->model('DatosLaborales_model');
 		$this->load->model('EstudiosRealizados_model');
 		$this->load->model('Perfil_model');
 		$this->load->model('ProduccionAca_model');
-		$this->load->model('premiosoDistinciones_model');
+		$this->load->model('PremiosoDistinciones_model');
 		$this->load->model('CuerpoAcademico_model');
 		$this->load->model('Docencia_model');
 		$this->load->model('LineaGeneracion_model');
 		$this->load->model('Inicio_model');
 		$this->load->model('Publico_model');
+		$this->load->model('Participacion_model');
 		$this->load->library(array('session'));
 	}
 
@@ -1090,7 +1091,7 @@ class User extends CI_Controller
 			else if($this->session->userdata('id') == 2)
 			{
 				$data['titulo'] = 'SAPTC - Datos Laborales';
-				$data['datos'] = $this->datosLaborales_model->obtiene($this->session->userdata('login'));
+				$data['datos'] = $this->DatosLaborales_model->obtiene($this->session->userdata('login'));
 				$this->load->view('User/datosLaborales', $data);
 			}
 			else
@@ -1105,11 +1106,11 @@ class User extends CI_Controller
 		if($el==0)
 		{
 			$data['es']=0;
-			$data["user"]=$this->datosLaborales_model->tomafila($id);
+			$data["user"]=$this->DatosLaborales_model->tomafila($id);
 		}
 		elseif ($id!=0 )
 		{
-			$data["user"]=$this->datosLaborales_model->tomafila($id);
+			$data["user"]=$this->DatosLaborales_model->tomafila($id);
 			$data['dec']=true;
 		}
 		else
@@ -1130,7 +1131,7 @@ class User extends CI_Controller
 				'Cronologia'=>'',
 				'Datosprofesores_idDatosprofesor'=>$this->session->userdata('login')
         );
-				$this->datosLaborales_model->insert_data($datos);
+				$this->DatosLaborales_model->insert_data($datos);
 	}
 	public function actualizaDatosLaborales($id)
 	{
@@ -1144,26 +1145,26 @@ class User extends CI_Controller
 					'NombreDependencia'=>$this->input->post('dependencia'),
 					'Unidadacademica'=>$this->input->post('unidad'),
 	        );
-				$this->datosLaborales_model->updateDatoslaborales($datos);
+				$this->DatosLaborales_model->updateDatoslaborales($datos);
 	}
 	public function deleteDatol()
 	{
 		$id= $this->uri->segment(3);
-		$this->datosLaborales_model->delete_data($id);
+		$this->DatosLaborales_model->delete_data($id);
 		redirect(base_url()."index.php/User/datosLaborales");
 	}
 	public function contratoactual()
 	{
 		$id= $this->uri->segment(3);
 		$data = (object)array('id'=>$id,'Cronologia'=>'Contrato Actual','profeid'=>$this->session->userdata('login'));
-		$this->datosLaborales_model->contratoactual($data);
+		$this->DatosLaborales_model->contratoactual($data);
 		redirect(base_url()."index.php/User/datosLaborales");
 	}
 	public function contratoprimero()
 	{
 		$id= $this->uri->segment(3);
 		$data = (object)array('id'=>$id,'Cronologia'=>'Primer Contrato','profeid'=>$this->session->userdata('login'));
-		$this->datosLaborales_model->contratoprimero($data);
+		$this->DatosLaborales_model->contratoprimero($data);
 		redirect(base_url()."index.php/User/datosLaborales");
 	}
 	//Fin de datos Laborales
@@ -1181,8 +1182,8 @@ class User extends CI_Controller
 			else if($this->session->userdata('id') == 2)
 			{
 				$data['titulo'] = 'SAPTC - Premios o Distinciones';
-				$data['datos'] = $this->premiosoDistinciones_model->obtiene($this->session->userdata('login'));
-				$data["inst"]=$this->premiosoDistinciones_model->obtienei();
+				$data['datos'] = $this->PremiosoDistinciones_model->obtiene($this->session->userdata('login'));
+				$data["inst"]=$this->PremiosoDistinciones_model->obtienei();
 				$this->load->view('User/premiosoDistinciones', $data);
 			}
 			else
@@ -1193,10 +1194,10 @@ class User extends CI_Controller
 	}
 	public function formu_premios($id)
 	{
-		$data["inst"]=$this->premiosoDistinciones_model->obtienei();
+		$data["inst"]=$this->PremiosoDistinciones_model->obtienei();
 		if ($id!=0 )
 		{
-			$data["user"]=$this->premiosoDistinciones_model->tomafila($id);
+			$data["user"]=$this->PremiosoDistinciones_model->tomafila($id);
 			$this->load->view('forms/premiosoDistinciones', $data);
 		}
 		else
@@ -1208,10 +1209,7 @@ class User extends CI_Controller
 	{
 		if ( $this->input->post('io')==0)
 		{ $dato = (object)array('Nombre'=>$this->input->post('oio'));
-			$this->premiosoDistinciones_model->insert_ins($dato);
-			$inst= $this->premiosoDistinciones_model->tomafilaIns($this->input->post('oio'));
-			foreach ($inst as $row ) {}
-			$dec = $row->idInstituciones;
+			$dec=$this->PremiosoDistinciones_model->insert_ins($dato);
 		}
 		else
 		{	$dec = $this->input->post('io');
@@ -1223,31 +1221,19 @@ class User extends CI_Controller
 					'Motivo'=>$this->input->post('m'),
 					'Datosprofesores_idDatosprofesor'=>$this->session->userdata('login'),
 					'Instituciones_idInstituciones'=>$dec);
-	$this->premiosoDistinciones_model->insert_data($datos);
-	}
-	public function agregaInstitucion()
-	{
-		$data = $this->input->post();
-		$datos = (object)array(
-						'Nombre'=>$data['ins']
-				);
-	$this->premiosoDistinciones_model->insert_ins($datos);
+	$this->PremiosoDistinciones_model->insert_data($datos);
 	}
 	public function deletePremios()
 	{
 		$id= $this->uri->segment(3);
-		$this->premiosoDistinciones_model->delete_data($id);
+		$this->PremiosoDistinciones_model->delete_data($id);
 		redirect(base_url()."index.php/User/premiosoDisticiones");
 	}
 	public function actualizaPremios($id)
 	{	if ( $this->input->post('io')==0)
 		{
 			$dato = (object)array('Nombre'=>$this->input->post('oio'));
-			$this->premiosoDistinciones_model->insert_ins($dato);
-			$inst= $this->premiosoDistinciones_model->tomafilaIns($this->input->post('oio'));
-			foreach ($inst as $row){
-			}
-			$dec = $row->idInstituciones;
+			$dec= $this->PremiosoDistinciones_model->insert_ins($dato);
 		}
 		else
 		{$dec = $this->input->post('io');
@@ -1259,7 +1245,7 @@ class User extends CI_Controller
 						'Otrainstitucion'=>$this->input->post('oio'),
 						'Motivo'=>$this->input->post('m'),
 						'Instituciones_idInstituciones'=>$dec);
-		$this->premiosoDistinciones_model->updatePremios($datos);
+		$this->PremiosoDistinciones_model->updatePremios($datos);
 	}
 //fin de premiosoDisticiones
 
@@ -1486,6 +1472,118 @@ class User extends CI_Controller
 	        );
 			$this->LineaGeneracion_model->modificarlinea($info);
 		}
+	}
+	// Participación en Programas Educativos
+	public function participacionEnProgramas()
+	{
+		if($this->acceso($this->session->userdata('login')));
+		else
+		{
+			if($this->session->userdata('id') != 2)
+			{
+				redirect(base_url());
+			}
+			else if($this->session->userdata('id') == 2)
+			{
+				$data['titulo'] = 'SAPTC - Participación en Programas Educativos';
+				$data['data'] = $this->Participacion_model->obtiene($this->session->userdata('login'));
+				$data['grado'] = $this->Participacion_model->obtieneg();
+				$this->load->view('User/participacionEnProgramas', $data);
+			}
+			else
+			{
+				redirect(base_url());
+			}
+		}
+	}
+	public function participacion($id)
+	{
+			$data['grado'] = $this->Participacion_model->obtieneg();
+			if($id!=0)
+			{
+				$data["user"]=$this->Participacion_model->tomafila($id);
+				$this->load->view('forms/participacion', $data);
+			}
+			else
+			{
+				$this->load->view('forms/participacion', $data);
+			}
+	}
+	public function agregarParticipacion()
+	{
+		$nombreDoc = $_FILES['archivo']['name'];
+		$tamDoc = $_FILES['archivo']['size'];
+		$tipoDoc = $_FILES['archivo']['type'];
+		$tmpDoc = $_FILES['archivo']['tmp_name'];
+		$errorDoc = $_FILES['archivo']['error'];
+		$idProfesor = $this->session->userdata('login');
+		if ( $this->input->post('grado')==0)
+		{ $dato = (object)array('nombre'=>$this->input->post('og'));
+			$dec= $this->Participacion_model->insert_grado($dato);
+		}
+ 		else
+			$dec = $this->input->post('grado');
+ 		$datos = (object)array(
+ 	        'Fechaimplementacion'=>$this->input->post('fechacambio'),
+ 	        'Grado'=>$this->input->post('og'),
+ 	        'Descripcion'=>$this->input->post('des'),
+ 	        'PDF'=>0,
+ 					'Programaeducativo'=>$this->input->post('programa'),
+ 					'Datosprofesores_idDatosprofesor'=>$idProfesor,
+ 					'Grado_idGrado'=>$dec
+ 	        );
+ 		$lastID = $this->Participacion_model->insert_participacion($datos);
+		if(!is_dir('assets/documentos/participacion/'.$idProfesor))
+		  mkdir('assets/documentos/participacion/'.$idProfesor, 0777, TRUE);
+		$ubicaDoc = 'assets/documentos/participacion/'.$idProfesor.'/';
+		if(move_uploaded_file($tmpDoc, $ubicaDoc.$lastID.'.'.'pdf'))
+		{
+			$this->Participacion_model->cambiarRuta($lastID,$ubicaDoc.$lastID.'.'.'pdf');
+			redirect(base_url('index.php/User/participacionEnProgramas'));
+		}
+	}
+	public function deleteParticipacion($id)
+	{
+		$ruta = $this->Participacion_model->tomafila($id);
+		unlink($ruta->result()[0]->PDF);
+		$this->Participacion_model->deleteParticipacion($id);
+		redirect(base_url()."index.php/User/participacionEnProgramas");
+	}
+	public function actualizaParticipacion($id)
+	{	$nombreDoc = $_FILES['archivo']['name'];
+		$tamDoc = $_FILES['archivo']['size'];
+		$tipoDoc = $_FILES['archivo']['type'];
+		$tmpDoc = $_FILES['archivo']['tmp_name'];
+		$errorDoc = $_FILES['archivo']['error'];
+		$profesor= $this->session->userdata('login');
+		if ( $this->input->post('grado')==0)
+		{ $dato = (object)array('nombre'=>$this->input->post('og'));
+			$dec = $this->Participacion_model->insert_grado($dato);
+		}
+		else
+		{	$dec = $this->input->post('grado');
+		}
+		$datos = (object)array(
+					'idParticipacion'=>$id,
+					'Fechaimplementacion'=>$this->input->post('fechacambio'),
+					'Grado'=>$this->input->post('grado'),
+					'Descripcion'=>$this->input->post('des'),
+					'Programaeducativo'=>$this->input->post('programa'),
+					'Datosprofesores_idDatosprofesor'=>$profesor,
+					'Grado_idGrado'=>$dec
+					);
+					$this->Participacion_model->updateParticipacion($datos);
+					$ubicaDoc = 'assets/documentos/participacion/'.$profesor.'/';
+					move_uploaded_file($tmpDoc, $ubicaDoc.$id.'.'.'pdf');
+					$this->Participacion_model->cambiarRuta($id,$ubicaDoc.$id.'.'.'pdf');
+					redirect(base_url()."index.php/User/participacionEnProgramas");
+	}
+	public function archivo($id)
+	{
+		$ruta = $this->Participacion_model->tomafila($id);
+		$ruta = $ruta->result()[0]->PDF;
+		$data['ruta'] = base_url().$ruta;
+		$this->load->view('User/participacionArchivo',$data);
 	}
 }
 

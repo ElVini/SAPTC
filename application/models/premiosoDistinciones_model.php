@@ -55,14 +55,9 @@
     }
     function insert_ins($data)
     {
-      return $this->db->insert("instituciones", $data);
+      $this->db->insert("instituciones", $data);
+      $id = $this->db->insert_id();
+  		return $id;
     }
-    function tomafilaIns($nombre)
-    {
-      $this->db->where("Nombre", $nombre);
-      $query= $this->db->get("instituciones");
-      return $query->result();
-    }
-
   }
 ?>

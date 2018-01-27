@@ -76,8 +76,8 @@
                    <li><a href="<?php echo base_url('index.php/User/premiosoDisticiones'); ?>" >Premios o Distinciones</a> </li>
                    <li class="divider" ></li>
                    <li><a href="<?php echo base_url('index.php/User/cuerpoAcademico'); ?>" >Datos del Cuerpo Académico</a> </li>
-                   <!-- <li class="divider" ></li> -->
-                   <!-- <li><a href="#" >Participación en Programas Educativos</a> </li> -->
+                   <li class="divider" ></li>
+                   <li><a href="<?php echo base_url('index.php/User/participacionEnProgramas'); ?>" >Participación en Programas Educativos</a> </li>
 <!--Me faltaba ese, pero como no se lo agregué a las pantallas que le envié a Angulo, pos se queda comentado por mientras   -->
                   <!-- <li class="divider" ></li>
                   <li><a href="#" >Gestión Académica - Vinculación</a> </li> -->
