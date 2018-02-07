@@ -18,6 +18,7 @@ class User extends CI_Controller
 		$this->load->model('Inicio_model');
 		$this->load->model('Publico_model');
 		$this->load->model('Participacion_model');
+		$this->load->model('ProyectosDeInvestigacion_model');
 		$this->load->library(array('session'));
 	}
 
@@ -216,6 +217,25 @@ class User extends CI_Controller
 		}
 	}
 	//Fin de docencias
+
+	//Proyectos de investigación
+	public function proyectosDeInvestigacion()
+	{
+		if($this->acceso($this->session->userdata('login')));
+		else
+		{
+			if($this->session->userdata('id') != 2)
+			{
+				redirect(base_url());
+			}
+
+			$idERUser = $this->session->userdata('login');
+			$data['estudios'] = $this->ProyectosDeInvestigacion_model->getProyectosInvestigacion($idERUser);
+			$data['titulo'] = 'SAPTC - Proyectos de investigación';
+			$this->load->view('User/ProyectosDeInvestigacion', $data);
+		}
+	}
+	//Fin de Proyectos de investigación
 
 	//Estudios Realizados
 	public function estudiosRealizados()
