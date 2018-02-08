@@ -17,6 +17,7 @@ class User extends CI_Controller
 		$this->load->model('LineaGeneracion_model');
 		$this->load->model('Inicio_model');
 		$this->load->model('Publico_model');
+		$this->load->model('gestionAca_model');
 		$this->load->library(array('session'));
 	}
 
@@ -1487,6 +1488,64 @@ class User extends CI_Controller
 			$this->LineaGeneracion_model->modificarlinea($info);
 		}
 	}
+
+	//gestion academica - scott
+	public function gestionAcademica(){
+		if($this->session->userdata('id')!=2){
+			redirect(base_url());
+		}
+		else{
+
+			$data['titulo'] = 'Gestión Académica - Vinculación';
+			$data['gestiones'] = $this->gestionAca_model->getGestiones();
+			$this->load->view('User/gestionAcademica',$data);
+		}
+	}
+
+	public function gestionAca_form(){
+		$data['seleccion'] = $_GET['seleccion'];
+		$id = -1;
+		if(isset($_GET['id'])){
+			$data['id'] = $_GET['id'];
+		}
+		$this->load->view('forms/gestion_form',$data);
+	}
+
+	public function agregar_mod_gestion(){
+		$data = array(
+			'Fechainicio'   =>   $_POST['fechaIni'],
+			'Resultados'   =>   $_POST['resultados'],
+			'Funcion'   =>   $_POST['funcion'],
+			'Estado'   =>   $_POST['estado'],
+			'Organocolegiado'   =>   $_POST['organo'],
+			'Horassemanales'   =>   $_POST['horasSemana'],
+			'Aprovacion'   =>   $_POST['aprobado'],
+			'IES'   =>   $_POST['IES'],
+			'FechaUltimoReporte'   =>   $_POST['ultimoReporte'],
+			'Datosprofesores_idDatosprofesor'   =>    $this->session->userdata('login'));
+		if(isset($_POST['seleccion']) && $_POST['seleccion'] == 'Colectiva') {
+			$data['Cargo'] = $_POST['cargo-act'];
+		}
+		else{
+			$data['Actividades'] = $_POST['cargo-act'];
+		}
+		if(isset($_POST['fechaTer'])){
+			$data['Fechafin'] = $_POST['fechaTer'];
+		}
+		if(isset($_GET['id'])){
+			$id = $_GET['id'];
+			$this->gestionAca_model->modificarGestion($data,$id);
+		}
+		else{
+			$this->gestionAca_model->agregarGestion($data);
+		}
+
+	}
+	public function deleteGestion(){
+		$id = $_POST['id'];
+		$this->gestionAca_model->deleteGestion($id);
+	}
+	//Fin gestión academica
 }
 
 ?>

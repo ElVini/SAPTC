@@ -23,16 +23,40 @@
     </div></center>
 </div>
 
+  <!-- Modal para cambiar la foto de perfil -->
+  <div class="modal fade" id="myModal" role="dialog">
+    <form action="<?php echo base_url('index.php/User/Imagen'); ?>" method="post" enctype="multipart/form-data">
+    <div class="modal-dialog">
+
+      <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-header" style="background-color:#337AB7; color:white;">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title">Cambiar foto</h4>
+        </div>
+        <div class="modal-body">
+          <h4>Seleccione la fotografía:</h4> <br>
+          <input type="file" name="foto" accept=".jpg">
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-danger" data-dismiss="modal">Cancelar</button>
+          <input type="submit" class="btn btn-primary" value="Enviar">
+        </div>
+      </div>
+
+    </div>
+    </form>
+  </div>
+
 </div>
 
-  <!-- Aqui empiezan a mostrarse los datos personales -->
-  <div class="container-fluid">
+  <!-- Aqui empiezan a mostrarse los da -->
     <div class="row">
         <div class="col-sm-12 col-md-12 col-lg-12">
               <h1>Datos personales</h1>
         </div>
     </div>
-    <div class="container-fluid">
+    <div class="container">
       <div>
 
       <hr>
@@ -115,8 +139,6 @@
         </form>
 
       </div>
-</div>
-
 </div>
 
 
