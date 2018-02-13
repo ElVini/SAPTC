@@ -2,10 +2,10 @@
 if (isset($user))
 { foreach ($user->result() as $row)
   { echo "<script type='text/javascript'>
-            $('#npd').val('$row->Nombre ');
+            $('#npd').val('$row->NombrePremio');
             $('#f').val('$row->Fecha');
             $('#io').val('$row->Instituciones_idInstituciones');
-            $('#m').val('$row->Motivo  ');
+            $('#m').val('$row->Motivo');
           </script>";
   }
 }

@@ -48,14 +48,10 @@
                 { foreach ($datos as $row){
           ?>
           <tr id="TablaLinea">
-            <td hidden="" id="<?= $row->idPremios ?>"></td>
-            <td><?= $row->Nombre?></td>
+            <td hidden="" id="<?= $row->idPremios?>"></td>
+            <td><?= $row->NombrePremio?></td>
             <td><?= date_format(date_create($row->Fecha), "d / m / Y")?></td>
-            <?php foreach($inst->result() as $raw){
-              if($row->Instituciones_idInstituciones== $raw->idInstituciones ){
-            ?>
-            <td><?= $raw->Nombre ?></td>
-          <?php } }?>
+            <td><?= $row->Nombre?></td>
             <td><?= $row->Motivo?></td>
           </tr>
           <?php }}

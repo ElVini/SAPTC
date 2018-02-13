@@ -19,17 +19,27 @@ function mostrarDatos(valor){
     //  alert (respuesta);
       var registros = eval(respuesta);
 
-      html="<table class='table table-responsive'><thead class='thead-inverse'>";
-      html+="<tr><th>#</th><th>NOMBRE DEL PROFESOR</th><th>APELLIDO PATERNO</th><th>APELLIDO MATERNO</th><th>CARRERA</th><th>NIVEL ACADEMICO</th></tr>";
+      html="<table class='table table-hover'><thead id='TablaCabeza'";
+      html+="<tr><th hidden>ID</th><th>Nombre</th><th>Apellido paterno</th><th>Apellido materno</th><th>Carrera</th><th>Nivel academico</th><th>Ver</th></tr>";
       html+="</thead> <tbody>";
       var contador=1;
       for (var i = 0; i < registros.length; i++) {
-        html+="<tr><td>"+contador+"</td><td>"+registros[i]["Nombres"]+"</td><td>"+registros[i]["Primerapellido"]+"</td><td>"+registros[i]["Segundoapellido"]+"</td><td>"+registros[i]["Disciplina"]+"</td><td>"+registros[i]["Nivelestudios"]+"</td></tr>"
+        html+="<tr id='TablaLinea'><td hidden>"+registros[i]["idDatosprofesor"]+"</td><td>"+registros[i]["Nombres"]+"</td><td>"+registros[i]["Primerapellido"]+"</td><td>"+registros[i]["Segundoapellido"]+
+        "</td><td>"+registros[i]["Disciplina"]+"</td><td>"+registros[i]["Nivelestudios"]+"</td><td><button class='btn btn-default' onclick='muestraInf("+registros[i]["idDatosprofesor"]+")'><span class='glyphicon glyphicon-eye-open'></span></button></td></tr>"
         contador++;
       }
-      html+="</tbody> </table>";
+      html+="</tbody></table>";
       $('#listaProfesores').html(html);
     }
 
   });
+}
+function muestraInf(id)
+{
+  BootstrapDialog.show({
+          size: BootstrapDialog.SIZE_WIDE,
+          cssClass: 'dialog',
+          title: 'Información',
+          message: $('<div></div>').load( base_url+'index.php/User/vistaProfe/'+id)
+      });
 }

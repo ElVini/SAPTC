@@ -7,26 +7,22 @@ defined('BASEPATH') OR exit('No direct script access allowed');
    		parent:: __construct();
    		$this->load->database();
    	}
-    public function obtiene($id)
+    public function obtieneDL($id)
  	  {
       $this->db->from('datoslaborales');
       $this->db->where('Datosprofesores_idDatosprofesor',$id);
       //$this->db->order_by("Fechadeiniciocontrato", "ASC");
       $query = $this->db->get();
       if($query->num_rows()>0)
-  		{
   			return $query;
-  		}
   		else
-  		{
   			return null;
-  		}
     }
-    function insert_data($data)
+    function insert_DL($data)
    	{
    		return $this->db->insert("datoslaborales", $data);
    	}
-    function delete_data($id){
+    function delete_DL($id){
    		$this->db->where("idDatoslaborales", $id);
    		$this->db->delete("datoslaborales");
    	}
@@ -79,7 +75,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
       }
     }
 
-    function tomafila($id)
+    function tomafilaDL($id)
     {
       $this->db->where("idDatoslaborales", $id);
    		$query= $this->db->get("datoslaborales");

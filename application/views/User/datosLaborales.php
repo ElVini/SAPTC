@@ -80,13 +80,13 @@
       </div>
 
       <div class="col-md-4 col-lg-4" style="margin-bottom: 5px;" >
-        <button class="btn btn-default" id="contratonow">Contrato actual</button>
-        <button  class="btn btn-default" id="firstcontrato">Primer contrato</button>
+        <button class="btn btn-default" id="contratonow" onclick="contratoActual()">Contrato actual</button>
+        <button  class="btn btn-default" id="firstcontrato" onclick="primerContrato()">Primer contrato</button>
       </div>
       <div class="col-sm-12 col-md-4 col-lg-4">
-          <button class="btn btn-danger" id="delete">Eliminar</button>
-          <button class="btn btn-primary" id="modify" >Modificar</button>
-          <button class="btn btn-success" id="add">Agregar</button>
+          <button class="btn btn-danger" id="delete" onclick="borrar()">Eliminar</button>
+          <button class="btn btn-primary" id="modify"  onclick="modificar()">Modificar</button>
+          <button class="btn btn-success" id="add" onclick="agregar()">Agregar</button>
       </div>
       </div>
 	</div>

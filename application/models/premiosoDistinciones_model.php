@@ -6,10 +6,11 @@
    		parent:: __construct();
    		$this->load->database();
    	}
-    public function obtiene($id)
+    public function obtienePD($id)
  	  {
       $this->db->from('premios');
       $this->db->where('Datosprofesores_idDatosprofesor',$id);
+      $this->db->join('instituciones', 'instituciones.idInstituciones = premios.Instituciones_idInstituciones', 'left');
       //$this->db->order_by("Fecha", "ASC");
       $query = $this->db->get();
       if($query->num_rows()>0)
@@ -35,11 +36,11 @@
         return null;
       }
     }
-    function insert_data($data)
+    function insertPD($data)
     {
       return $this->db->insert("premios", $data);
     }
-    function delete_data($id){
+    function deletePD($id){
    		$this->db->where("idPremios", $id);
    		$this->db->delete("premios");
    	}

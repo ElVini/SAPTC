@@ -4,17 +4,15 @@
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <title> UPSIN | SAPTC   </title>
-
       <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
-      <link rel="stylesheet" href="<?php echo base_url('assets/styles/acc.css'); ?>">
       <link rel="stylesheet" type="text/css" href="<?php echo base_url('assets/styles/bootstrap.css') ?>">
-      <link rel="stylesheet" href="<?php echo base_url('assets/styles/avisos.css'); ?>">
-      <link rel="stylesheet" href="<?php echo base_url('assets/styles/zabuto_calendar.css'); ?>">
-      <link rel="stylesheet" href="<?php echo base_url('assets/styles/inicio_admin.css') ?>">
-
+      <link rel="stylesheet" href="<?php echo base_url('assets/styles/estudiosRealizadosUsuario.css'); ?>">
+      <link rel="stylesheet" href="<?php echo base_url('assets/styles/bootstrap-dialog.min.css'); ?>">
+      <script type="text/javascript" src="<?php echo base_url('assets/js/jquery-3.2.1.min.js'); ?>"></script>
+      <script type="text/javascript" src="<?php echo base_url('assets/js/bootstrap.min.js'); ?>"></script>
+      <script type="text/javascript" src="<?php echo base_url('assets/js/bootstrap-dialog.min.js'); ?>"></script>
 </head>
 <body>
-
   <header>
     <nav class="navbar navbar-inverse navbar-static-top" style="background-color: #2f4159;"role="navigation">
       <div class="container-fluid">

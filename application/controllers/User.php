@@ -104,6 +104,27 @@ class User extends CI_Controller
 			show_404();
 		}
 	}
+	public function vistaProfe($id)
+	{
+		$datos = $this->Perfil_model->getData($id);
+		if($datos != null)
+		{
+			foreach($datos->result() as $res)
+			{
+				$data = array(
+					'nombre' 		=> $res->Nombres,
+					'apellidop'		=> $res->Primerapellido,
+					'apellidom'		=> $res->Segundoapellido,
+					'nacionalidad' 	=> $res->Nacionalidad,
+					'correo' 		=> $res->Correo,
+					'telefonot' 	=> $res->TelefonoTrabajo,
+					'img' 			=> $res->foto,
+				);
+			}
+		}
+		$data['premio'] = $this->PremiosoDistinciones_model->obtienePD($id);
+		$this->load->view('Public/vista', $data);
+	}
 // Fin  de inicio
 //Tutorías
 	public function tutorias()
@@ -1112,7 +1133,7 @@ class User extends CI_Controller
 			else if($this->session->userdata('id') == 2)
 			{
 				$data['titulo'] = 'SAPTC - Datos Laborales';
-				$data['datos'] = $this->DatosLaborales_model->obtiene($this->session->userdata('login'));
+				$data['datos'] = $this->DatosLaborales_model->obtieneDL($this->session->userdata('login'));
 				$this->load->view('User/datosLaborales', $data);
 			}
 			else
@@ -1124,17 +1145,17 @@ class User extends CI_Controller
 	public function form_datoslaborales($id, $el)
 	{
 
-		if($el==0)
+		if($el==0)// Detalles
 		{
 			$data['es']=0;
-			$data["user"]=$this->DatosLaborales_model->tomafila($id);
+			$data["user"]=$this->DatosLaborales_model->tomafilaDL($id);
 		}
-		elseif ($id!=0 )
+		elseif ($id!=0 )// Modifica
 		{
-			$data["user"]=$this->DatosLaborales_model->tomafila($id);
+			$data["user"]=$this->DatosLaborales_model->tomafilaDL($id);
 			$data['dec']=true;
 		}
-		else
+		else // Agregar
 		{
 			$data['dec']=null;
 		}
@@ -1152,7 +1173,7 @@ class User extends CI_Controller
 				'Cronologia'=>'',
 				'Datosprofesores_idDatosprofesor'=>$this->session->userdata('login')
         );
-				$this->DatosLaborales_model->insert_data($datos);
+				$this->DatosLaborales_model->insert_DL($datos);
 	}
 	public function actualizaDatosLaborales($id)
 	{
@@ -1171,7 +1192,7 @@ class User extends CI_Controller
 	public function deleteDatol()
 	{
 		$id= $this->uri->segment(3);
-		$this->DatosLaborales_model->delete_data($id);
+		$this->DatosLaborales_model->delete_DL($id);
 		redirect(base_url()."index.php/User/datosLaborales");
 	}
 	public function contratoactual()
@@ -1203,8 +1224,7 @@ class User extends CI_Controller
 			else if($this->session->userdata('id') == 2)
 			{
 				$data['titulo'] = 'SAPTC - Premios o Distinciones';
-				$data['datos'] = $this->PremiosoDistinciones_model->obtiene($this->session->userdata('login'));
-				$data["inst"]=$this->PremiosoDistinciones_model->obtienei();
+				$data['datos'] = $this->PremiosoDistinciones_model->obtienePD($this->session->userdata('login'));
 				$this->load->view('User/premiosoDistinciones', $data);
 			}
 			else
@@ -1236,18 +1256,18 @@ class User extends CI_Controller
 		{	$dec = $this->input->post('io');
 		}
 		$datos = (object)array(
-					'Nombre'=>$this->input->post('npd'),
+					'NombrePremio'=>$this->input->post('npd'),
 					'Fecha'=>$this->input->post('f'),
 					'Otrainstitucion'=>$this->input->post('oio'),
 					'Motivo'=>$this->input->post('m'),
 					'Datosprofesores_idDatosprofesor'=>$this->session->userdata('login'),
 					'Instituciones_idInstituciones'=>$dec);
-	$this->PremiosoDistinciones_model->insert_data($datos);
+	$this->PremiosoDistinciones_model->insertPD($datos);
 	}
 	public function deletePremios()
 	{
 		$id= $this->uri->segment(3);
-		$this->PremiosoDistinciones_model->delete_data($id);
+		$this->PremiosoDistinciones_model->deletePD($id);
 		redirect(base_url()."index.php/User/premiosoDisticiones");
 	}
 	public function actualizaPremios($id)
@@ -1261,7 +1281,7 @@ class User extends CI_Controller
 		}
 		$datos = (object)array(
 						'idPremios'=>$id,
-						'Nombre'=>$this->input->post('npd'),
+						'NombrePremio'=>$this->input->post('npd'),
 						'Fecha'=>$this->input->post('f'),
 						'Otrainstitucion'=>$this->input->post('oio'),
 						'Motivo'=>$this->input->post('m'),
