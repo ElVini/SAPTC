@@ -9,17 +9,18 @@ class Publico_model extends CI_Model
 		$this->load->database();
 	}
 
-  	public function getProfesores()
+  public function getProfesores()
 	{
 		$this->db->select('idDatosprofesor,Nombres,Primerapellido,Segundoapellido,estudiosrealizados.Nivelestudios,estudiosrealizados.Disciplina');
 		$this->db->from('datosprofesores');
 		$this->db->join('estudiosrealizados',  'datosprofesores.idDatosprofesor = estudiosrealizados.Datosprofesores_idDatosprofesor', 'INNER');
 		$query = $this->db->get();
-    	return $query;
+    return $query;
 	}
 
-	public function mostrar($valor)
-	{
+	public function mostrar($valor){
+
+
 		/*$consulta = $this->db->get("datosprofesores");*/
 		//AQUI MAS ADELANTE VOY HACER LA CONSULTA PARA EL ENLACE A LAS DOS TABLAS
 		$this->db->select('idDatosprofesor,Nombres,Primerapellido,Segundoapellido,estudiosrealizados.Nivelestudios,estudiosrealizados.Disciplina');
