@@ -14,6 +14,7 @@ class Administrador extends CI_Controller {
 
 	public function index()
 	{
+		$this->load->view('Admin/inicio');
 	}
 
 	public function inicio()

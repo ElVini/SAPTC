@@ -33,7 +33,7 @@
 
           </ul>
           <ul class="nav navbar-nav navbar-right">
-            <li><a href="<?php echo base_url();?>" style="color:white;"><span class="glyphicon glyphicon-log-in" id="cerrar-sesion"></span > Iniciar Sesión</a></li>
+            <li><a href="<?php echo base_url('index.php/Login/inicio');?>" style="color:white;"><span class="glyphicon glyphicon-log-in" id="cerrar-sesion"></span > Iniciar Sesión</a></li>
           </ul>
 
         </div>

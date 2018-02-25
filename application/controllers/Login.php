@@ -6,7 +6,7 @@ class Login extends CI_Controller {
 	public function __construct()
 	{
 		parent::__construct();
-		$this->load->model('Inicio_model');
+		$this->load->model(array('Inicio_model', 'Publico_model'));
 		$this->load->helper('url');
 		$this->load->library(array('session'));
 		$this->load->helper('string');
@@ -17,11 +17,11 @@ class Login extends CI_Controller {
 		switch($this->session->userdata('id'))
 		{
 			case '':
-				$data['titulo'] = 'SAPTC - Inicio de sesión ';
-				$data['token'] = $this->token();
-				$data['correo_e'] = $this->session->flashdata('correo_e');
-				$data['error'] = $this->session->flashdata('error');
-				$this->load->view('inicio', $data);
+				$data = array(
+					'titulo'	=> 'UPSIN | SAPTC',
+					'consulta'	=> $this->Publico_model->getProfesores()
+				);
+				$this->load->view('Public/publico_view', $data);
 				break;
 
 			case '1':
@@ -115,6 +115,14 @@ class Login extends CI_Controller {
 		$this->session->sess_destroy();
 		$this->index();
 		redirect(base_url());
+	}
+
+	public function inicio()
+	{
+		$data = array(
+			'titulo'	=> 'SAPT - Iniciar sesión',
+		);
+		$this->load->view('inicio', $data);
 	}
 
 	public function recordarContra(){
