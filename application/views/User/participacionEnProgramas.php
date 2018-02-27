@@ -51,11 +51,7 @@
           <tr id="TablaLinea">
             <td hidden="" id="<?= $row->idParticipacion ?>"></td>
             <td><?= $row->Programaeducativo?></td>
-            <?php foreach($grado->result() as $raw){
-              if($row->Grado_idGrado== $raw->idGrado ){
-            ?>
-            <td><?= $raw->nombre ?></td>
-          <?php } }?>
+            <td><?= $row->nombre ?></td>
             <td><?= date_format(date_create($row->Fechaimplementacion), "d / m / Y")?></td>
             <td><?= $row->Descripcion ?></td>
             <td><?= '<a href="'.base_url().'index.php/User/archivo/'.$row->idParticipacion.'" target="_blank" >Abrir archivo</a>'?></td>

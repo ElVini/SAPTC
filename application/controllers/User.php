@@ -1527,8 +1527,7 @@ class User extends CI_Controller
 			else if($this->session->userdata('id') == 2)
 			{
 				$data['titulo'] = 'SAPTC - Participación en Programas Educativos';
-				$data['data'] = $this->Participacion_model->obtiene($this->session->userdata('login'));
-				$data['grado'] = $this->Participacion_model->obtieneg();
+				$data['data'] = $this->Participacion_model->obtieneParticipacion($this->session->userdata('login'));
 				$this->load->view('User/participacionEnProgramas', $data);
 			}
 			else
@@ -1537,12 +1536,13 @@ class User extends CI_Controller
 			}
 		}
 	}
-	public function participacion($id)
+	public function formParticipacion($id)
 	{
 			$data['grado'] = $this->Participacion_model->obtieneg();
+			$data['data'] = $this->Participacion_model->obtieneParticipacion($this->session->userdata('login'));
 			if($id!=0)
 			{
-				$data["user"]=$this->Participacion_model->tomafila($id);
+				$data["user"]=$this->Participacion_model->tomafilaParticipacion($id);
 				$this->load->view('forms/participacion', $data);
 			}
 			else
@@ -1579,13 +1579,13 @@ class User extends CI_Controller
 		$ubicaDoc = 'assets/documentos/participacion/'.$idProfesor.'/';
 		if(move_uploaded_file($tmpDoc, $ubicaDoc.$lastID.'.'.'pdf'))
 		{
-			$this->Participacion_model->cambiarRuta($lastID,$ubicaDoc.$lastID.'.'.'pdf');
+			$this->Participacion_model->cambiarRutaParticipacion($lastID,$ubicaDoc.$lastID.'.'.'pdf');
 			redirect(base_url('index.php/User/participacionEnProgramas'));
 		}
 	}
 	public function deleteParticipacion($id)
 	{
-		$ruta = $this->Participacion_model->tomafila($id);
+		$ruta = $this->Participacion_model->tomafilaParticipacion($id);
 		unlink($ruta->result()[0]->PDF);
 		$this->Participacion_model->deleteParticipacion($id);
 		redirect(base_url()."index.php/User/participacionEnProgramas");
@@ -1616,12 +1616,12 @@ class User extends CI_Controller
 					$this->Participacion_model->updateParticipacion($datos);
 					$ubicaDoc = 'assets/documentos/participacion/'.$profesor.'/';
 					move_uploaded_file($tmpDoc, $ubicaDoc.$id.'.'.'pdf');
-					$this->Participacion_model->cambiarRuta($id,$ubicaDoc.$id.'.'.'pdf');
+					$this->Participacion_model->cambiarRutaParticipacion($id,$ubicaDoc.$id.'.'.'pdf');
 					redirect(base_url()."index.php/User/participacionEnProgramas");
 	}
 	public function archivo($id)
 	{
-		$ruta = $this->Participacion_model->tomafila($id);
+		$ruta = $this->Participacion_model->tomafilaParticipacion($id);
 		$ruta = $ruta->result()[0]->PDF;
 		$data['ruta'] = base_url().$ruta;
 		$this->load->view('User/participacionArchivo',$data);

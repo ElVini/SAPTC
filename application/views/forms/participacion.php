@@ -1,15 +1,23 @@
 <?php
+if(isset($data))
+{ foreach  ($data->result() as $datos)
+  {?><script type="text/javascript">
+      $('#programa option[value="<?= $datos->Programaeducativo ?>"]').attr('disabled',true);
+    </script><?php
+  }
+}
 if (isset($user))
 { foreach ($user->result() as $row)
-  { echo "<script type='text/javascript'>
-            $('#programa').val('$row->Programaeducativo');
-            $('#fechacambio').val('$row->Fechaimplementacion');
-            $('#grado').val('$row->Grado_idGrado');
-            $('#des').val('$row->Descripcion');
+  { ?><script type='text/javascript'>
+            $('#programa').val('<?= $row->Programaeducativo?>');
+            $('#fechacambio').val('<?= $row->Fechaimplementacion?>');
+            $('#grado').val('<?= $row->Grado_idGrado?>');
+            $('#des').val('<?= $row->Descripcion?>');
             $('#archivodiv').hide();
             var accion= base_url+'index.php/User/actualizaParticipacion/'+$('#id_p').val();
             $('#formu').attr('action', accion);
-          </script>";
+            $('#programa option[value="<?= $row->Programaeducativo ?>"]').attr('disabled',false);
+      </script><?php
   }
 }
 else{
@@ -30,6 +38,7 @@ else
          $('.primera').hide();
         </script>";
 ?>
+<input type="text" hidden name="pro" value="" id="pro">
 <form method="post" action="" enctype="multipart/form-data" id="formu">
   <div class="row">
     <div class="form-group col-xs-12 col-sm-6 col-md-6 col-lg-6">
@@ -153,7 +162,6 @@ $(document).ready(function(){
   $('input[type=file]').on('change', function(e){
   //$(this).next().find('input').val($(this).val());
   $("#muestra").html($('#archivo').val().split('C:\\fakepath\\'));
-});
-
+  });
 });
 </script>

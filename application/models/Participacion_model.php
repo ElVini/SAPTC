@@ -6,10 +6,11 @@
    		parent:: __construct();
    		$this->load->database();
    	}
-    public function obtiene($id)
+    public function obtieneParticipacion($id)
  	  {
       $this->db->from('participacion');
       $this->db->where('Datosprofesores_idDatosprofesor',$id);
+      $this->db->join('grado', 'grado.idGrado = participacion.Grado_idGrado', 'left');
       //$this->db->order_by("Fecha", "ASC");
       $query = $this->db->get();
       if($query->num_rows()>0)
@@ -47,12 +48,6 @@
       $dat= $this->db->insert_id();
   		return $dat;
     }
-    function tomafilaGrado($nombre)
-    {
-      $this->db->where("nombre", $nombre);
-      $query= $this->db->get("grado");
-      return $query->result();
-    }
     function deleteParticipacion($id){
    		$this->db->where("idParticipacion", $id);
    		$this->db->delete("participacion");
@@ -62,12 +57,12 @@
       $this->db->where('idParticipacion', $data->idParticipacion);
       return $this->db->update('participacion', $data);
     }
-    function tomafila($id)
+    function tomafilaParticipacion($id)
     {
       $this->db->where("idParticipacion", $id);
       return $query= $this->db->get("participacion");
     }
-    function cambiarRuta($id,$ruta)
+    function cambiarRutaParticipacion($id,$ruta)
   	{
         $dat = array('PDF' => $ruta);
         $this->db->where('idParticipacion', $id);
