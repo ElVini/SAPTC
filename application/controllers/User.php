@@ -123,7 +123,7 @@ class User extends CI_Controller
 			}
 		}
 		$data['premio'] = $this->PremiosoDistinciones_model->obtienePD($id);
-		$this->load->view('Public/vista', $data);
+		$this->load->view('Public/vista_modal', $data);
 	}
 // Fin  de inicio
 //Tutorías

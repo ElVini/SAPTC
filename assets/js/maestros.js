@@ -1,5 +1,5 @@
 $(document).on("ready",inicio());
-console.log("ENTRO");
+//console.log("ENTRO");
 
 function inicio()
 {
@@ -35,11 +35,9 @@ function mostrarDatos(valor){
   });
 }
 function muestraInf(id)
-{
-  BootstrapDialog.show({
-          size: BootstrapDialog.SIZE_WIDE,
-          cssClass: 'dialog',
-          title: 'Información',
-          message: $('<div></div>').load( base_url+'index.php/User/vistaProfe/'+id)
-      });
+{ BootstrapDialog.show({
+      size: BootstrapDialog.SIZE_WIDE,
+      title: 'Información',
+      message: $('<div></div>').load( base_url+'index.php/User/vistaProfe/'+id)
+  });
 }
